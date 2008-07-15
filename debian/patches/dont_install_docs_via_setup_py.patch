@@ -1,0 +1,13 @@
+Index: jinja2-2.0~rc1+hg547/setup.py
+===================================================================
+--- jinja2-2.0~rc1+hg547.orig/setup.py
++++ jinja2-2.0~rc1+hg547/setup.py
+@@ -119,7 +119,7 @@ setup(
+         'Topic :: Text Processing :: Markup :: HTML'
+     ],
+     packages=['jinja2'],
+-    data_files=data_files,
++    #data_files=data_files,
+     features={
+         'speedups': Feature("optional C speed-enhancements",
+             standard=True,

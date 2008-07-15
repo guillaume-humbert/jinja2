@@ -1,0 +1,88 @@
+#!/usr/bin/make -f
+
+#export DH_VERBOSE=1
+
+include /usr/share/quilt/quilt.make
+
+PYVERS=$(shell pyversions -vr)
+PKGDIR=$(CURDIR)/debian/python-jinja2
+
+clean: unpatch
+	dh_testdir
+	dh_testroot
+	rm -rf dist build Jinja2.egg-info
+	find . -name '*\.pyc' -delete
+	find . -name '\._*' -delete
+	make -C docs clean
+	dh_clean install-stamp build-stamp \
+		$(PYVERS:%=install-python%) $(PYVERS:%=build-python%) \
+		$(PYVERS:%=install-debug-python%) $(PYVERS:%=build-debug-python%)
+
+build: patch build-stamp
+
+build-stamp: $(PYVERS:%=build-python%) $(PYVERS:%=build-debug-python%)
+	touch $@
+
+build-python%: patch
+	python$* setup.py build
+	touch $@
+
+build-debug-python%: patch
+	python$*-dbg setup.py build
+	touch $@
+
+build-docs:
+	PYTHONPATH=$(CURDIR) make -C docs html
+
+install: $(PYVERS:%=install-python%) $(PYVERS:%=install-debug-python%)
+
+install-python%: build
+	python$* setup.py install \
+		--skip-build --single-version-externally-managed --root $(PKGDIR)
+	touch $@
+
+install-debug-python%: build
+	python$*-dbg setup.py install \
+		--skip-build --single-version-externally-managed --root $(PKGDIR)-dbg/
+	find $(PKGDIR)-dbg/usr/lib/python$*/ ! -type d ! -name '*_d\.so' -delete
+	find $(PKGDIR)-dbg/usr/lib/python$*/ -depth -empty -delete
+	touch $@
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs -a CHANGES
+	dh_installdocs -a
+	dh_pysupport -a
+	dh_makeshlibs -a
+	dh_strip -ppython-jinja2 --dbg-package=python-jinja2-dbg
+	rm -rf $(PKGDIR)-dbg/usr/share/doc/python-jinja2-dbg
+	ln -s python-jinja2 $(PKGDIR)-dbg/usr/share/doc/python-jinja2-dbg
+	dh_compress -a -X.py
+	dh_fixperms -a
+	dh_installdeb -a
+	dh_shlibdeps -a
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a -- -Z bzip2
+
+binary-indep: build-docs
+	dh_testdir -i
+	dh_testroot -i
+	dh_installchangelogs -i CHANGES
+	dh_installdirs -i
+	dh_installdocs -i
+	dh_installexamples -i
+	dh_link -i /usr/share/doc/python-jinja2-doc/html /usr/share/doc/python-jinja2/html
+	dh_link -i /usr/share/doc/python-jinja2-doc/html/_sources /usr/share/doc/python-jinja2/rst
+	dh_link -i /usr/share/javascript/jquery/jquery.min.js /usr/share/doc/python-jinja2-doc/html/_static/jquery.js
+	dh_compress -i -X.html
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i -- -Z bzip2
+
+binary: binary-indep binary-arch
+
+.PHONY: build clean binary-indep binary-arch binary install
