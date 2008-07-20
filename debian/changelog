@@ -1,5 +1,5 @@
-jinja2 (2.0~rc1+hg547-1) UNRELEASED; urgency=low
+jinja2 (2.0-1) unstable; urgency=low
 
   * Initial release (this package is an successor of jinja package)
 
- -- Piotr Ożarowski <piotr@debian.org>  Mon, 14 Jul 2008 23:45:03 +0200
+ -- Piotr Ożarowski <piotr@debian.org>  Sun, 20 Jul 2008 23:01:02 +0200

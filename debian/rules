@@ -76,7 +76,7 @@ binary-indep: build-docs
 	dh_link -i /usr/share/doc/python-jinja2-doc/html /usr/share/doc/python-jinja2/html
 	dh_link -i /usr/share/doc/python-jinja2-doc/html/_sources /usr/share/doc/python-jinja2/rst
 	dh_link -i /usr/share/javascript/jquery/jquery.min.js /usr/share/doc/python-jinja2-doc/html/_static/jquery.js
-	dh_compress -i -X.html
+	dh_compress -i -X.html -X.py
 	dh_fixperms -i
 	dh_installdeb -i
 	dh_gencontrol -i
