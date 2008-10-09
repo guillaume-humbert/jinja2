@@ -15,7 +15,7 @@ Vcs-Browser: http://svn.debian.org/wsvn/python-modules/packages/jinja2/trunk/?op
 Package: python-jinja2
 Architecture: any
 Depends: ${python:Depends}, ${shlibs:Depends}
-Recommends: python-pkg-resources, python-babel
+Recommends: python-pkg-resources, python-pybabel
 Provides: ${python:Provides}
 Suggests: python-jinja2-doc
 XB-Python-Version: ${python:Versions}

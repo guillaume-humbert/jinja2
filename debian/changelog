@@ -1,3 +1,9 @@
+jinja2 (2.0-2) unstable; urgency=low
+
+  * Recommend python-pybabel instead of python-babel (Closes: #501725)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Thu, 09 Oct 2008 22:43:11 +0200
+
 jinja2 (2.0-1) unstable; urgency=low
 
   * Initial release (this package is an successor of jinja package)
