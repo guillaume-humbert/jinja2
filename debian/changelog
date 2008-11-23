@@ -1,10 +1,11 @@
-jinja2 (2.1-1) unstable; urgency=low
+jinja2 (2.1-1) UNRELEASED; urgency=low
 
   [ Sandro Tosi ]
   * Switch Vcs-Browser field to viewsvn
 
   [ Piotr Ożarowski ]
-  *  New upstream release
+  * New upstream release
+  * Bump required python-sphinx version to >= 0.5 (needed to build docs)
 
  -- Piotr Ożarowski <piotr@debian.org>  Sun, 23 Nov 2008 15:02:38 +0100
 
