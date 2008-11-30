@@ -1,4 +1,4 @@
-jinja2 (2.1-1) unstable; urgency=low
+jinja2 (2.1-1) experimental; urgency=low
 
   [ Sandro Tosi ]
   * Switch Vcs-Browser field to viewsvn
@@ -6,9 +6,10 @@ jinja2 (2.1-1) unstable; urgency=low
   [ Piotr Ożarowski ]
   * New upstream release
   * Bump required python-sphinx version to >= 0.5 (needed to build docs)
+    + upload to experimental (Sphinx 0.5 is in experimental for now)
   * Add remove_non_ascii_char patch (to workaround docutils/Sphinx bug)
 
- -- Piotr Ożarowski <piotr@debian.org>  Sun, 23 Nov 2008 15:02:38 +0100
+ -- Piotr Ożarowski <piotr@debian.org>  Sun, 30 Nov 2008 20:14:33 +0100
 
 jinja2 (2.0-2) unstable; urgency=low
 
