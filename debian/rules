@@ -13,6 +13,7 @@ clean: unpatch
 	rm -rf dist build Jinja2.egg-info
 	find . -name '*\.pyc' -delete
 	find . -name '\._*' -delete
+	find . -name '\.DS_Store' -delete
 	make -C docs clean
 	dh_clean install-stamp build-stamp \
 		$(PYVERS:%=install-python%) $(PYVERS:%=build-python%) \
