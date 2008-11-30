@@ -9,14 +9,16 @@
     :license: BSD, see LICENSE for more details.
 """
 import sys
+from jinja2 import nodes
 from jinja2.defaults import *
-from jinja2.lexer import Lexer, TokenStream
+from jinja2.lexer import get_lexer, TokenStream
 from jinja2.parser import Parser
 from jinja2.optimizer import optimize
 from jinja2.compiler import generate
 from jinja2.runtime import Undefined, Context
 from jinja2.exceptions import TemplateSyntaxError
-from jinja2.utils import import_string, LRUCache, Markup, missing, concat
+from jinja2.utils import import_string, LRUCache, Markup, missing, \
+     concat, consume
 
 
 # for direct template usage we have up to ten living environments
@@ -24,9 +26,9 @@ _spontaneous_environments = LRUCache(10)
 
 
 def get_spontaneous_environment(*args):
-    """Return a new spontaneus environment.  A spontaneus environment is an
-    unnamed and unaccessable (in theory) environment that is used for
-    template generated from a string and not from the file system.
+    """Return a new spontaneous environment.  A spontaneous environment is an
+    unnamed and unaccessible (in theory) environment that is used for
+    templates generated from a string and not from the file system.
     """
     try:
         env = _spontaneous_environments.get(args)
@@ -46,6 +48,15 @@ def create_cache(size):
     if size < 0:
         return {}
     return LRUCache(size)
+
+
+def copy_cache(cache):
+    """Create an empty copy of the given cache."""
+    if cache is None:
+        return Noe
+    elif type(cache) is dict:
+        return {}
+    return LRUCache(cache.capacity)
 
 
 def load_extensions(environment, extensions):
@@ -135,6 +146,8 @@ class Environment(object):
 
         `autoescape`
             If set to true the XML/HTML autoescaping feature is enabled.
+            For more details about auto escaping see
+            :class:`~jinja2.utils.Markup`.
 
         `loader`
             The template loader for this environment.
@@ -153,6 +166,13 @@ class Environment(object):
             requested the loader checks if the source changed and if yes, it
             will reload the template.  For higher performance it's possible to
             disable that.
+
+        `bytecode_cache`
+            If set to a bytecode cache object, this object will provide a
+            cache for the internal Jinja bytecode so that templates don't
+            have to be parsed if they were not changed.
+
+            See :ref:`bytecode-cache` for more information.
     """
 
     #: if this environment is sandboxed.  Modifying this variable won't make
@@ -187,7 +207,8 @@ class Environment(object):
                  autoescape=False,
                  loader=None,
                  cache_size=50,
-                 auto_reload=True):
+                 auto_reload=True,
+                 bytecode_cache=None):
         # !!Important notice!!
         #   The constructor accepts quite a few arguments that should be
         #   passed by keyword rather than position.  However it's important to
@@ -223,7 +244,9 @@ class Environment(object):
 
         # set the loader provided
         self.loader = loader
+        self.bytecode_cache = None
         self.cache = create_cache(cache_size)
+        self.bytecode_cache = bytecode_cache
         self.auto_reload = auto_reload
 
         # load extensions
@@ -246,7 +269,8 @@ class Environment(object):
                 line_statement_prefix=missing, trim_blocks=missing,
                 extensions=missing, optimized=missing, undefined=missing,
                 finalize=missing, autoescape=missing, loader=missing,
-                cache_size=missing, auto_reload=missing):
+                cache_size=missing, auto_reload=missing,
+                bytecode_cache=missing):
         """Create a new overlay environment that shares all the data with the
         current environment except of cache and the overriden attributes.
         Extensions cannot be removed for a overlayed environment.  A overlayed
@@ -272,6 +296,8 @@ class Environment(object):
 
         if cache_size is not missing:
             rv.cache = create_cache(cache_size)
+        else:
+            rv.cache = copy_cache(self.cache)
 
         rv.extensions = {}
         for key, value in self.extensions.iteritems():
@@ -281,10 +307,7 @@ class Environment(object):
 
         return _environment_sanity_check(rv)
 
-    @property
-    def lexer(self):
-        """Return a fresh lexer for the environment."""
-        return Lexer(self)
+    lexer = property(get_lexer, doc="The lexer for this environment.")
 
     def getitem(self, obj, argument):
         """Get an item or attribute of an object but prefer the item."""
@@ -330,9 +353,8 @@ class Environment(object):
         try:
             return Parser(self, source, name, filename).parse()
         except TemplateSyntaxError, e:
-            from jinja2.debug import translate_syntax_error
-            exc_type, exc_value, tb = translate_syntax_error(e)
-            raise exc_type, exc_value, tb
+            e.source = source
+            raise e
 
     def lex(self, source, name=None, filename=None):
         """Lex the given sourcecode and return a generator that yields
@@ -344,7 +366,12 @@ class Environment(object):
         of the extensions to be applied you have to filter source through
         the :meth:`preprocess` method.
         """
-        return self.lexer.tokeniter(unicode(source), name, filename)
+        source = unicode(source)
+        try:
+            return self.lexer.tokeniter(source, name, filename)
+        except TemplateSyntaxError, e:
+            e.source = source
+            raise e
 
     def preprocess(self, source, name=None, filename=None):
         """Preprocesses the source with all extensions.  This is automatically
@@ -354,12 +381,12 @@ class Environment(object):
         return reduce(lambda s, e: e.preprocess(s, name, filename),
                       self.extensions.itervalues(), unicode(source))
 
-    def _tokenize(self, source, name, filename=None):
+    def _tokenize(self, source, name, filename=None, state=None):
         """Called by the parser to do the preprocessing and filtering
         for all the extensions.  Returns a :class:`~jinja2.lexer.TokenStream`.
         """
         source = self.preprocess(source, name, filename)
-        stream = self.lexer.tokenize(source, name, filename)
+        stream = self.lexer.tokenize(source, name, filename, state)
         for ext in self.extensions.itervalues():
             stream = ext.filter_stream(stream)
             if not isinstance(stream, TokenStream):
@@ -382,8 +409,8 @@ class Environment(object):
         if isinstance(source, basestring):
             source = self.parse(source, name, filename)
         if self.optimized:
-            node = optimize(source, self)
-        source = generate(node, self, name, filename)
+            source = optimize(source, self)
+        source = generate(source, self, name, filename)
         if raw:
             return source
         if filename is None:
@@ -391,6 +418,48 @@ class Environment(object):
         elif isinstance(filename, unicode):
             filename = filename.encode('utf-8')
         return compile(source, filename, 'exec')
+
+    def compile_expression(self, source, undefined_to_none=True):
+        """A handy helper method that returns a callable that accepts keyword
+        arguments that appear as variables in the expression.  If called it
+        returns the result of the expression.
+
+        This is useful if applications want to use the same rules as Jinja
+        in template "configuration files" or similar situations.
+
+        Example usage:
+
+        >>> env = Environment()
+        >>> expr = env.compile_expression('foo == 42')
+        >>> expr(foo=23)
+        False
+        >>> expr(foo=42)
+        True
+
+        Per default the return value is converted to `None` if the
+        expression returns an undefined value.  This can be changed
+        by setting `undefined_to_none` to `False`.
+
+        >>> env.compile_expression('var')() is None
+        True
+        >>> env.compile_expression('var', undefined_to_none=False)()
+        Undefined
+
+        **new in Jinja 2.1**
+        """
+        parser = Parser(self, source, state='variable')
+        try:
+            expr = parser.parse_expression()
+            if not parser.stream.eos:
+                raise TemplateSyntaxError('chunk after expression',
+                                          parser.stream.current.lineno,
+                                          None, None)
+        except TemplateSyntaxError, e:
+            e.source = source
+            raise e
+        body = [nodes.Assign(nodes.Name('result', 'store'), expr, lineno=1)]
+        template = self.from_string(nodes.Template(body, lineno=1))
+        return TemplateExpression(template, undefined_to_none)
 
     def join_path(self, template, parent):
         """Join a template with the parent.  By default all the lookups are
@@ -410,7 +479,7 @@ class Environment(object):
         If the `parent` parameter is not `None`, :meth:`join_path` is called
         to get the real template name before loading.
 
-        The `globals` parameter can be used to provide temlate wide globals.
+        The `globals` parameter can be used to provide template wide globals.
         These variables are available in the context at render time.
 
         If the template does not exist a :exc:`TemplateNotFound` exception is
@@ -498,7 +567,7 @@ class Template(object):
             variable_end_string, comment_start_string, comment_end_string,
             line_statement_prefix, trim_blocks, newline_sequence,
             frozenset(extensions), optimized, undefined, finalize,
-            autoescape, None, 0, False)
+            autoescape, None, 0, False, None)
         return env.from_string(source, template_class=cls)
 
     @classmethod
@@ -518,7 +587,7 @@ class Template(object):
         t.filename = code.co_filename
         t.blocks = namespace['blocks']
 
-        # render function and module 
+        # render function and module
         t.root_render_func = namespace['root']
         t._module = None
 
@@ -569,13 +638,13 @@ class Template(object):
             exc_type, exc_value, tb = translate_exception(sys.exc_info())
             raise exc_type, exc_value, tb
 
-    def new_context(self, vars=None, shared=False):
+    def new_context(self, vars=None, shared=False, locals=None):
         """Create a new :class:`Context` for this template.  The vars
         provided will be passed to the template.  Per default the globals
-        are added to the context, if shared is set to `True` the data
-        provided is used as parent namespace.  This is used to share the
-        same globals in multiple contexts without consuming more memory.
-        (This works because the context does not modify the parent dict)
+        are added to the context.  If shared is set to `True` the data
+        is passed as it to the context without adding the globals.
+
+        `locals` can be a dict of local variables for internal usage.
         """
         if vars is None:
             vars = {}
@@ -583,16 +652,24 @@ class Template(object):
             parent = vars
         else:
             parent = dict(self.globals, **vars)
+        if locals:
+            # if the parent is shared a copy should be created because
+            # we don't want to modify the dict passed
+            if shared:
+                parent = dict(parent)
+            for key, value in locals.iteritems():
+                if key[:2] == 'l_' and value is not missing:
+                    parent[key[2:]] = value
         return Context(self.environment, parent, self.name, self.blocks)
 
-    def make_module(self, vars=None, shared=False):
+    def make_module(self, vars=None, shared=False, locals=None):
         """This method works like the :attr:`module` attribute when called
         without arguments but it will evaluate the template every call
         rather then caching the template.  It's also possible to provide
         a dict which is then used as context.  The arguments are the same
         as for the :meth:`new_context` method.
         """
-        return TemplateModule(self, self.new_context(vars, shared))
+        return TemplateModule(self, self.new_context(vars, shared, locals))
 
     @property
     def module(self):
@@ -664,6 +741,25 @@ class TemplateModule(object):
         else:
             name = repr(self.__name__)
         return '<%s %s>' % (self.__class__.__name__, name)
+
+
+class TemplateExpression(object):
+    """The :meth:`jinja2.Environment.compile_expression` method returns an
+    instance of this object.  It encapsulates the expression-like access
+    to the template with an expression it wraps.
+    """
+
+    def __init__(self, template, undefined_to_none):
+        self._template = template
+        self._undefined_to_none = undefined_to_none
+
+    def __call__(self, *args, **kwargs):
+        context = self._template.new_context(dict(*args, **kwargs))
+        consume(self._template.root_render_func(context))
+        rv = context.vars['result']
+        if self._undefined_to_none and isinstance(rv, Undefined):
+            rv = None
+        return rv
 
 
 class TemplateStream(object):

@@ -97,15 +97,15 @@
 
         </div>
         
-  <div class="section">
-<h1 id="template-designer-documentation">Template Designer Documentation<a class="headerlink" href="#template-designer-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="template-designer-documentation">
+<h1>Template Designer Documentation<a class="headerlink" href="#template-designer-documentation" title="Permalink to this headline">¶</a></h1>
 <p>This document describes the syntax and semantics of the template engine and
 will be most useful as reference to those creating Jinja templates.  As the
 template engine is very flexible the configuration from the application might
 be slightly different from here in terms of delimiters and behavior of
 undefined values.</p>
-<div class="section">
-<h2 id="synopsis">Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
 <p>A template is simply a text file.  It can generate any text-based format
 (HTML, XML, CSV, LaTeX, etc.).  It doesn&#8217;t have a specific extension,
 <tt class="docutils literal"><span class="pre">.html</span></tt> or <tt class="docutils literal"><span class="pre">.xml</span></tt> are just fine.</p>
@@ -137,8 +137,8 @@ changed the syntax from <tt class="docutils literal"><span class="pre">{%</span>
 one is used to execute statements such as for-loops or assign values, the
 latter prints the result of the expression to the template.</p>
 </div>
-<div class="section">
-<h2 id="id1"><span id="variables"></span>Variables<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<span id="variables"></span><h2>Variables<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>The application passes variables to the templates you can mess around in the
 template.  Variables may have attributes or elements on them you can access
 too.  How a variable looks like, heavily depends on the application providing
@@ -177,8 +177,8 @@ name.  Additionally there is the <a title="attr" class="reference" href="#attr">
 attributes.</p>
 </div>
 </div>
-<div class="section">
-<h2 id="id2"><span id="filters"></span>Filters<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<span id="filters"></span><h2>Filters<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>Variables can by modified by <strong>filters</strong>.  Filters are separated from the
 variable by a pipe symbol (<tt class="docutils literal"><span class="pre">|</span></tt>) and may have optional arguments in
 parentheses.  Multiple filters can be chained.  The output of one filter is
@@ -189,8 +189,8 @@ around the arguments, like a function call.  This example will join a list
 by spaces:  <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">list|join(',</span> <span class="pre">')</span> <span class="pre">}}</span></tt>.</p>
 <p>The <a class="reference" href="#builtin-filters"><em>List of Builtin Filters</em></a> below describes all the builtin filters.</p>
 </div>
-<div class="section">
-<h2 id="id3"><span id="tests"></span>Tests<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<span id="tests"></span><h2>Tests<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <p>Beside filters there are also so called &#8220;tests&#8221; available.  Tests can be used
 to test a variable against a common expression.  To test a variable or
 expression you add <cite>is</cite> plus the name of the test after the variable.  For
@@ -204,8 +204,8 @@ expressions do the same:</p>
 </pre></div>
 <p>The <a class="reference" href="#builtin-tests"><em>List of Builtin Tests</em></a> below describes all the builtin tests.</p>
 </div>
-<div class="section">
-<h2 id="comments">Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="comments">
+<h2>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h2>
 <p>To comment-out part of a line in a template, use the comment syntax which is
 by default set to <tt class="docutils literal"><span class="pre">{#</span> <span class="pre">...</span> <span class="pre">#}</span></tt>.  This is useful to comment out parts of the
 template for debugging or to add information for other template designers or
@@ -217,8 +217,8 @@ yourself:</p>
 <span class="c">#}</span>
 </pre></div>
 </div>
-<div class="section">
-<h2 id="whitespace-control">Whitespace Control<a class="headerlink" href="#whitespace-control" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="whitespace-control">
+<h2>Whitespace Control<a class="headerlink" href="#whitespace-control" title="Permalink to this headline">¶</a></h2>
 <p>In the default configuration whitespace is not further modified by the
 template engine, so each whitespace (spaces, tabs, newlines etc.) is returned
 unchanged.  If the application configures Jinja to <cite>trim_blocks</cite> the first
@@ -246,8 +246,8 @@ automatically up to the beginning of the line.</p>
 </pre></div>
 </div>
 </div>
-<div class="section">
-<h2 id="escaping">Escaping<a class="headerlink" href="#escaping" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="escaping">
+<h2>Escaping<a class="headerlink" href="#escaping" title="Permalink to this headline">¶</a></h2>
 <p>It is sometimes desirable or even necessary to have Jinja ignore parts it
 would otherwise handle as variables or blocks.  For example if the default
 syntax is used and you want to use <tt class="docutils literal"><span class="pre">{{</span></tt> as raw string in the template and
@@ -267,8 +267,8 @@ put Jinja syntax as example into a template you can use this snippet:</p>
 <span class="cp">{%</span> <span class="k">endraw</span> <span class="cp">%}</span>
 </pre></div>
 </div>
-<div class="section">
-<h2 id="id4"><span id="line-statements"></span>Line Statements<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<span id="line-statements"></span><h2>Line Statements<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <p>If line statements are enabled by the application it&#8217;s possible to mark a
 line as a statement.  For example if the line statement prefix is configured
 to <tt class="docutils literal"><span class="pre">#</span></tt> the following two examples are equivalent:</p>
@@ -304,15 +304,15 @@ braces or brackets:</p>
 </pre></div>
 </div>
 </div>
-<div class="section">
-<h2 id="id5"><span id="template-inheritance"></span>Template Inheritance<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<span id="template-inheritance"></span><h2>Template Inheritance<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <p>The most powerful part of Jinja is template inheritance. Template inheritance
 allows you to build a base &#8220;skeleton&#8221; template that contains all the common
 elements of your site and defines <strong>blocks</strong> that child templates can override.</p>
 <p>Sounds complicated but is very basic. It&#8217;s easiest to understand it by starting
 with an example.</p>
-<div class="section">
-<h3 id="base-template">Base Template<a class="headerlink" href="#base-template" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="base-template">
+<h3>Base Template<a class="headerlink" href="#base-template" title="Permalink to this headline">¶</a></h3>
 <p>This template, which we&#8217;ll call <tt class="docutils literal"><span class="pre">base.html</span></tt>, defines a simple HTML skeleton
 document that you might use for a simple two-column page. It&#8217;s the job of
 &#8220;child&#8221; templates to fill the empty blocks with content:</p>
@@ -338,8 +338,8 @@ document that you might use for a simple two-column page. It&#8217;s the job of
 can fill in. All the <cite>block</cite> tag does is to tell the template engine that a
 child template may override those portions of the template.</p>
 </div>
-<div class="section">
-<h3 id="child-template">Child Template<a class="headerlink" href="#child-template" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="child-template">
+<h3>Child Template<a class="headerlink" href="#child-template" title="Permalink to this headline">¶</a></h3>
 <p>A child template might look like this:</p>
 <div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span>
 <span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span>Index<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
@@ -385,8 +385,8 @@ parent wouldn&#8217;t know which one of the blocks&#8217; content to use.</p>
 <p>Unlike Python Jinja does not support multiple inheritance.  So you can only have
 one extends tag called per rendering.</p>
 </div>
-<div class="section">
-<h3 id="super-blocks">Super Blocks<a class="headerlink" href="#super-blocks" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="super-blocks">
+<h3>Super Blocks<a class="headerlink" href="#super-blocks" title="Permalink to this headline">¶</a></h3>
 <p>It&#8217;s possible to render the contents of the parent block by calling <cite>super</cite>.
 This gives back the results of the parent block:</p>
 <div class="highlight"><pre><span class="cp">{%</span> <span class="k">block</span> <span class="nv">sidebar</span> <span class="cp">%}</span>
@@ -396,8 +396,8 @@ This gives back the results of the parent block:</p>
 <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
 </pre></div>
 </div>
-<div class="section">
-<h3 id="named-block-end-tags">Named Block End-Tags<a class="headerlink" href="#named-block-end-tags" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="named-block-end-tags">
+<h3>Named Block End-Tags<a class="headerlink" href="#named-block-end-tags" title="Permalink to this headline">¶</a></h3>
 <p>Jinja2 allows you to put the name of the block after the end tag for better
 readability:</p>
 <div class="highlight"><pre><span class="cp">{%</span> <span class="k">block</span> <span class="nv">sidebar</span> <span class="cp">%}</span>
@@ -409,8 +409,8 @@ readability:</p>
 <p>However the name after the <cite>endblock</cite> word must match the block name.</p>
 </div>
 </div>
-<div class="section">
-<h2 id="html-escaping">HTML Escaping<a class="headerlink" href="#html-escaping" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="html-escaping">
+<h2>HTML Escaping<a class="headerlink" href="#html-escaping" title="Permalink to this headline">¶</a></h2>
 <p>When generating HTML from templates, there&#8217;s always a risk that a variable will
 include characters that affect the resulting HTML.  There are two approaches:
 manually escaping each variable or automatically escaping everything by default.</p>
@@ -424,8 +424,8 @@ a huge performance hit.</li>
 happen that by coercing safe and unsafe values the return value is double
 escaped HTML.</li>
 </ul>
-<div class="section">
-<h3 id="working-with-manual-escaping">Working with Manual Escaping<a class="headerlink" href="#working-with-manual-escaping" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="working-with-manual-escaping">
+<h3>Working with Manual Escaping<a class="headerlink" href="#working-with-manual-escaping" title="Permalink to this headline">¶</a></h3>
 <p>If manual escaping is enabled it&#8217;s <strong>your</strong> responsibility to escape
 variables if needed.  What to escape?  If you have a variable that <em>may</em>
 include any of the following chars (<tt class="docutils literal"><span class="pre">&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;</span></tt>, <tt class="docutils literal"><span class="pre">&amp;</span></tt>, or <tt class="docutils literal"><span class="pre">&quot;</span></tt>) you
@@ -433,8 +433,8 @@ include any of the following chars (<tt class="docutils literal"><span class="pr
 HTML.  Escaping works by piping the variable through the <tt class="docutils literal"><span class="pre">|e</span></tt> filter:
 <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">user.username|e</span> <span class="pre">}}</span></tt>.</p>
 </div>
-<div class="section">
-<h3 id="working-with-automatic-escaping">Working with Automatic Escaping<a class="headerlink" href="#working-with-automatic-escaping" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="working-with-automatic-escaping">
+<h3>Working with Automatic Escaping<a class="headerlink" href="#working-with-automatic-escaping" title="Permalink to this headline">¶</a></h3>
 <p>When automatic escaping is enabled everything is escaped by default except
 for values explicitly marked as safe.  Those can either be marked by the
 application or in the template by using the <cite>|safe</cite> filter.  The main
@@ -452,14 +452,14 @@ too.  The reason for this is that the safe string is an extension to Python
 and not every library will work properly with it.</p>
 </div>
 </div>
-<div class="section">
-<h2 id="list-of-control-structures">List of Control Structures<a class="headerlink" href="#list-of-control-structures" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="list-of-control-structures">
+<h2>List of Control Structures<a class="headerlink" href="#list-of-control-structures" title="Permalink to this headline">¶</a></h2>
 <p>A control structure refers to all those things that control the flow of a
 program - conditionals (i.e. if/elif/else), for-loops, as well as things like
 macros and blocks.  Control structures appear inside <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">...</span> <span class="pre">%}</span></tt> blocks
 in the default syntax.</p>
-<div class="section">
-<h3 id="for">For<a class="headerlink" href="#for" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="for">
+<h3>For<a class="headerlink" href="#for" title="Permalink to this headline">¶</a></h3>
 <p>Loop over each item in a sequence.  For example, to display a list of users
 provided in a variable called <cite>users</cite>:</p>
 <div class="highlight"><pre><span class="nt">&lt;h1&gt;</span>Members<span class="nt">&lt;/h1&gt;</span>
@@ -516,6 +516,8 @@ each time through the loop by using the special <cite>loop.cycle</cite> helper:<
     <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nb">loop</span><span class="nv">.cycle</span><span class="o">(</span><span class="s1">&#39;odd&#39;</span><span class="o">,</span> <span class="s1">&#39;even&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">row</span> <span class="cp">}}</span><span class="nt">&lt;/li&gt;</span>
 <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
 </pre></div>
+<p>With Jinja 2.1 an extra <cite>cycle</cite> helper exists that allows loop-unbound
+cycling.  For more information have a look at the <a class="reference" href="#builtin-globals"><em>List of Global Functions</em></a>.</p>
 <p id="loop-filtering">Unlike in Python it&#8217;s not possible to <cite>break</cite> or <cite>continue</cite> in a loop.  You
 can however filter the sequence during iteration which allows you to skip
 items.  The following example skips all the users which are hidden:</p>
@@ -551,8 +553,8 @@ call the <cite>loop</cite> variable with the new iterable where you want to recu
 <span class="nt">&lt;/ul&gt;</span>
 </pre></div>
 </div>
-<div class="section">
-<h3 id="if">If<a class="headerlink" href="#if" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="if">
+<h3>If<a class="headerlink" href="#if" title="Permalink to this headline">¶</a></h3>
 <p>The <cite>if</cite> statement in Jinja is comparable with the if statements of Python.
 In the simplest form you can use it to test if a variable is defined, not
 empty or not false:</p>
@@ -577,8 +579,8 @@ use more complex <a class="reference" href="#expressions"><em>Expressions</em></
 <p>If can also be used as <a class="reference" href="#if-expression"><em>inline expression</em></a> and for
 <a class="reference" href="#loop-filtering"><em>loop filtering</em></a>.</p>
 </div>
-<div class="section">
-<h3 id="macros">Macros<a class="headerlink" href="#macros" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="macros">
+<h3>Macros<a class="headerlink" href="#macros" title="Permalink to this headline">¶</a></h3>
 <p>Macros are comparable with functions in regular programming languages.  They
 are useful to put often used idioms into reusable functions to not repeat
 yourself.</p>
@@ -625,9 +627,11 @@ accesses the special <cite>varargs</cite> variable).</dd>
 <dd>This is <cite>true</cite> if the macro accesses the special <cite>caller</cite> variable and may
 be called from a <a class="reference" href="#call"><em>call</em></a> tag.</dd>
 </dl>
+<p>If a macro name starts with an underscore it&#8217;s not exported and can&#8217;t
+be imported.</p>
 </div>
-<div class="section">
-<h3 id="id6"><span id="call"></span>Call<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<span id="call"></span><h3>Call<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>In some cases it can be useful to pass a macro to another macro.  For this
 purpose you can use the special <cite>call</cite> block.  The following example shows
 a macro that takes advantage of the call functionality and how it can be
@@ -668,8 +672,8 @@ exactly like an macro, just that it doesn&#8217;t have a name.</p>
 <span class="cp">{%</span> <span class="k">endcall</span> <span class="cp">%}</span>
 </pre></div>
 </div>
-<div class="section">
-<h3 id="id7">Filters<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id7">
+<h3>Filters<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>Filter sections allow you to apply regular Jinja2 filters on a block of
 template data.  Just wrap the code in the special <cite>filter</cite> section:</p>
 <div class="highlight"><pre><span class="cp">{%</span> <span class="k">filter</span> <span class="nf">upper</span> <span class="cp">%}</span>
@@ -677,8 +681,8 @@ template data.  Just wrap the code in the special <cite>filter</cite> section:</
 <span class="cp">{%</span> <span class="k">endfilter</span> <span class="cp">%}</span>
 </pre></div>
 </div>
-<div class="section">
-<h3 id="assignments">Assignments<a class="headerlink" href="#assignments" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="assignments">
+<h3>Assignments<a class="headerlink" href="#assignments" title="Permalink to this headline">¶</a></h3>
 <p>Inside code blocks you can also assign values to variables.  Assignments at
 top level (outside of blocks, macros or loops) are exported from the template
 like top level macros and can be imported by other templates.</p>
@@ -687,21 +691,21 @@ like top level macros and can be imported by other templates.</p>
 <span class="cp">{%</span> <span class="k">set</span> <span class="nv">key</span><span class="o">,</span> <span class="nv">value</span> <span class="o">=</span> <span class="nv">call_something</span><span class="o">()</span> <span class="cp">%}</span>
 </pre></div>
 </div>
-<div class="section">
-<h3 id="extends">Extends<a class="headerlink" href="#extends" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="extends">
+<h3>Extends<a class="headerlink" href="#extends" title="Permalink to this headline">¶</a></h3>
 <p>The <cite>extends</cite> tag can be used to extend a template from another one.  You
 can have multiple of them in a file but only one of them may be executed
 at the time.  There is no support for multiple inheritance.  See the section
 about <a class="reference" href="#template-inheritance"><em>Template Inheritance</em></a> above.</p>
 </div>
-<div class="section">
-<h3 id="block">Block<a class="headerlink" href="#block" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="block">
+<h3>Block<a class="headerlink" href="#block" title="Permalink to this headline">¶</a></h3>
 <p>Blocks are used for inheritance and act as placeholders and replacements
 at the same time.  They are documented in detail as part of the section
 about <a class="reference" href="#template-inheritance"><em>Template Inheritance</em></a>.</p>
 </div>
-<div class="section">
-<h3 id="include">Include<a class="headerlink" href="#include" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="include">
+<h3>Include<a class="headerlink" href="#include" title="Permalink to this headline">¶</a></h3>
 <p>The <cite>include</cite> statement is useful to include a template and return the
 rendered contents of that file into the current namespace:</p>
 <div class="highlight"><pre><span class="cp">{%</span> <span class="k">include</span> <span class="s1">&#39;header.html&#39;</span> <span class="cp">%}</span>
@@ -712,8 +716,8 @@ rendered contents of that file into the current namespace:</p>
 default.  For more details about context behavior of imports and includes
 see <a class="reference" href="#import-visibility"><em>Import Context Behavior</em></a>.</p>
 </div>
-<div class="section">
-<h3 id="id8"><span id="import"></span>Import<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<span id="import"></span><h3>Import<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <p>Jinja2 supports putting often used code into macros.  These macros can go into
 different templates and get imported from there.  This works similar to the
 import statements in Python.  It&#8217;s important to know that imports are cached
@@ -758,8 +762,8 @@ namespace:</p>
 cannot be imported.</p>
 </div>
 </div>
-<div class="section">
-<h2 id="import-context-behavior"><span id="import-visibility"></span>Import Context Behavior<a class="headerlink" href="#import-context-behavior" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="import-context-behavior">
+<span id="import-visibility"></span><h2>Import Context Behavior<a class="headerlink" href="#import-context-behavior" title="Permalink to this headline">¶</a></h2>
 <p>Per default included templates are passed the current context and imported
 templates not.  The reason for this is that imports unlike includes are
 cached as imports are often used just as a module that holds macros.</p>
@@ -770,14 +774,26 @@ can be passed to the template and caching is disabled automatically.</p>
 <div class="highlight"><pre><span class="cp">{%</span> <span class="k">from</span> <span class="s1">&#39;forms.html&#39;</span> <span class="k">import</span> <span class="nv">input</span> <span class="k">with context</span> <span class="cp">%}</span>
 <span class="cp">{%</span> <span class="k">include</span> <span class="s1">&#39;header.html&#39;</span> <span class="k">without context</span> <span class="cp">%}</span>
 </pre></div>
+<div class="admonition-note admonition ">
+<p class="first admonition-title">Note</p>
+<p>In Jinja 2.0 the context that was passed to the included template
+did not include variables define in the template.  As a matter of
+fact this did not work:</p>
+<div class="highlight"><pre><span class="cp">{%</span> <span class="k">for</span> <span class="nv">box</span> <span class="k">in</span> <span class="nv">boxes</span> <span class="cp">%}</span>
+    <span class="cp">{%</span> <span class="k">include</span> <span class="s2">&quot;render_box.html&quot;</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+</pre></div>
+<p class="last">The included template <tt class="docutils literal"><span class="pre">render_box.html</span></tt> is not able to access
+<cite>box</cite> in Jinja 2.0, but in Jinja 2.1.</p>
 </div>
-<div class="section">
-<h2 id="id9"><span id="expressions"></span>Expressions<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id9">
+<span id="expressions"></span><h2>Expressions<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
 <p>Jinja allows basic expressions everywhere.  These work very similar to regular
 Python and even if you&#8217;re not working with Python you should feel comfortable
 with it.</p>
-<div class="section">
-<h3 id="literals">Literals<a class="headerlink" href="#literals" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="literals">
+<h3>Literals<a class="headerlink" href="#literals" title="Permalink to this headline">¶</a></h3>
 <p>The simplest form of expressions are literals.  Literals are representations
 for Python objects such as strings and numbers.  The following literals exist:</p>
 <dl class="docutils">
@@ -826,8 +842,8 @@ consistency (all Jinja identifiers are lowercase) you should use the
 lowercase versions.</p>
 </div>
 </div>
-<div class="section">
-<h3 id="math">Math<a class="headerlink" href="#math" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="math">
+<h3>Math<a class="headerlink" href="#math" title="Permalink to this headline">¶</a></h3>
 <p>Jinja allows you to calculate with values.  This is rarely useful in templates
 but exists for completeness sake.  The following operators are supported:</p>
 <dl class="docutils">
@@ -862,8 +878,8 @@ return <tt class="docutils literal"><span class="pre">4</span></tt>.  This can a
 would return <tt class="docutils literal"><span class="pre">8</span></tt>.</dd>
 </dl>
 </div>
-<div class="section">
-<h3 id="logic">Logic<a class="headerlink" href="#logic" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="logic">
+<h3>Logic<a class="headerlink" href="#logic" title="Permalink to this headline">¶</a></h3>
 <p>For <cite>if</cite> statements / <cite>for</cite> filtering or <cite>if</cite> expressions it can be useful to
 combine group multiple expressions:</p>
 <dl class="docutils">
@@ -884,8 +900,8 @@ and <tt class="docutils literal"><span class="pre">not</span> <span class="pre">
 <tt class="docutils literal"><span class="pre">not</span> <span class="pre">(foo</span> <span class="pre">and</span> <span class="pre">bar).</span></tt></p>
 </div>
 </div>
-<div class="section">
-<h3 id="other-operators">Other Operators<a class="headerlink" href="#other-operators" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="other-operators">
+<h3>Other Operators<a class="headerlink" href="#other-operators" title="Permalink to this headline">¶</a></h3>
 <p>The following operators are very useful but don&#8217;t fit into any of the other
 two categories:</p>
 <dl class="docutils">
@@ -911,8 +927,8 @@ can use arguments and keyword arguments like in python:
 <dd>Get an attribute of an object.  (See <a class="reference" href="#variables"><em>Variables</em></a>)</dd>
 </dl>
 </div>
-<div class="section">
-<h3 id="id10"><span id="if-expression"></span>If Expression<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id10">
+<span id="if-expression"></span><h3>If Expression<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <p>It is also possible to use inline <cite>if</cite> expressions.  These are useful in some
 situations.  For example you can use this to extend from one template if a
 variable is defined, otherwise from the default layout template:</p>
@@ -925,8 +941,8 @@ evaluates into an undefined object:</p>
 <pre>{{ '[%s]' % page.title if page.title }}</pre>
 </div>
 </div>
-<div class="section">
-<h2 id="list-of-builtin-filters"><span id="builtin-filters"></span>List of Builtin Filters<a class="headerlink" href="#list-of-builtin-filters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="list-of-builtin-filters">
+<span id="builtin-filters"></span><h2>List of Builtin Filters<a class="headerlink" href="#list-of-builtin-filters" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="abs">
 <!--[abs]--><tt class="descname">abs</tt><big>(</big><em>number</em><big>)</big><a class="headerlink" href="#abs" title="Permalink to this definition">¶</a></dt>
@@ -1332,8 +1348,8 @@ if the filter returned something unless the second parameter is false.</p>
 </dd></dl>
 
 </div>
-<div class="section">
-<h2 id="list-of-builtin-tests"><span id="builtin-tests"></span>List of Builtin Tests<a class="headerlink" href="#list-of-builtin-tests" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="list-of-builtin-tests">
+<span id="builtin-tests"></span><h2>List of Builtin Tests<a class="headerlink" href="#list-of-builtin-tests" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="callable">
 <!--[callable]--><tt class="descname">callable</tt><big>(</big><em>object</em><big>)</big><a class="headerlink" href="#callable" title="Permalink to this definition">¶</a></dt>
@@ -1427,8 +1443,8 @@ that are iterable.</dd></dl>
 <dd>Return true if the variable is uppercased.</dd></dl>
 
 </div>
-<div class="section">
-<h2 id="list-of-global-functions">List of Global Functions<a class="headerlink" href="#list-of-global-functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="list-of-global-functions">
+<span id="builtin-globals"></span><h2>List of Global Functions<a class="headerlink" href="#list-of-global-functions" title="Permalink to this headline">¶</a></h2>
 <p>The following functions are available in the global scope by default:</p>
 <dl class="function">
 <dt id="range">
@@ -1466,15 +1482,75 @@ contents for layout testing.</dd></dl>
 <dd>A convenient alternative to dict literals.  <tt class="docutils literal"><span class="pre">{'foo':</span> <span class="pre">'bar'}</span></tt> is the same
 as <tt class="docutils literal"><span class="pre">dict(foo='bar')</span></tt>.</dd></dl>
 
+<dl class="class">
+<dt id="cycler">
+<!--[cycler]-->class <tt class="descname">cycler</tt><big>(</big><em>*items</em><big>)</big><a class="headerlink" href="#cycler" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cycler allows you to cycle among values similar to how <cite>loop.cycle</cite>
+works.  Unlike <cite>loop.cycle</cite> however you can use this cycler outside of
+loops or over multiple loops.</p>
+<p>This is for example very useful if you want to show a list of folders and
+files, with the folders on top, but both in the same list with alteranting
+row colors.</p>
+<p>The following example shows how <cite>cycler</cite> can be used:</p>
+<div class="highlight"><pre><span class="cp">{%</span> <span class="k">set</span> <span class="nv">row_class</span> <span class="o">=</span> <span class="nv">cycler</span><span class="o">(</span><span class="s1">&#39;odd&#39;</span><span class="o">,</span> <span class="s1">&#39;even&#39;</span><span class="o">)</span> <span class="cp">%}</span>
+<span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;browser&quot;</span><span class="nt">&gt;</span>
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">folder</span> <span class="k">in</span> <span class="nv">folders</span> <span class="cp">%}</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;folder </span><span class="cp">{{</span> <span class="nv">row_class.next</span><span class="o">()</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">folder</span><span class="o">|</span><span class="nf">e</span> <span class="cp">}}</span><span class="nt">&lt;/li&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">filename</span> <span class="k">in</span> <span class="nv">files</span> <span class="cp">%}</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;file </span><span class="cp">{{</span> <span class="nv">row_class.next</span><span class="o">()</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">filename</span><span class="o">|</span><span class="nf">e</span> <span class="cp">}}</span><span class="nt">&lt;/li&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="nt">&lt;/ul&gt;</span>
+</pre></div>
+<p>A cycler has the following attributes and methods:</p>
+<dl class="method">
+<dt id="cycler.reset">
+<!--[cycler.reset]--><tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#cycler.reset" title="Permalink to this definition">¶</a></dt>
+<dd>Resets the cycle to the first item.</dd></dl>
+
+<dl class="method">
+<dt id="cycler.next">
+<!--[cycler.next]--><tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#cycler.next" title="Permalink to this definition">¶</a></dt>
+<dd>Goes one item a head and returns the then current item.</dd></dl>
+
+<dl class="attribute">
+<dt id="cycler.current">
+<!--[cycler.current]--><tt class="descname">current</tt><a class="headerlink" href="#cycler.current" title="Permalink to this definition">¶</a></dt>
+<dd>Returns the current item.</dd></dl>
+
+<p><strong>new in Jinja 2.1</strong></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="joiner">
+<!--[joiner]-->class <tt class="descname">joiner</tt><big>(</big><em>sep='</em>, <em>'</em><big>)</big><a class="headerlink" href="#joiner" title="Permalink to this definition">¶</a></dt>
+<dd><p>A tiny helper that can be use to &#8220;join&#8221; multiple sections.  A joiner is
+passed a string and will return that string every time it&#8217;s calld, except
+the first time in which situation it returns an empty string.  You can
+use this to join things:</p>
+<div class="highlight"><pre><span class="cp">{%</span> <span class="k">set</span> <span class="nv">pipe</span> <span class="o">=</span> <span class="nv">joiner</span><span class="o">(</span><span class="s2">&quot;|&quot;</span><span class="o">)</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">categories</span> <span class="cp">%}</span> <span class="cp">{{</span> <span class="nv">pipe</span><span class="o">()</span> <span class="cp">}}</span>
+    Categories: <span class="cp">{{</span> <span class="nv">categories</span><span class="o">|</span><span class="nf">join</span><span class="o">(</span><span class="s2">&quot;, &quot;</span><span class="o">)</span> <span class="cp">}}</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">author</span> <span class="cp">%}</span> <span class="cp">{{</span> <span class="nv">pipe</span><span class="o">()</span> <span class="cp">}}</span>
+    Author: <span class="cp">{{</span> <span class="nv">author</span><span class="o">()</span> <span class="cp">}}</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">can_edit</span> <span class="cp">%}</span> <span class="cp">{{</span> <span class="nv">pipe</span><span class="o">()</span> <span class="cp">}}</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;?action=edit&quot;</span><span class="nt">&gt;</span>Edit<span class="nt">&lt;/a&gt;</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+</pre></div>
+<p><strong>new in Jinja 2.1</strong></p>
+</dd></dl>
+
 </div>
-<div class="section">
-<h2 id="extensions">Extensions<a class="headerlink" href="#extensions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="extensions">
+<h2>Extensions<a class="headerlink" href="#extensions" title="Permalink to this headline">¶</a></h2>
 <p>The following sections cover the built-in Jinja2 extensions that may be
 enabled by the application.  The application could also provide further
 extensions not covered by this documentation.  In that case there should
 be a separate document explaining the extensions.</p>
-<div class="section">
-<h3 id="i18n"><span id="i18n-in-templates"></span>i18n<a class="headerlink" href="#i18n" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="i18n">
+<span id="i18n-in-templates"></span><h3>i18n<a class="headerlink" href="#i18n" title="Permalink to this headline">¶</a></h3>
 <p>If the i18n extension is enabled it&#8217;s possible to mark parts in the template
 as translatable.  To mark a section as translatable you can use <cite>trans</cite>:</p>
 <div class="highlight"><pre><span class="nt">&lt;p&gt;</span><span class="cp">{%</span> <span class="k">trans</span> <span class="cp">%}</span>Hello <span class="cp">{{</span> <span class="nv">user</span> <span class="cp">}}</span>!<span class="cp">{%</span> <span class="k">endtrans</span> <span class="cp">%}</span><span class="nt">&lt;/p&gt;</span>
@@ -1521,16 +1597,16 @@ three functions exist:</p>
 <p>For multiple placeholders always use keyword arguments to <cite>format</cite> as other
 languages may not use the words in the same order.</p>
 </div>
-<div class="section">
-<h3 id="expression-statement">Expression Statement<a class="headerlink" href="#expression-statement" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="expression-statement">
+<h3>Expression Statement<a class="headerlink" href="#expression-statement" title="Permalink to this headline">¶</a></h3>
 <p>If the expression-statement extension is loaded a tag called <cite>do</cite> is available
 that works exactly like the regular variable expression (<tt class="docutils literal"><span class="pre">{{</span> <span class="pre">...</span> <span class="pre">}}</span></tt>) just
 that it doesn&#8217;t print anything.  This can be used to modify lists:</p>
 <div class="highlight"><pre><span class="cp">{%</span> <span class="k">do</span> <span class="nv">navigation.append</span><span class="o">(</span><span class="s1">&#39;a string&#39;</span><span class="o">)</span> <span class="cp">%}</span>
 </pre></div>
 </div>
-<div class="section">
-<h3 id="loop-controls">Loop Controls<a class="headerlink" href="#loop-controls" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="loop-controls">
+<h3>Loop Controls<a class="headerlink" href="#loop-controls" title="Permalink to this headline">¶</a></h3>
 <p>If the application enables the <a class="reference" href="extensions.html#loopcontrols-extension"><em>Loop Controls</em></a> it&#8217;s possible to
 use <cite>break</cite> and <cite>continue</cite> in loops.  When <cite>break</cite> is reached, the loop is
 terminated, if <cite>continue</cite> is eached the processing is stopped and continues

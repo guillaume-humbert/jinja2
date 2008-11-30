@@ -61,18 +61,18 @@
 
         </div>
         
-  <div class="section">
-<h1 id="switching-from-other-template-engines">Switching from other Template Engines<a class="headerlink" href="#switching-from-other-template-engines" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="switching-from-other-template-engines">
+<h1>Switching from other Template Engines<a class="headerlink" href="#switching-from-other-template-engines" title="Permalink to this headline">¶</a></h1>
 <p>If you have used a different template engine in the past and want to swtich
 to Jinja2 here is a small guide that shows the basic syntatic and semantic
 changes between some common, similar text template engines for Python.</p>
-<div class="section">
-<h2 id="jinja1">Jinja1<a class="headerlink" href="#jinja1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="jinja1">
+<h2>Jinja1<a class="headerlink" href="#jinja1" title="Permalink to this headline">¶</a></h2>
 <p>Jinja2 is mostly compatible with Jinja1 in terms of API usage and template
 syntax.  The differences between Jinja1 and 2 are explained in the following
 list.</p>
-<div class="section">
-<h3 id="api">API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="api">
+<h3>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h3>
 <dl class="docutils">
 <dt>Loaders</dt>
 <dd>Jinja2 uses a different loader API.  Because the internal representation
@@ -117,8 +117,8 @@ multiple context objects may exist during template evaluation.</dd>
 and allowed to use factory functions.</dd>
 </dl>
 </div>
-<div class="section">
-<h3 id="templates">Templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="templates">
+<h3>Templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h3>
 <p>Jinja2 has mostly the same syntax as Jinja1.  What&#8217;s different is that
 macros require parentheses around the argument list now.</p>
 <p>Additionally Jinja2 allows dynamic inheritance now and dynamic includes.
@@ -131,8 +131,8 @@ doesn&#8217;t have a <cite>parent</cite> attribute, instead you have to alias th
 yourself.  See <a class="reference" href="tricks.html#accessing-the-parent-loop"><em>Accessing the parent Loop</em></a> for more details.</p>
 </div>
 </div>
-<div class="section">
-<h2 id="django">Django<a class="headerlink" href="#django" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="django">
+<h2>Django<a class="headerlink" href="#django" title="Permalink to this headline">¶</a></h2>
 <p>If you have previously worked with Django templates, you should find
 Jinja2 very familiar.  In fact, most of the syntax elements look and
 work the same.</p>
@@ -140,8 +140,8 @@ work the same.</p>
 documentation and some work a bit different.</p>
 <p>This section covers the template changes.  As the API is fundamentally
 different we won&#8217;t cover it here.</p>
-<div class="section">
-<h3 id="method-calls">Method Calls<a class="headerlink" href="#method-calls" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="method-calls">
+<h3>Method Calls<a class="headerlink" href="#method-calls" title="Permalink to this headline">¶</a></h3>
 <p>In Django method calls work implicitly.  With Jinja2 you have to specify that
 you want to call an object.  Thus this Django code:</p>
 <div class="highlight"><pre><span class="cp">{%</span> <span class="k">for</span> <span class="nv">page</span> <span class="k">in</span> <span class="nv">user.get_created_pages</span> <span class="cp">%}</span>
@@ -156,8 +156,8 @@ you want to call an object.  Thus this Django code:</p>
 <p>This allows you to pass variables to the function which is also used for macros
 which is not possible in Django.</p>
 </div>
-<div class="section">
-<h3 id="conditions">Conditions<a class="headerlink" href="#conditions" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="conditions">
+<h3>Conditions<a class="headerlink" href="#conditions" title="Permalink to this headline">¶</a></h3>
 <p>In Django you can use the following constructs to check for equality:</p>
 <div class="highlight"><pre><span class="cp">{%</span> <span class="k">ifequal</span> <span class="nv">foo</span> <span class="s2">&quot;bar&quot;</span> <span class="cp">%}</span>
     ...
@@ -184,8 +184,8 @@ which is not possible in Django.</p>
 <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
 </pre></div>
 </div>
-<div class="section">
-<h3 id="filter-arguments">Filter Arguments<a class="headerlink" href="#filter-arguments" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="filter-arguments">
+<h3>Filter Arguments<a class="headerlink" href="#filter-arguments" title="Permalink to this headline">¶</a></h3>
 <p>Jinja2 provides more than one argument for filters.  Also the syntax for
 argument passing is different.  A template that looks like this in Django:</p>
 <div class="highlight"><pre><span class="cp">{{</span> <span class="nv">items</span><span class="o">|</span><span class="nf">join</span><span class="s2">:&quot;, &quot;</span> <span class="cp">}}</span>
@@ -196,8 +196,8 @@ argument passing is different.  A template that looks like this in Django:</p>
 <p>In fact it&#8217;s a bit more verbose but it allows different types of arguments -
 including variables - and more than one of them.</p>
 </div>
-<div class="section">
-<h3 id="tests">Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="tests">
+<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h3>
 <p>In addition to filters there also are tests you can perform using the is
 operator.  Here are some examples:</p>
 <div class="highlight"><pre><span class="cp">{%</span> <span class="k">if</span> <span class="nv">user.user_id</span> <span class="k">is</span> <span class="nf">odd</span> <span class="cp">%}</span>
@@ -207,14 +207,14 @@ operator.  Here are some examples:</p>
 <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
 </pre></div>
 </div>
-<div class="section">
-<h3 id="loops">Loops<a class="headerlink" href="#loops" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="loops">
+<h3>Loops<a class="headerlink" href="#loops" title="Permalink to this headline">¶</a></h3>
 <p>For loops work very similar to Django, the only incompatibility is that in
 Jinja2 the special variable for the loop context is called <cite>loop</cite> and not
 <cite>forloop</cite> like in Django.</p>
 </div>
-<div class="section">
-<h3 id="cycle">Cycle<a class="headerlink" href="#cycle" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="cycle">
+<h3>Cycle<a class="headerlink" href="#cycle" title="Permalink to this headline">¶</a></h3>
 <p>The <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">cycle</span> <span class="pre">%}</span></tt> tag does not exist in Jinja because of it&#8217;s implicit
 nature.  However you can achieve mostly the same by using the <cite>cycle</cite>
 method on a loop object.</p>
@@ -231,8 +231,8 @@ method on a loop object.</p>
 <p>There is no equivalent of <tt class="docutils literal"><span class="pre">{%</span> <span class="pre">cycle</span> <span class="pre">...</span> <span class="pre">as</span> <span class="pre">variable</span> <span class="pre">%}</span></tt>.</p>
 </div>
 </div>
-<div class="section">
-<h2 id="mako">Mako<a class="headerlink" href="#mako" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mako">
+<h2>Mako<a class="headerlink" href="#mako" title="Permalink to this headline">¶</a></h2>
 <p>If you have used Mako so far and want to switch to Jinja2 you can configure
 Jinja2 to look more like Mako:</p>
 <div class="highlight"><pre><span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="s">&#39;&lt;%&#39;</span><span class="p">,</span> <span class="s">&#39;%&gt;&#39;</span><span class="p">,</span> <span class="s">&#39;${&#39;</span><span class="p">,</span> <span class="s">&#39;}&#39;</span><span class="p">,</span> <span class="s">&#39;%&#39;</span><span class="p">)</span>

@@ -9,9 +9,9 @@
     :license: BSD.
 """
 import sys
-from types import FunctionType, MethodType
 from itertools import chain, imap
-from jinja2.utils import Markup, partial, soft_unicode, escape, missing, concat
+from jinja2.utils import Markup, partial, soft_unicode, escape, missing, \
+     concat, MethodType, FunctionType
 from jinja2.exceptions import UndefinedError, TemplateRuntimeError
 
 
@@ -20,6 +20,8 @@ __all__ = ['LoopContext', 'Context', 'TemplateReference', 'Macro', 'Markup',
            'TemplateRuntimeError', 'missing', 'concat', 'escape',
            'markup_join', 'unicode_join']
 
+
+#: the types we support for context functions
 _context_function_types = (FunctionType, MethodType)
 
 
@@ -59,7 +61,7 @@ class Context(object):
     :class:`Undefined` object for missing variables.
     """
     __slots__ = ('parent', 'vars', 'environment', 'exported_vars', 'name',
-                 'blocks')
+                 'blocks', '__weakref__')
 
     def __init__(self, environment, parent, name, blocks):
         self.parent = parent
@@ -77,15 +79,13 @@ class Context(object):
         """Render a parent block."""
         try:
             blocks = self.blocks[name]
-            block = blocks[blocks.index(current) + 1]
+            index = blocks.index(current) + 1
+            blocks[index]
         except LookupError:
             return self.environment.undefined('there is no parent block '
                                               'called %r.' % name,
                                               name='super')
-        wrap = self.environment.autoescape and Markup or (lambda x: x)
-        render = lambda: wrap(concat(block(self)))
-        render.__name__ = render.name = name
-        return render
+        return BlockReference(name, self, blocks, index)
 
     def get(self, key, default=None):
         """Returns an item from the template context, if it doesn't exist
@@ -165,10 +165,10 @@ class Context(object):
         )
 
 
-# register the context as mutable mapping if possible
+# register the context as mapping if possible
 try:
-    from collections import MutableMapping
-    MutableMapping.register(Context)
+    from collections import Mapping
+    Mapping.register(Context)
 except ImportError:
     pass
 
@@ -180,18 +180,42 @@ class TemplateReference(object):
         self.__context = context
 
     def __getitem__(self, name):
-        func = self.__context.blocks[name][0]
+        blocks = self.__context.blocks[name]
         wrap = self.__context.environment.autoescape and \
                Markup or (lambda x: x)
-        render = lambda: wrap(concat(func(self.__context)))
-        render.__name__ = render.name = name
-        return render
+        return BlockReference(name, self.__context, blocks, 0)
 
     def __repr__(self):
         return '<%s %r>' % (
             self.__class__.__name__,
-            self._context.name
+            self.__context.name
         )
+
+
+class BlockReference(object):
+    """One block on a template reference."""
+
+    def __init__(self, name, context, stack, depth):
+        self.name = name
+        self._context = context
+        self._stack = stack
+        self._depth = depth
+
+    @property
+    def super(self):
+        """Super the block."""
+        if self._depth + 1 >= len(self._stack):
+            return self._context.environment. \
+                undefined('there is no parent block called %r.' %
+                          self.name, name='super')
+        return BlockReference(self.name, self._context, self._stack,
+                              self._depth + 1)
+
+    def __call__(self):
+        rv = concat(self._stack[self._depth](self._context))
+        if self._context.environment.autoescape:
+            rv = Markup(rv)
+        return rv
 
 
 class LoopContext(object):
@@ -379,13 +403,14 @@ class Undefined(object):
         raise self._undefined_exception(hint)
 
     __add__ = __radd__ = __mul__ = __rmul__ = __div__ = __rdiv__ = \
-    __realdiv__ = __rrealdiv__ = __floordiv__ = __rfloordiv__ = \
+    __truediv__ = __rtruediv__ = __floordiv__ = __rfloordiv__ = \
     __mod__ = __rmod__ = __pos__ = __neg__ = __call__ = \
     __getattr__ = __getitem__ = __lt__ = __le__ = __gt__ = __ge__ = \
-    __int__ = __float__ = __complex__ = _fail_with_undefined_error
+    __int__ = __float__ = __complex__ = __pow__ = __rpow__ = \
+        _fail_with_undefined_error
 
     def __str__(self):
-        return self.__unicode__().encode('utf-8')
+        return unicode(self).encode('utf-8')
 
     def __unicode__(self):
         return u''

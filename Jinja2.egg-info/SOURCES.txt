@@ -41,9 +41,10 @@ docs/_build/html/genindex.html
 docs/_build/html/index.html
 docs/_build/html/integration.html
 docs/_build/html/intro.html
+docs/_build/html/objects.inv
 docs/_build/html/sandbox.html
 docs/_build/html/search.html
-docs/_build/html/searchindex.json
+docs/_build/html/searchindex.js
 docs/_build/html/switching.html
 docs/_build/html/templates.html
 docs/_build/html/tricks.html
@@ -65,7 +66,6 @@ docs/_build/html/_static/doctools.js
 docs/_build/html/_static/file.png
 docs/_build/html/_static/headerbg.png
 docs/_build/html/_static/implementation.png
-docs/_build/html/_static/interface.js
 docs/_build/html/_static/jinja.js
 docs/_build/html/_static/jinjabanner.png
 docs/_build/html/_static/jquery.js
@@ -103,6 +103,7 @@ docs/_templates/layout.html
 docs/_templates/opensearch.xml
 docs/_templates/page.html
 docs/_templates/search.html
+examples/.DS_Store
 examples/bench.py
 examples/profile.py
 examples/basic/cycle.py
@@ -113,8 +114,19 @@ examples/basic/test_filter_and_linestatements.py
 examples/basic/test_loop_filter.py
 examples/basic/translate.py
 examples/basic/templates/broken.html
+examples/rwbench/.DS_Store
+examples/rwbench/django.gv
+examples/rwbench/django.pdf
 examples/rwbench/djangoext.py
 examples/rwbench/djangoext.pyc
+examples/rwbench/genshi.gv
+examples/rwbench/jinja.gv
+examples/rwbench/jinja.pdf
+examples/rwbench/jinjabug.gv
+examples/rwbench/jinjabug.pdf
+examples/rwbench/mako.gv
+examples/rwbench/profiler.py
+examples/rwbench/profiler.pyc
 examples/rwbench/rwbench.py
 examples/rwbench/rwbench.pyc
 examples/rwbench/django/_form.html
@@ -133,6 +145,8 @@ examples/rwbench/mako/index.html
 examples/rwbench/mako/layout.html
 ext/djangojinja2.py
 ext/djangojinja2.pyc
+ext/ifchanged.py
+ext/ifchanged.pyc
 ext/inlinegettext.py
 ext/inlinegettext.pyc
 ext/jinja.el
@@ -155,8 +169,19 @@ ext/Jinja Templates.tmbundle/Syntaxes/HTML (Jinja Templates).tmLanguage
 ext/Jinja Templates.tmbundle/Syntaxes/Jinja Templates.tmLanguage
 ext/Vim/htmljinja.vim
 ext/Vim/jinja.vim
+ext/django2jinja/django2jinja.py
+ext/django2jinja/example.py
+ext/django2jinja/incoming.patch
+ext/django2jinja/converted/index.html
+ext/django2jinja/converted/layout.html
+ext/django2jinja/converted/subtemplate.html
+ext/django2jinja/templates/index.html
+ext/django2jinja/templates/layout.html
+ext/django2jinja/templates/subtemplate.html
 jinja2/__init__.py
+jinja2/_ipysupport.py
 jinja2/_speedups.c
+jinja2/bccache.py
 jinja2/compiler.py
 jinja2/constants.py
 jinja2/debug.py
@@ -200,6 +225,8 @@ tests/test_lrucache.py
 tests/test_lrucache.pyc
 tests/test_macros.py
 tests/test_macros.pyc
+tests/test_old_bugs.py
+tests/test_old_bugs.pyc
 tests/test_parser.py
 tests/test_parser.pyc
 tests/test_security.py

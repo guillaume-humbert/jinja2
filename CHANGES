@@ -1,6 +1,51 @@
 Jinja2 Changelog
 ===============
 
+Version 2.1
+-----------
+(codename Yasuzō, released on November 23rd 2008)
+
+- fixed a bug with nested loops and the special loop variable.  Before the
+  change an inner loop overwrote the loop variable from the outer one after
+  iteration.
+
+- fixed a bug with the i18n extension that caused the explicit pluralization
+  block to look up the wrong variable.
+
+- fixed a limitation in the lexer that made ``{{ foo.0.0 }}`` impossible.
+
+- index based subscribing of variables with a constant value returns an
+  undefined object now instead of raising an index error.  This was a bug
+  caused by eager optimizing.
+
+- the i18n extension looks up `foo.ugettext` now followed by `foo.gettext`
+  if an translations object is installed.  This makes dealing with custom
+  translations classes easier.
+
+- fixed a confusing behavior with conditional extending.  loops were partially
+  executed under some conditions even though they were not part of a visible
+  area.
+
+- added `sort` filter that works like `dictsort` but for arbitrary sequences.
+
+- fixed a bug with empty statements in macros.
+
+- implemented a bytecode cache system.  (:ref:`bytecode-cache`)
+
+- the template context is now weakref-able
+
+- inclusions and imports "with context" forward all variables now, not only
+  the initial context.
+
+- added a cycle helper called `cycler`.
+
+- added a joining helper called `joiner`.
+
+- added a `compile_expression` method to the environment that allows compiling
+  of Jinja expressions into callable Python objects.
+
+- fixed an escaping bug in urlize
+
 Version 2.0
 -----------
 (codename jinjavitus, released on July 17th 2008)

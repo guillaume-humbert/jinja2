@@ -37,8 +37,8 @@
       </div>
       <div id="contentwrapper">
         
-  <div class="section">
-<h1 id="module-jinja2.sandbox">Sandbox<a class="headerlink" href="#module-jinja2.sandbox" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-jinja2.sandbox">
+<h1>Sandbox<a class="headerlink" href="#module-jinja2.sandbox" title="Permalink to this headline">¶</a></h1>
 <p>The Jinja2 sandbox can be used to evaluate untrusted code.  Access to unsafe
 attributes and methods is prohibited.</p>
 <p>Assuming <cite>env</cite> is a <tt class="xref docutils literal"><span class="pre">SandboxedEnvironment</span></tt> in the default configuration
@@ -109,7 +109,7 @@ sandbox is enabled.</dd></dl>
 example this function returns <cite>True</cite> for the <cite>func_code</cite> attribute of
 python objects.  This is useful if the environment method
 <a title="jinja2.sandbox.SandboxedEnvironment.is_safe_attribute" class="reference" href="#jinja2.sandbox.SandboxedEnvironment.is_safe_attribute"><tt class="xref docutils literal"><span class="pre">is_safe_attribute()</span></tt></a> is overriden.</p>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">jinja2.sandbox</span> <span class="k">import</span> <span class="n">is_internal_attribute</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">jinja2.sandbox</span> <span class="kn">import</span> <span class="n">is_internal_attribute</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_internal_attribute</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">&quot;func_code&quot;</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_internal_attribute</span><span class="p">((</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">func_code</span><span class="p">,</span> <span class="s">&#39;co_code&#39;</span><span class="p">)</span>

@@ -1,3 +1,4 @@
+don't install documentation via setup.py as it will be regenerated in build-docs rule
 Index: jinja2-2.0~rc1+hg547/setup.py
 ===================================================================
 --- jinja2-2.0~rc1+hg547.orig/setup.py

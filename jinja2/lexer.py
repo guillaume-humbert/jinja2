@@ -15,7 +15,6 @@
     :license: BSD, see LICENSE for more details.
 """
 import re
-import unicodedata
 from operator import itemgetter
 from collections import deque
 from jinja2.exceptions import TemplateSyntaxError
@@ -27,12 +26,12 @@ from jinja2.utils import LRUCache
 _lexer_cache = LRUCache(50)
 
 # static regular expressions
-whitespace_re = re.compile(r'\s+(?um)')
+whitespace_re = re.compile(r'\s+', re.U)
 string_re = re.compile(r"('([^'\\]*(?:\\.[^'\\]*)*)'"
-                       r'|"([^"\\]*(?:\\.[^"\\]*)*)")(?ms)')
+                       r'|"([^"\\]*(?:\\.[^"\\]*)*)")', re.S)
 integer_re = re.compile(r'\d+')
 name_re = re.compile(r'\b[a-zA-Z_][a-zA-Z0-9_]*\b')
-float_re = re.compile(r'\d+\.\d+')
+float_re = re.compile(r'(?<!\.)\d+\.\d+')
 newline_re = re.compile(r'(\r\n|\r|\n)')
 
 # bind operators to token types
@@ -246,26 +245,22 @@ class TokenStream(object):
             self.next()
 
 
-class LexerMeta(type):
-    """Metaclass for the lexer that caches instances for
-    the same configuration in a weak value dictionary.
-    """
-
-    def __call__(cls, environment):
-        key = (environment.block_start_string,
-               environment.block_end_string,
-               environment.variable_start_string,
-               environment.variable_end_string,
-               environment.comment_start_string,
-               environment.comment_end_string,
-               environment.line_statement_prefix,
-               environment.trim_blocks,
-               environment.newline_sequence)
-        lexer = _lexer_cache.get(key)
-        if lexer is None:
-            lexer = type.__call__(cls, environment)
-            _lexer_cache[key] = lexer
-        return lexer
+def get_lexer(environment):
+    """Return a lexer which is probably cached."""
+    key = (environment.block_start_string,
+           environment.block_end_string,
+           environment.variable_start_string,
+           environment.variable_end_string,
+           environment.comment_start_string,
+           environment.comment_end_string,
+           environment.line_statement_prefix,
+           environment.trim_blocks,
+           environment.newline_sequence)
+    lexer = _lexer_cache.get(key)
+    if lexer is None:
+        lexer = Lexer(environment)
+        _lexer_cache[key] = lexer
+    return lexer
 
 
 class Lexer(object):
@@ -275,8 +270,6 @@ class Lexer(object):
     Note that the lexer is not automatically bound to an environment.
     Multiple environments can share the same lexer.
     """
-
-    __metaclass__ = LexerMeta
 
     def __init__(self, environment):
         # shortcuts
@@ -382,10 +375,10 @@ class Lexer(object):
         """Called for strings and template data to normlize it to unicode."""
         return newline_re.sub(self.newline_sequence, value)
 
-    def tokenize(self, source, name=None, filename=None):
+    def tokenize(self, source, name=None, filename=None, state=None):
         """Calls tokeniter + tokenize and wraps it in a token stream.
         """
-        stream = self.tokeniter(source, name, filename)
+        stream = self.tokeniter(source, name, filename, state)
         return TokenStream(self.wrap(stream, name, filename), name, filename)
 
     def wrap(self, stream, name=None, filename=None):
@@ -433,7 +426,7 @@ class Lexer(object):
                 token = operators[value]
             yield Token(lineno, token, value)
 
-    def tokeniter(self, source, name, filename=None):
+    def tokeniter(self, source, name, filename=None, state=None):
         """This method tokenizes the text and returns the tokens in a
         generator.  Use this method if you just want to tokenize a template.
         """
@@ -441,7 +434,12 @@ class Lexer(object):
         pos = 0
         lineno = 1
         stack = ['root']
-        statetokens = self.rules['root']
+        if state is not None and state != 'root':
+            assert state in ('variable', 'block'), 'invalid state'
+            stack.append(state + '_begin')
+        else:
+            state = 'root'
+        statetokens = self.rules[stack[-1]]
         source_length = len(source)
 
         balancing_stack = []

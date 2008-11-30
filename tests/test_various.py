@@ -8,7 +8,8 @@
 """
 import gc
 from py.test import raises
-from jinja2 import escape
+from jinja2 import escape, is_undefined
+from jinja2.utils import Cycler
 from jinja2.exceptions import TemplateSyntaxError
 
 
@@ -84,3 +85,26 @@ def test_finalizer():
     assert tmpl.render(seq=(None, 1, "foo")) == '||1|foo'
     tmpl = env.from_string('<{{ none }}>')
     assert tmpl.render() == '<>'
+
+
+def test_cycler():
+    items = 1, 2, 3
+    c = Cycler(*items)
+    for item in items + items:
+        assert c.current == item
+        assert c.next() == item
+    c.next()
+    assert c.current == 2
+    c.reset()
+    assert c.current == 1
+
+
+def test_expressions(env):
+    expr = env.compile_expression("foo")
+    assert expr() is None
+    assert expr(foo=42) == 42
+    expr2 = env.compile_expression("foo", undefined_to_none=False)
+    assert is_undefined(expr2())
+
+    expr = env.compile_expression("42 + foo")
+    assert expr(foo=42) == 84

@@ -50,13 +50,13 @@
 
         </div>
         
-  <div class="section">
-<h1 id="integration">Integration<a class="headerlink" href="#integration" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="integration">
+<h1>Integration<a class="headerlink" href="#integration" title="Permalink to this headline">¶</a></h1>
 <p>Jinja2 provides some code for integration into other tools such as frameworks,
 the <a class="reference" href="http://babel.edgewall.org/">Babel</a> library or your favourite editor for fancy code highlighting.
 This is a brief description of whats included.</p>
-<div class="section">
-<h2 id="id1"><span id="babel-integration"></span>Babel Integration<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<span id="babel-integration"></span><h2>Babel Integration<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>Jinja provides support for extracting gettext messages from templates via a
 <a class="reference" href="http://babel.edgewall.org/">Babel</a> extractor entry point called <cite>jinja2.ext.babel_extract</cite>.  The Babel
 support is implemented as part of the <a class="reference" href="extensions.html#i18n-extension"><em>i18n Extension</em></a> extension.</p>
@@ -77,13 +77,13 @@ that templates use <tt class="docutils literal"><span class="pre">%</span></tt> 
 of import paths as <cite>extensions</cite> value.  The i18n extension is added
 automatically.</p>
 </div>
-<div class="section">
-<h2 id="pylons">Pylons<a class="headerlink" href="#pylons" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pylons">
+<h2>Pylons<a class="headerlink" href="#pylons" title="Permalink to this headline">¶</a></h2>
 <p>With <a class="reference" href="http://www.pylonshq.com/">Pylons</a> 0.9.7 onwards it&#8217;s incredible easy to integrate Jinja into a
 Pylons powered application.</p>
 <p>The template engine is configured in <cite>config/environment.py</cite>.  The configuration
 for Jinja2 looks something like that:</p>
-<div class="highlight"><pre><span class="k">from</span> <span class="nn">jinja2</span> <span class="k">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">PackageLoader</span>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">PackageLoader</span>
 <span class="n">config</span><span class="p">[</span><span class="s">&#39;pylons.app_globals&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">jinja_env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span>
     <span class="n">loader</span><span class="o">=</span><span class="n">PackageLoader</span><span class="p">(</span><span class="s">&#39;yourapplication&#39;</span><span class="p">,</span> <span class="s">&#39;templates&#39;</span><span class="p">)</span>
 <span class="p">)</span>
@@ -97,14 +97,14 @@ snippet and add it into your <cite>config/environment.py</cite>:</p>
 <div class="highlight"><pre><span class="n">config</span><span class="p">[</span><span class="s">&#39;pylons.strict_c&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
 </pre></div>
 </div>
-<div class="section">
-<h2 id="textmate">TextMate<a class="headerlink" href="#textmate" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="textmate">
+<h2>TextMate<a class="headerlink" href="#textmate" title="Permalink to this headline">¶</a></h2>
 <p>Inside the <cite>ext</cite> folder of Jinja2 there is a bundle for TextMate that supports
 syntax highlighting for Jinja1 and Jinja2 for text based templates as well as
 HTML.  It also contains a few often used snippets.</p>
 </div>
-<div class="section">
-<h2 id="vim">Vim<a class="headerlink" href="#vim" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="vim">
+<h2>Vim<a class="headerlink" href="#vim" title="Permalink to this headline">¶</a></h2>
 <p>A syntax plugin for <a class="reference" href="http://www.vim.org/">Vim</a> exists in the Vim-scripts directory as well as the
 ext folder of Jinja2.  <a class="reference" href="http://www.vim.org/scripts/script.php?script_id=1856">The script</a>
 supports Jinja1 and Jinja2.  Once installed two file types are available <cite>jinja</cite>

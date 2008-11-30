@@ -49,7 +49,7 @@ from distutils.errors import CCompilerError, DistutilsPlatformError
 
 #: don't change the variable and assignment.  the fabfile parses this
 #: file to get the version for deployment from it.
-VERSION = '2.0'
+VERSION = '2.1'
 
 
 data_files = []
@@ -76,29 +76,6 @@ def get_terminal_width():
         return 80
 
 
-class optional_build_ext(build_ext):
-    """This class allows C extension building to fail."""
-
-    def run(self):
-        try:
-            build_ext.run(self)
-        except DistutilsPlatformError:
-            self._unavailable()
-
-    def build_extension(self, ext):
-        try:
-            build_ext.build_extension(self, ext)
-        except CCompilerError, x:
-            self._unavailable()
-
-    def _unavailable(self):
-        width = get_terminal_width()
-        print '*' * width
-        print """WARNING:
-An optional C extension could not be compiled, speedups will not be
-available."""
-
-
 setup(
     name='Jinja2',
     version=VERSION,
@@ -113,7 +90,7 @@ setup(
     # in form of html and txt files it's a better idea to extract the files
     zip_safe=False,
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',

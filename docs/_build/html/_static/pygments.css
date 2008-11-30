@@ -1,3 +1,4 @@
+.hll { background-color: #ffffcc }
 .c { color: #aaaaaa; font-style: italic } /* Comment */
 .err { color: #F00000; background-color: #F0A0A0 } /* Error */
 .k { color: #B80000; font-weight: bold } /* Keyword */
@@ -17,6 +18,7 @@
 .gt { color: #aa0000 } /* Generic.Traceback */
 .kc { color: #B80000; font-weight: bold } /* Keyword.Constant */
 .kd { color: #B80000; font-weight: bold } /* Keyword.Declaration */
+.kn { color: #B80000; font-weight: bold } /* Keyword.Namespace */
 .kp { color: #B80000; font-weight: bold } /* Keyword.Pseudo */
 .kr { color: #B80000; font-weight: bold } /* Keyword.Reserved */
 .kt { color: #808080; font-weight: bold } /* Keyword.Type */

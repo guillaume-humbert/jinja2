@@ -13,7 +13,6 @@
     :license: BSD, see LICENSE for more details.
 """
 import operator
-from copy import copy
 from itertools import chain, izip
 from collections import deque
 from jinja2.utils import Markup
@@ -154,30 +153,6 @@ class Node(object):
             for result in child.find_all(node_type):
                 yield result
 
-    def copy(self):
-        """Return a deep copy of the node."""
-        result = object.__new__(self.__class__)
-        for field, value in self.iter_fields():
-            if isinstance(value, Node):
-                new_value = value.copy()
-            elif isinstance(value, list):
-                new_value = []
-                for item in value:
-                    if isinstance(item, Node):
-                        item = item.copy()
-                    else:
-                        item = copy(item)
-                    new_value.append(item)
-            else:
-                new_value = copy(value)
-            setattr(result, field, new_value)
-        for attr in self.attributes:
-            try:
-                setattr(result, attr, getattr(self, attr))
-            except AttributeError:
-                pass
-        return result
-
     def set_ctx(self, ctx):
         """Reset the context of a node and all child nodes.  Per default the
         parser will all generate nodes that have a 'load' context as it's the
@@ -285,11 +260,6 @@ class CallBlock(Stmt):
     the unnamed macro as `caller` argument this node holds.
     """
     fields = ('call', 'args', 'defaults', 'body')
-
-
-class Set(Stmt):
-    """Allows defining own variables."""
-    fields = ('name', 'expr')
 
 
 class FilterBlock(Stmt):
@@ -488,6 +458,9 @@ class Pair(Helper):
 class Keyword(Helper):
     """A key, value pair for keyword arguments where key is a string."""
     fields = ('key', 'value')
+
+    def as_const(self):
+        return self.key, self.value.as_const()
 
 
 class CondExpr(Expr):

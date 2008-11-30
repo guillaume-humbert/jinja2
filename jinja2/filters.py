@@ -10,7 +10,6 @@
 """
 import re
 import math
-import textwrap
 from random import choice
 from operator import itemgetter
 from itertools import imap, groupby
@@ -138,7 +137,7 @@ def do_title(s):
 
 
 def do_dictsort(value, case_sensitive=False, by='key'):
-    """ Sort a dict and yield (key, value) pairs. Because python dicts are
+    """Sort a dict and yield (key, value) pairs. Because python dicts are
     unsorted you may want to use this function to order them by either
     key or value:
 
@@ -163,13 +162,32 @@ def do_dictsort(value, case_sensitive=False, by='key'):
                                   '"key" or "value"')
     def sort_func(item):
         value = item[pos]
-        if isinstance(value, basestring):
-            value = unicode(value)
-            if not case_sensitive:
-                value = value.lower()
+        if isinstance(value, basestring) and not case_sensitive:
+            value = value.lower()
         return value
 
     return sorted(value.items(), key=sort_func)
+
+
+def do_sort(value, case_sensitive=False):
+    """Sort an iterable.  If the iterable is made of strings the second
+    parameter can be used to control the case sensitiveness of the
+    comparison which is disabled by default.
+
+    .. sourcecode:: jinja
+
+        {% for item in iterable|sort %}
+            ...
+        {% endfor %}
+    """
+    if not case_sensitive:
+        def sort_func(item):
+            if isinstance(item, basestring):
+                item = item.lower()
+            return item
+    else:
+        sort_func = None
+    return sorted(seq, key=sort_func)
 
 
 def do_default(value, default_value=u'', boolean=False):
@@ -304,7 +322,7 @@ def do_urlize(environment, value, trim_url_limit=None, nofollow=False):
         {{ mytext|urlize(40, true) }}
             links are shortened to 40 chars and defined with rel="nofollow"
     """
-    rv = urlize(soft_unicode(value), trim_url_limit, nofollow)
+    rv = urlize(value, trim_url_limit, nofollow)
     if environment.autoescape:
         rv = Markup(rv)
     return rv
@@ -321,10 +339,11 @@ def do_indent(s, width=4, indentfirst=False):
         {{ mytext|indent(2, true) }}
             indent by two spaces and indent the first line too.
     """
-    indention = ' ' * width
+    indention = u' ' * width
+    rv = (u'\n' + indention).join(s.splitlines())
     if indentfirst:
-        return u'\n'.join(indention + line for line in s.splitlines())
-    return s.replace('\n', '\n' + indention)
+        rv = indention + rv
+    return rv
 
 
 def do_truncate(s, length=255, killwords=False, end='...'):
@@ -365,6 +384,7 @@ def do_wordwrap(s, width=79, break_long_words=True):
     parameter.  If you set the second parameter to `false` Jinja will not
     split words apart if they are longer than `width`.
     """
+    import textwrap
     return u'\n'.join(textwrap.wrap(s, width=width, expand_tabs=False,
                                    replace_whitespace=False,
                                    break_long_words=break_long_words))
@@ -629,13 +649,20 @@ def do_attr(environment, obj, name):
     See :ref:`Notes on subscriptions <notes-on-subscriptions>` for more details.
     """
     try:
-        value = getattr(obj, name)
-    except AttributeError:
-        return environment.undefined(obj=obj, name=name)
-    if environment.sandboxed and not \
-       environment.is_safe_attribute(obj, name, value):
-        return environment.unsafe_undefined(obj, name)
-    return value
+        name = str(name)
+    except UnicodeError:
+        pass
+    else:
+        try:
+            value = getattr(obj, name)
+        except AttributeError:
+            pass
+        else:
+            if environment.sandboxed and not \
+               environment.is_safe_attribute(obj, name, value):
+                return environment.unsafe_undefined(obj, name)
+            return value
+    return environment.undefined(obj=obj, name=name)
 
 
 FILTERS = {
@@ -653,6 +680,7 @@ FILTERS = {
     'join':                 do_join,
     'count':                len,
     'dictsort':             do_dictsort,
+    'sort':                 do_sort,
     'length':               len,
     'reverse':              do_reverse,
     'center':               do_center,

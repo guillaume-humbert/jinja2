@@ -8,14 +8,12 @@
     :copyright: Copyright 2008 by Armin Ronacher.
     :license: BSD.
 """
-from copy import copy
-from keyword import iskeyword
 from cStringIO import StringIO
 from itertools import chain
 from jinja2 import nodes
 from jinja2.visitor import NodeVisitor, NodeTransformer
 from jinja2.exceptions import TemplateAssertionError
-from jinja2.utils import Markup, concat, escape
+from jinja2.utils import Markup, concat, escape, is_python_keyword
 
 
 operators = {
@@ -117,10 +115,13 @@ class Identifiers(object):
             return False
         return name in self.declared
 
-    def find_shadowed(self):
-        """Find all the shadowed names."""
+    def find_shadowed(self, extra=()):
+        """Find all the shadowed names.  extra is an iterable of variables
+        that may be defined with `add_special` which may occour scoped.
+        """
         return (self.declared | self.outer_undeclared) & \
-               (self.declared_locally | self.declared_parameter)
+               (self.declared_locally | self.declared_parameter) | \
+               set(x for x in extra if self.is_declared(x))
 
 
 class Frame(object):
@@ -136,6 +137,10 @@ class Frame(object):
         # conditions.  This information is used to optimize inheritance
         # situations.
         self.rootlevel = False
+
+        # in some dynamic inheritance situations the compiler needs to add
+        # write tests around output statements.
+        self.require_output_check = parent and parent.require_output_check
 
         # inside some tags we are using a buffer rather than yield statements.
         # this for example affects {% filter %} or {% macro %}.  If a frame
@@ -164,8 +169,10 @@ class Frame(object):
 
     def copy(self):
         """Create a copy of the current one."""
-        rv = copy(self)
-        rv.identifiers = copy(self.identifiers)
+        rv = object.__new__(self.__class__)
+        rv.__dict__.update(self.__dict__)
+        rv.identifiers = object.__new__(self.identifiers.__class__)
+        rv.identifiers.__dict__.update(self.identifiers.__dict__)
         return rv
 
     def inspect(self, nodes, hard_scope=False):
@@ -186,9 +193,11 @@ class Frame(object):
         standalone thing as it shares the resources with the frame it
         was created of, but it's not a rootlevel frame any longer.
         """
-        rv = copy(self)
+        rv = self.copy()
         rv.rootlevel = False
         return rv
+
+    __copy__ = copy
 
 
 class VisitorExit(RuntimeError):
@@ -398,13 +407,15 @@ class CodeGenerator(NodeVisitor):
         self.write(s)
         self.end_write(frame)
 
-    def blockvisit(self, nodes, frame, force_generator=True):
+    def blockvisit(self, nodes, frame):
         """Visit a list of nodes as block in a frame.  If the current frame
         is no buffer a dummy ``if 0: yield None`` is written automatically
         unless the force_generator parameter is set to False.
         """
-        if frame.buffer is None and force_generator:
+        if frame.buffer is None:
             self.writeline('if 0: yield None')
+        else:
+            self.writeline('pass')
         try:
             for node in nodes:
                 self.visit(node, frame)
@@ -449,7 +460,7 @@ class CodeGenerator(NodeVisitor):
         # we have to make sure that no invalid call is created.
         kwarg_workaround = False
         for kwarg in chain((x.key for x in node.kwargs), extra_kwargs or ()):
-            if iskeyword(kwarg):
+            if is_python_keyword(kwarg):
                 kwarg_workaround = True
                 break
 
@@ -509,21 +520,38 @@ class CodeGenerator(NodeVisitor):
                 self.writeline('%s = environment.%s[%r]' %
                                (mapping[name], dependency, name))
 
-    def collect_shadowed(self, frame):
+    def push_scope(self, frame, extra_vars=()):
         """This function returns all the shadowed variables in a dict
         in the form name: alias and will write the required assignments
         into the current scope.  No indentation takes place.
+
+        This also predefines locally declared variables from the loop
+        body because under some circumstances it may be the case that
+
+        `extra_vars` is passed to `Identifiers.find_shadowed`.
         """
         aliases = {}
-        for name in frame.identifiers.find_shadowed():
+        for name in frame.identifiers.find_shadowed(extra_vars):
             aliases[name] = ident = self.temporary_identifier()
             self.writeline('%s = l_%s' % (ident, name))
+        to_declare = set()
+        for name in frame.identifiers.declared_locally:
+            if name not in aliases:
+                to_declare.add('l_' + name)
+        if to_declare:
+            self.writeline(' = '.join(to_declare) + ' = missing')
         return aliases
 
-    def restore_shadowed(self, aliases):
-        """Restore all aliases."""
+    def pop_scope(self, aliases, frame):
+        """Restore all aliases and delete unused variables."""
         for name, alias in aliases.iteritems():
             self.writeline('l_%s = %s' % (name, alias))
+        to_delete = set()
+        for name in frame.identifiers.declared_locally:
+            if name not in aliases:
+                to_delete.add('l_' + name)
+        if to_delete:
+            self.writeline('del ' + ', '.join(to_delete))
 
     def function_scoping(self, node, frame, children=None,
                          find_special=True):
@@ -595,6 +623,8 @@ class CodeGenerator(NodeVisitor):
     def macro_body(self, node, frame, children=None):
         """Dump the function def of a macro or call block."""
         frame = self.function_scoping(node, frame, children)
+        # macros are delayed, they never require output checks
+        frame.require_output_check = False
         args = frame.arguments
         self.writeline('def macro(%s):' % ', '.join(args), node)
         self.indent()
@@ -669,6 +699,7 @@ class CodeGenerator(NodeVisitor):
         frame = Frame()
         frame.inspect(node.body)
         frame.toplevel = frame.rootlevel = True
+        frame.require_output_check = have_extends and not self.has_known_extends
         self.indent()
         if have_extends:
             self.writeline('parent_template = None')
@@ -759,12 +790,12 @@ class CodeGenerator(NodeVisitor):
                 self.indent()
             self.writeline('raise TemplateRuntimeError(%r)' %
                            'extended multiple times')
+            self.outdent()
 
             # if we have a known extends already we don't need that code here
             # as we know that the template execution will end here.
             if self.has_known_extends:
                 raise CompilerExit()
-            self.outdent()
 
         self.writeline('parent_template = environment.get_template(', node)
         self.visit(node.template, frame)
@@ -792,7 +823,8 @@ class CodeGenerator(NodeVisitor):
             self.visit(node.template, frame)
             self.write(', %r)' % self.name)
             self.writeline('for event in template.root_render_func('
-                           'template.new_context(context.parent, True)):')
+                           'template.new_context(context.parent, True, '
+                           'locals())):')
         else:
             self.writeline('for event in environment.get_template(', node)
             self.visit(node.template, frame)
@@ -811,7 +843,7 @@ class CodeGenerator(NodeVisitor):
         self.visit(node.template, frame)
         self.write(', %r).' % self.name)
         if node.with_context:
-            self.write('make_module(context.parent, True)')
+            self.write('make_module(context.parent, True, locals())')
         else:
             self.write('module')
         if frame.toplevel and not node.target.startswith('_'):
@@ -887,18 +919,11 @@ class CodeGenerator(NodeVisitor):
                         find_undeclared(node.iter_child_nodes(
                             only=('body',)), ('loop',))
 
-        # make sure the loop variable is a special one and raise a template
-        # assertion error if a loop tries to write to loop
-        loop_frame.identifiers.add_special('loop')
-        for name in node.find_all(nodes.Name):
-            if name.ctx == 'store' and name.name == 'loop':
-                self.fail('Can\'t assign to special loop variable '
-                          'in for-loop target', name.lineno)
-
         # if we don't have an recursive loop we have to find the shadowed
-        # variables at that point
+        # variables at that point.  Because loops can be nested but the loop
+        # variable is a special one we have to enforce aliasing for it.
         if not node.recursive:
-            aliases = self.collect_shadowed(loop_frame)
+            aliases = self.push_scope(loop_frame, ('loop',))
 
         # otherwise we set up a buffer and add a function def
         else:
@@ -906,6 +931,15 @@ class CodeGenerator(NodeVisitor):
             self.indent()
             self.buffer(loop_frame)
             aliases = {}
+
+        # make sure the loop variable is a special one and raise a template
+        # assertion error if a loop tries to write to loop
+        if extended_loop:
+            loop_frame.identifiers.add_special('loop')
+        for name in node.find_all(nodes.Name):
+            if name.ctx == 'store' and name.name == 'loop':
+                self.fail('Can\'t assign to special loop variable '
+                          'in for-loop target', name.lineno)
 
         self.pull_locals(loop_frame)
         if node.else_:
@@ -966,7 +1000,7 @@ class CodeGenerator(NodeVisitor):
             self.outdent(2)
 
         self.indent()
-        self.blockvisit(node.body, loop_frame, force_generator=True)
+        self.blockvisit(node.body, loop_frame)
         if node.else_:
             self.writeline('%s = 0' % iteration_indicator)
         self.outdent()
@@ -974,11 +1008,11 @@ class CodeGenerator(NodeVisitor):
         if node.else_:
             self.writeline('if %s:' % iteration_indicator)
             self.indent()
-            self.blockvisit(node.else_, loop_frame, force_generator=False)
+            self.blockvisit(node.else_, loop_frame)
             self.outdent()
 
         # reset the aliases if there are any.
-        self.restore_shadowed(aliases)
+        self.pop_scope(aliases, loop_frame)
 
         # if the node was recursive we have to return the buffer contents
         # and start the iteration code
@@ -1027,14 +1061,14 @@ class CodeGenerator(NodeVisitor):
     def visit_FilterBlock(self, node, frame):
         filter_frame = frame.inner()
         filter_frame.inspect(node.iter_child_nodes())
-        aliases = self.collect_shadowed(filter_frame)
+        aliases = self.push_scope(filter_frame)
         self.pull_locals(filter_frame)
         self.buffer(filter_frame)
-        self.blockvisit(node.body, filter_frame, force_generator=False)
+        self.blockvisit(node.body, filter_frame)
         self.start_write(frame, node)
         self.visit_Filter(node.filter, filter_frame)
         self.end_write(frame)
-        self.restore_shadowed(aliases)
+        self.pop_scope(aliases, filter_frame)
 
     def visit_ExprStmt(self, node, frame):
         self.newline(node)
@@ -1042,7 +1076,8 @@ class CodeGenerator(NodeVisitor):
 
     def visit_Output(self, node, frame):
         # if we have a known extends statement, we don't output anything
-        if self.has_known_extends and frame.toplevel:
+        # if we are in a require_output_check section
+        if self.has_known_extends and frame.require_output_check:
             return
 
         if self.environment.finalize:
@@ -1052,11 +1087,9 @@ class CodeGenerator(NodeVisitor):
 
         self.newline(node)
 
-        # if we are in the toplevel scope and there was already an extends
-        # statement we have to add a check that disables our yield(s) here
-        # so that they don't appear in the output.
+        # if we are inside a frame that requires output checking, we do so
         outdent_later = False
-        if frame.toplevel and self.extends_so_far != 0:
+        if frame.require_output_check:
             self.writeline('if parent_template is None:')
             self.indent()
             outdent_later = True
@@ -1290,11 +1323,8 @@ class CodeGenerator(NodeVisitor):
         self.write(', %r)' % node.attr)
 
     def visit_Getitem(self, node, frame):
-        # slices or integer subscriptions bypass the getitem
-        # method if we can determine that at compile time.
-        if isinstance(node.arg, nodes.Slice) or \
-           (isinstance(node.arg, nodes.Const) and
-            isinstance(node.arg.value, (int, long))):
+        # slices bypass the environment getitem method.
+        if isinstance(node.arg, nodes.Slice):
             self.visit(node.node, frame)
             self.write('[')
             self.visit(node.arg, frame)
