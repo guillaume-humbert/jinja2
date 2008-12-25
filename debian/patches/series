@@ -1,2 +1,1 @@
-remove_non_ascii_char.patch
 dont_install_docs_via_setup_py.patch
