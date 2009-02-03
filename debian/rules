@@ -35,7 +35,10 @@ build-debug-python%: patch
 build-docs:
 	PYTHONPATH=$(CURDIR) make -C docs html
 
-install: $(PYVERS:%=install-python%) $(PYVERS:%=install-debug-python%)
+install: install-stamp
+install-stamp: $(PYVERS:%=install-python%) $(PYVERS:%=install-debug-python%)
+	dh_install
+	touch $@
 
 install-python%: build
 	python$* setup.py install \
