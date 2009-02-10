@@ -1,8 +1,10 @@
-jinja2 (2.1.1-2) UNRELEASED; urgency=low
+jinja2 (2.1.1-2) unstable; urgency=low
 
-  * Install Vim syntax files in /usr/share/vim/addons (Closes: 514046)
+  * Install Vim syntax files in /usr/share/vim/addons/syntax/
+    Use `vim-addons install jinja` to enable it (Closes: 514046)
+  * Upload to unstable
 
- -- Piotr Ożarowski <piotr@debian.org>  Tue, 03 Feb 2009 20:28:10 +0100
+ -- Piotr Ożarowski <piotr@debian.org>  Tue, 10 Feb 2009 19:59:56 +0100
 
 jinja2 (2.1.1-1) experimental; urgency=low
 
