@@ -4,6 +4,7 @@ jinja2 (2.1.1-3) unstable; urgency=low
     Jakub Wilk for the patch (Closes: #527486)
   * Standards-version bumped to 3.8.2:
     - python-jinja2-dbg's section changed to debug
+  * Support /usr/local/*/dist-packages in debian/rules (python2.6 will need it)
 
  -- Piotr Ożarowski <piotr@debian.org>  Wed, 08 Jul 2009 21:40:46 +0200
 

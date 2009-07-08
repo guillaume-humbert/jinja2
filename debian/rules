@@ -48,8 +48,8 @@ install-python%: build
 install-debug-python%: build
 	python$*-dbg setup.py install \
 		--skip-build --single-version-externally-managed --root $(PKGDIR)-dbg/
-	find $(PKGDIR)-dbg/usr/lib/python$*/ ! -type d ! -name '*_d\.so' -delete
-	find $(PKGDIR)-dbg/usr/lib/python$*/ -depth -empty -delete
+	find $(PKGDIR)-dbg/usr/ ! -type d ! -name '*_d\.so' -delete
+	find $(PKGDIR)-dbg/usr/ -depth -empty -delete
 	touch $@
 
 binary-arch: build install
