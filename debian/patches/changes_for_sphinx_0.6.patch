@@ -1,0 +1,12 @@
+new Sphinx needs this (thanks to Jakub Wilk <ubanus@users.sf.net> for the patch)
+--- jinja2-2.1.1.orig/docs/conf.py
++++ jinja2-2.1.1/docs/conf.py
+@@ -96,7 +96,7 @@
+ #html_use_smartypants = True
+ 
+ # use jinja2 for templates
+-template_bridge = 'jinjaext.Jinja2Bridge'
++template_bridge = 'sphinx.jinja2glue.BuiltinTemplateLoader'
+ 
+ # no modindex
+ html_use_modindex = False
