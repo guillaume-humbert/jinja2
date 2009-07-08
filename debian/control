@@ -6,7 +6,7 @@ Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.o
 Build-Depends: debhelper (>= 5), quilt (>= 0.40), python-support (>= 0.6.4),
  python-setuptools (>= 0.6b3-1~), python-all-dev (>= 2.3.5-11), python-all-dbg
 Build-Depends-Indep: python-sphinx (>= 0.5.1), python-pygments
-Standards-Version: 3.8.0
+Standards-Version: 3.8.2
 Homepage: http://jinja.pocoo.org/2/
 XS-Python-Version: >= 2.4
 Vcs-Svn: svn://svn.debian.org/python-modules/packages/jinja2/trunk
@@ -52,6 +52,7 @@ Description: documentation for the Jinja2 Python library
 
 Package: python-jinja2-dbg
 Architecture: any
+Section: debug
 Priority: extra
 Depends: python-jinja2 (= ${binary:Version}), python-dbg, ${shlibs:Depends}
 Provides: ${python:Provides}

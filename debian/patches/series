@@ -1,1 +1,2 @@
 dont_install_docs_via_setup_py.patch
+changes_for_sphinx_0.6.patch
