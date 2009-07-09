@@ -2,7 +2,7 @@
 # (thanks to Jakub Wilk <ubanus@users.sf.net> for the patch)
 #
 # note to backporters: if you will disable this patch, you can downgrade
-# python-sphinx minimum requured version to 0.5.1
+# python-sphinx minimum required version to 0.5.1
 --- jinja2-2.1.1.orig/docs/conf.py
 +++ jinja2-2.1.1/docs/conf.py
 @@ -96,7 +96,7 @@
