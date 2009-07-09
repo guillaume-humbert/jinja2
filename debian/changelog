@@ -1,6 +1,6 @@
 jinja2 (2.1.1-4) UNRELEASED; urgency=low
 
-  * Build depend on Sphinx >= 0.6
+  * Build depend on Sphinx >= 0.6 (due to changes_for_sphinx_0.6 patch)
 
  -- Jakub Wilk <ubanus@users.sf.net>  Thu, 09 Jul 2009 13:01:02 +0200
 
