@@ -14,7 +14,7 @@ Basics
 Jinja2 uses a central object called the template :class:`Environment`.
 Instances of this class are used to store the configuration, global objects
 and are used to load templates from the file system or other locations.
-Even if you are creating templates from string by using the constructor of
+Even if you are creating templates from strings by using the constructor of
 :class:`Template` class, an environment is created automatically for you,
 albeit a shared one.
 
@@ -61,7 +61,7 @@ Python 2.x supports two ways of representing string objects.  One is the
 `str` type and the other is the `unicode` type, both of which extend a type
 called `basestring`.  Unfortunately the default is `str` which should not
 be used to store text based information unless only ASCII characters are
-used.  With Python 2.6 it is possible to my `unicode` the default on a per
+used.  With Python 2.6 it is possible to make `unicode` the default on a per
 module level and with Python 3 it will be the default.
 
 To explicitly use a unicode string you have to prefix the string literal
@@ -161,7 +161,7 @@ useful if you want to dig deeper into Jinja2 or :ref:`develop extensions
         some operations.  All parameters except of `hint` should be provided
         as keyword parameters for better readability.  The `hint` is used as
         error message for the exception if provided, otherwise the error
-        message generated from `obj` and `name` automatically.  The exception
+        message will be generated from `obj` and `name` automatically.  The exception
         provided as `exc` is raised if something with the generated undefined
         object is done that the undefined object does not allow.  The default
         exception is :exc:`UndefinedError`.  If a `hint` is provided the
@@ -540,7 +540,7 @@ Inside the template it can then be used as follows:
     publication date: {{ article.pub_date|datetimeformat('%d-%m-%Y') }}
 
 Filters can also be passed the current template context or environment.  This
-is useful if a filters wants to return an undefined value or check the current
+is useful if a filter wants to return an undefined value or check the current
 :attr:`~Environment.autoescape` setting.  For this purpose two decorators
 exist: :func:`environmentfilter` and :func:`contextfilter`.
 
@@ -665,3 +665,17 @@ don't recommend using any of those.
     change it in a backwards incompatible way but modifications in the Jinja2
     core may shine through.  For example if Jinja2 introduces a new AST node
     in later versions that may be returned by :meth:`~Environment.parse`.
+
+The Meta API
+------------
+
+.. versionadded:: 2.2
+
+The meta API returns some information about abstract syntax trees that
+could help applications to implement more advanced template concepts.  All
+the functions of the meta API operate on an abstract syntax tree as
+returned by the :meth:`Environment.parse` method.
+
+.. autofunction:: jinja2.meta.find_undeclared_variables
+
+.. autofunction:: jinja2.meta.find_referenced_templates

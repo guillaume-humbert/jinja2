@@ -41,18 +41,19 @@
           <ul>
 <li><a class="reference external" href="">Template Designer Documentation</a><ul>
 <li><a class="reference external" href="#synopsis">Synopsis</a></li>
-<li><a class="reference external" href="#id1">Variables</a></li>
-<li><a class="reference external" href="#id2">Filters</a></li>
-<li><a class="reference external" href="#id3">Tests</a></li>
+<li><a class="reference external" href="#variables">Variables</a></li>
+<li><a class="reference external" href="#filters">Filters</a></li>
+<li><a class="reference external" href="#tests">Tests</a></li>
 <li><a class="reference external" href="#comments">Comments</a></li>
 <li><a class="reference external" href="#whitespace-control">Whitespace Control</a></li>
 <li><a class="reference external" href="#escaping">Escaping</a></li>
-<li><a class="reference external" href="#id4">Line Statements</a></li>
-<li><a class="reference external" href="#id5">Template Inheritance</a><ul>
+<li><a class="reference external" href="#line-statements">Line Statements</a></li>
+<li><a class="reference external" href="#template-inheritance">Template Inheritance</a><ul>
 <li><a class="reference external" href="#base-template">Base Template</a></li>
 <li><a class="reference external" href="#child-template">Child Template</a></li>
 <li><a class="reference external" href="#super-blocks">Super Blocks</a></li>
 <li><a class="reference external" href="#named-block-end-tags">Named Block End-Tags</a></li>
+<li><a class="reference external" href="#block-nesting-and-scope">Block Nesting and Scope</a></li>
 </ul>
 </li>
 <li><a class="reference external" href="#html-escaping">HTML Escaping</a><ul>
@@ -64,22 +65,22 @@
 <li><a class="reference external" href="#for">For</a></li>
 <li><a class="reference external" href="#if">If</a></li>
 <li><a class="reference external" href="#macros">Macros</a></li>
-<li><a class="reference external" href="#id6">Call</a></li>
+<li><a class="reference external" href="#call">Call</a></li>
 <li><a class="reference external" href="#id7">Filters</a></li>
 <li><a class="reference external" href="#assignments">Assignments</a></li>
 <li><a class="reference external" href="#extends">Extends</a></li>
 <li><a class="reference external" href="#block">Block</a></li>
 <li><a class="reference external" href="#include">Include</a></li>
-<li><a class="reference external" href="#id8">Import</a></li>
+<li><a class="reference external" href="#import">Import</a></li>
 </ul>
 </li>
 <li><a class="reference external" href="#import-context-behavior">Import Context Behavior</a></li>
-<li><a class="reference external" href="#id9">Expressions</a><ul>
+<li><a class="reference external" href="#expressions">Expressions</a><ul>
 <li><a class="reference external" href="#literals">Literals</a></li>
 <li><a class="reference external" href="#math">Math</a></li>
 <li><a class="reference external" href="#logic">Logic</a></li>
 <li><a class="reference external" href="#other-operators">Other Operators</a></li>
-<li><a class="reference external" href="#id10">If Expression</a></li>
+<li><a class="reference external" href="#if-expression">If Expression</a></li>
 </ul>
 </li>
 <li><a class="reference external" href="#list-of-builtin-filters">List of Builtin Filters</a></li>
@@ -138,8 +139,8 @@ changed the syntax from <tt class="docutils literal"><span class="pre">{%</span>
 one is used to execute statements such as for-loops or assign values, the
 latter prints the result of the expression to the template.</p>
 </div>
-<div class="section" id="id1">
-<span id="variables"></span><h2>Variables<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="variables">
+<span id="id1"></span><h2>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h2>
 <p>The application passes variables to the templates you can mess around in the
 template.  Variables may have attributes or elements on them you can access
 too.  How a variable looks like, heavily depends on the application providing
@@ -179,8 +180,8 @@ name.  Additionally there is the <a title="attr" class="reference internal" href
 attributes.</p>
 </div>
 </div>
-<div class="section" id="id2">
-<span id="filters"></span><h2>Filters<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="filters">
+<span id="id2"></span><h2>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h2>
 <p>Variables can by modified by <strong>filters</strong>.  Filters are separated from the
 variable by a pipe symbol (<tt class="docutils literal"><span class="pre">|</span></tt>) and may have optional arguments in
 parentheses.  Multiple filters can be chained.  The output of one filter is
@@ -188,11 +189,11 @@ applied to the next.</p>
 <p><tt class="docutils literal"><span class="pre">{{</span> <span class="pre">name|striptags|title</span> <span class="pre">}}</span></tt> for example will remove all HTML Tags from the
 <cite>name</cite> and title-cases it.  Filters that accept arguments have parentheses
 around the arguments, like a function call.  This example will join a list
-by spaces:  <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">list|join(',</span> <span class="pre">')</span> <span class="pre">}}</span></tt>.</p>
+by commas:  <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">list|join(',</span> <span class="pre">')</span> <span class="pre">}}</span></tt>.</p>
 <p>The <a class="reference internal" href="#builtin-filters"><em>List of Builtin Filters</em></a> below describes all the builtin filters.</p>
 </div>
-<div class="section" id="id3">
-<span id="tests"></span><h2>Tests<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="tests">
+<span id="id3"></span><h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
 <p>Beside filters there are also so called &#8220;tests&#8221; available.  Tests can be used
 to test a variable against a common expression.  To test a variable or
 expression you add <cite>is</cite> plus the name of the test after the variable.  For
@@ -213,7 +214,7 @@ expressions do the same:</p>
 by default set to <tt class="docutils literal"><span class="pre">{#</span> <span class="pre">...</span> <span class="pre">#}</span></tt>.  This is useful to comment out parts of the
 template for debugging or to add information for other template designers or
 yourself:</p>
-<div class="highlight-html+jinja"><div class="highlight"><pre><span class="c">{# note: disabled template because we no longer user this</span>
+<div class="highlight-html+jinja"><div class="highlight"><pre><span class="c">{# note: disabled template because we no longer use this</span>
 <span class="c">    {% for user in users %}</span>
 <span class="c">        ...</span>
 <span class="c">    {% endfor %}</span>
@@ -276,8 +277,8 @@ put Jinja syntax as example into a template you can use this snippet:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="id4">
-<span id="line-statements"></span><h2>Line Statements<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="line-statements">
+<span id="id4"></span><h2>Line Statements<a class="headerlink" href="#line-statements" title="Permalink to this headline">¶</a></h2>
 <p>If line statements are enabled by the application it&#8217;s possible to mark a
 line as a statement.  For example if the line statement prefix is configured
 to <tt class="docutils literal"><span class="pre">#</span></tt> the following two examples are equivalent:</p>
@@ -315,9 +316,17 @@ braces or brackets:</p>
 </pre></div>
 </div>
 </div>
+<p>Since Jinja 2.2 line-based comments are available as well.  For example if
+the line-comment prefix is configured to be <tt class="docutils literal"><span class="pre">##</span></tt> everything from <tt class="docutils literal"><span class="pre">##</span></tt> to
+the end of the line is ignored (excluding the newline sign):</p>
+<div class="highlight-html+jinja"><div class="highlight"><pre># for item in seq:
+    <span class="nt">&lt;li&gt;</span><span class="cp">{{</span> <span class="nv">item</span> <span class="cp">}}</span><span class="nt">&lt;/li&gt;</span>     ## this comment is ignored
+# endfor
+</pre></div>
 </div>
-<div class="section" id="id5">
-<span id="template-inheritance"></span><h2>Template Inheritance<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="template-inheritance">
+<span id="id5"></span><h2>Template Inheritance<a class="headerlink" href="#template-inheritance" title="Permalink to this headline">¶</a></h2>
 <p>The most powerful part of Jinja is template inheritance. Template inheritance
 allows you to build a base &#8220;skeleton&#8221; template that contains all the common
 elements of your site and defines <strong>blocks</strong> that child templates can override.</p>
@@ -365,7 +374,7 @@ child template may override those portions of the template.</p>
 <span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
     <span class="nt">&lt;h1&gt;</span>Index<span class="nt">&lt;/h1&gt;</span>
     <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;important&quot;</span><span class="nt">&gt;</span>
-      Welcome on my awsome homepage.
+      Welcome on my awesome homepage.
     <span class="nt">&lt;/p&gt;</span>
 <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
 </pre></div>
@@ -425,6 +434,30 @@ readability:</p>
 </pre></div>
 </div>
 <p>However the name after the <cite>endblock</cite> word must match the block name.</p>
+</div>
+<div class="section" id="block-nesting-and-scope">
+<h3>Block Nesting and Scope<a class="headerlink" href="#block-nesting-and-scope" title="Permalink to this headline">¶</a></h3>
+<p>Blocks can be nested for more complex layouts.  However per default blocks
+may not access variables from outer scopes:</p>
+<div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">for</span> <span class="nv">item</span> <span class="k">in</span> <span class="nv">seq</span> <span class="cp">%}</span>
+    <span class="nt">&lt;li&gt;</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">loop_item</span> <span class="cp">%}{{</span> <span class="nv">item</span> <span class="cp">}}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="nt">&lt;/li&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>This example would output empty <tt class="docutils literal"><span class="pre">&lt;li&gt;</span></tt> items because <cite>item</cite> is unavailable
+inside the block.  The reason for this is that if the block is replaced by
+a child template a variable would appear that was not defined in the block or
+passed to the context.</p>
+<p>Starting with Jinja 2.2 you can explicitly specify that variables are
+available in a block by setting the block to &#8220;scoped&#8221; by adding the <cite>scoped</cite>
+modifier to a block declaration:</p>
+<div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">for</span> <span class="nv">item</span> <span class="k">in</span> <span class="nv">seq</span> <span class="cp">%}</span>
+    <span class="nt">&lt;li&gt;</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">loop_item</span> <span class="nv">scoped</span> <span class="cp">%}{{</span> <span class="nv">item</span> <span class="cp">}}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="nt">&lt;/li&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+
+When overriding a block the `scoped` modifier does not have to be provided.
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="html-escaping">
@@ -657,8 +690,8 @@ be called from a <a class="reference internal" href="#call"><em>call</em></a> ta
 <p>If a macro name starts with an underscore it&#8217;s not exported and can&#8217;t
 be imported.</p>
 </div>
-<div class="section" id="id6">
-<span id="call"></span><h3>Call<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="call">
+<span id="id6"></span><h3>Call<a class="headerlink" href="#call" title="Permalink to this headline">¶</a></h3>
 <p>In some cases it can be useful to pass a macro to another macro.  For this
 purpose you can use the special <cite>call</cite> block.  The following example shows
 a macro that takes advantage of the call functionality and how it can be
@@ -747,9 +780,19 @@ rendered contents of that file into the current namespace:</p>
 <p>Included templates have access to the variables of the active context by
 default.  For more details about context behavior of imports and includes
 see <a class="reference internal" href="#import-visibility"><em>Import Context Behavior</em></a>.</p>
+<p>From Jinja 2.2 onwards you can mark an include with <tt class="docutils literal"><span class="pre">ignore</span> <span class="pre">missing</span></tt> in
+which case Jinja will ignore the statement if the template to be ignored
+does not exist.  When combined with <tt class="docutils literal"><span class="pre">with</span></tt> or <tt class="docutils literal"><span class="pre">without</span> <span class="pre">context</span></tt> it has
+to be placed <em>before</em> the context visibility statement.  Here some valid
+examples:</p>
+<div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">include</span> <span class="s2">&quot;sidebar.html&quot;</span> <span class="nv">ignore</span> <span class="nv">missing</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">include</span> <span class="s2">&quot;sidebar.html&quot;</span> <span class="nv">ignore</span> <span class="nv">missing</span> <span class="k">with context</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">include</span> <span class="s2">&quot;sidebar.html&quot;</span> <span class="nv">ignore</span> <span class="nv">missing</span> <span class="k">without context</span> <span class="cp">%}</span>
+</pre></div>
 </div>
-<div class="section" id="id8">
-<span id="import"></span><h3>Import<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="import">
+<span id="id8"></span><h3>Import<a class="headerlink" href="#import" title="Permalink to this headline">¶</a></h3>
 <p>Jinja2 supports putting often used code into macros.  These macros can go into
 different templates and get imported from there.  This works similar to the
 import statements in Python.  It&#8217;s important to know that imports are cached
@@ -813,7 +856,7 @@ can be passed to the template and caching is disabled automatically.</p>
 <div class="admonition-note admonition ">
 <p class="first admonition-title">Note</p>
 <p>In Jinja 2.0 the context that was passed to the included template
-did not include variables define in the template.  As a matter of
+did not include variables defined in the template.  As a matter of
 fact this did not work:</p>
 <div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">for</span> <span class="nv">box</span> <span class="k">in</span> <span class="nv">boxes</span> <span class="cp">%}</span>
     <span class="cp">{%</span> <span class="k">include</span> <span class="s2">&quot;render_box.html&quot;</span> <span class="cp">%}</span>
@@ -824,8 +867,8 @@ fact this did not work:</p>
 <cite>box</cite> in Jinja 2.0, but in Jinja 2.1.</p>
 </div>
 </div>
-<div class="section" id="id9">
-<span id="expressions"></span><h2>Expressions<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="expressions">
+<span id="id9"></span><h2>Expressions<a class="headerlink" href="#expressions" title="Permalink to this headline">¶</a></h2>
 <p>Jinja allows basic expressions everywhere.  These work very similar to regular
 Python and even if you&#8217;re not working with Python you should feel comfortable
 with it.</p>
@@ -883,15 +926,15 @@ lowercase versions.</p>
 <div class="section" id="math">
 <h3>Math<a class="headerlink" href="#math" title="Permalink to this headline">¶</a></h3>
 <p>Jinja allows you to calculate with values.  This is rarely useful in templates
-but exists for completeness sake.  The following operators are supported:</p>
+but exists for completeness&#8217; sake.  The following operators are supported:</p>
 <dl class="docutils">
 <dt>+</dt>
-<dd>Adds two objects with each other.  Usually numbers but if both objects are
+<dd>Adds two objects together.  Usually the objects are numbers but if both are
 strings or lists you can concatenate them this way.  This however is not
 the preferred way to concatenate strings!  For string concatenation have
 a look at the <tt class="docutils literal"><span class="pre">~</span></tt> operator.  <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">1</span> <span class="pre">+</span> <span class="pre">1</span> <span class="pre">}}</span></tt> is <tt class="docutils literal"><span class="pre">2</span></tt>.</dd>
 <dt>-</dt>
-<dd>Substract two numbers from each other.  <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">3</span> <span class="pre">-</span> <span class="pre">2</span> <span class="pre">}}</span></tt> is <tt class="docutils literal"><span class="pre">1</span></tt>.</dd>
+<dd>Substract the second number from the first one.  <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">3</span> <span class="pre">-</span> <span class="pre">2</span> <span class="pre">}}</span></tt> is <tt class="docutils literal"><span class="pre">1</span></tt>.</dd>
 </dl>
 <dl class="docutils">
 <dt>/</dt>
@@ -905,11 +948,10 @@ a look at the <tt class="docutils literal"><span class="pre">~</span></tt> opera
 </dl>
 <dl class="docutils">
 <dt>%</dt>
-<dd>Calculate the remainder of an integer division between the left and right
-operand.  <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">11</span> <span class="pre">%</span> <span class="pre">7</span> <span class="pre">}}</span></tt> is <tt class="docutils literal"><span class="pre">4</span></tt>.</dd>
+<dd>Calculate the remainder of an integer division.  <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">11</span> <span class="pre">%</span> <span class="pre">7</span> <span class="pre">}}</span></tt> is <tt class="docutils literal"><span class="pre">4</span></tt>.</dd>
 <dt>*</dt>
 <dd>Multiply the left operand with the right one.  <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">2</span> <span class="pre">}}</span></tt> would
-return <tt class="docutils literal"><span class="pre">4</span></tt>.  This can also be used to repeat string multiple times.
+return <tt class="docutils literal"><span class="pre">4</span></tt>.  This can also be used to repeat a string multiple times.
 <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">'='</span> <span class="pre">*</span> <span class="pre">80</span> <span class="pre">}}</span></tt> would print a bar of 80 equal signs.</dd>
 <dt>**</dt>
 <dd>Raise the left operand to the power of the right operand.  <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">2**3</span> <span class="pre">}}</span></tt>
@@ -918,8 +960,8 @@ would return <tt class="docutils literal"><span class="pre">8</span></tt>.</dd>
 </div>
 <div class="section" id="logic">
 <h3>Logic<a class="headerlink" href="#logic" title="Permalink to this headline">¶</a></h3>
-<p>For <cite>if</cite> statements / <cite>for</cite> filtering or <cite>if</cite> expressions it can be useful to
-combine group multiple expressions:</p>
+<p>For <cite>if</cite> statements, <cite>for</cite> filtering or <cite>if</cite> expressions it can be useful to
+combine multiple expressions:</p>
 <dl class="docutils">
 <dt>and</dt>
 <dd>Return true if the left and the right operand is true.</dd>
@@ -959,14 +1001,14 @@ example return true.</dd>
 <tt class="docutils literal"><span class="pre">'John'</span></tt>) <tt class="docutils literal"><span class="pre">Hello</span> <span class="pre">John!</span></tt>.</dd>
 <dt>()</dt>
 <dd>Call a callable: <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">post.render()</span> <span class="pre">}}</span></tt>.  Inside of the parentheses you
-can use arguments and keyword arguments like in python:
+can use positional arguments and keyword arguments like in python:
 <tt class="docutils literal"><span class="pre">{{</span> <span class="pre">post.render(user,</span> <span class="pre">full=true)</span> <span class="pre">}}</span></tt>.</dd>
 <dt>. / []</dt>
 <dd>Get an attribute of an object.  (See <a class="reference internal" href="#variables"><em>Variables</em></a>)</dd>
 </dl>
 </div>
-<div class="section" id="id10">
-<span id="if-expression"></span><h3>If Expression<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="if-expression">
+<span id="id10"></span><h3>If Expression<a class="headerlink" href="#if-expression" title="Permalink to this headline">¶</a></h3>
 <p>It is also possible to use inline <cite>if</cite> expressions.  These are useful in some
 situations.  For example you can use this to extend from one template if a
 variable is defined, otherwise from the default layout template:</p>
@@ -985,12 +1027,12 @@ evaluates into an undefined object:</p>
 <span id="builtin-filters"></span><h2>List of Builtin Filters<a class="headerlink" href="#list-of-builtin-filters" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="abs">
-<!--[abs]--><tt class="descname">abs</tt><big>(</big><em>number</em><big>)</big><a class="headerlink" href="#abs" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">abs</tt><big>(</big><em>number</em><big>)</big><a class="headerlink" href="#abs" title="Permalink to this definition">¶</a></dt>
 <dd>Return the absolute value of the argument.</dd></dl>
 
 <dl class="function">
 <dt id="attr">
-<!--[attr]--><tt class="descname">attr</tt><big>(</big><em>obj</em>, <em>name</em><big>)</big><a class="headerlink" href="#attr" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">attr</tt><big>(</big><em>obj</em>, <em>name</em><big>)</big><a class="headerlink" href="#attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get an attribute of an object.  <tt class="docutils literal"><span class="pre">foo|attr(&quot;bar&quot;)</span></tt> works like
 <tt class="docutils literal"><span class="pre">foo[&quot;bar&quot;]</span></tt> just that always an attribute is returned and items are not
 looked up.</p>
@@ -999,7 +1041,7 @@ looked up.</p>
 
 <dl class="function">
 <dt id="batch">
-<!--[batch]--><tt class="descname">batch</tt><big>(</big><em>value</em>, <em>linecount</em>, <em>fill_with=None</em><big>)</big><a class="headerlink" href="#batch" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">batch</tt><big>(</big><em>value</em>, <em>linecount</em>, <em>fill_with=None</em><big>)</big><a class="headerlink" href="#batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>A filter that batches items. It works pretty much like <cite>slice</cite>
 just the other way round. It returns a list of lists with the
 given number of items. If you provide a second parameter this
@@ -1008,7 +1050,7 @@ is used to fill missing items. See this example:</p>
 <span class="cp">{%</span>- <span class="k">for</span> <span class="nv">row</span> <span class="k">in</span> <span class="nv">items</span><span class="o">|</span><span class="nf">batch</span><span class="o">(</span><span class="m">3</span><span class="o">,</span> <span class="s1">&#39;&amp;nbsp;&#39;</span><span class="o">)</span> <span class="cp">%}</span>
   <span class="nt">&lt;tr&gt;</span>
   <span class="cp">{%</span>- <span class="k">for</span> <span class="nv">column</span> <span class="k">in</span> <span class="nv">row</span> <span class="cp">%}</span>
-    <span class="nt">&lt;tr&gt;</span><span class="cp">{{</span> <span class="nv">column</span> <span class="cp">}}</span><span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span><span class="cp">{{</span> <span class="nv">column</span> <span class="cp">}}</span><span class="nt">&lt;/td&gt;</span>
   <span class="cp">{%</span>- <span class="k">endfor</span> <span class="cp">%}</span>
   <span class="nt">&lt;/tr&gt;</span>
 <span class="cp">{%</span>- <span class="k">endfor</span> <span class="cp">%}</span>
@@ -1019,18 +1061,18 @@ is used to fill missing items. See this example:</p>
 
 <dl class="function">
 <dt id="capitalize">
-<!--[capitalize]--><tt class="descname">capitalize</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#capitalize" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">capitalize</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#capitalize" title="Permalink to this definition">¶</a></dt>
 <dd>Capitalize a value. The first character will be uppercase, all others
 lowercase.</dd></dl>
 
 <dl class="function">
 <dt id="center">
-<!--[center]--><tt class="descname">center</tt><big>(</big><em>value</em>, <em>width=80</em><big>)</big><a class="headerlink" href="#center" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">center</tt><big>(</big><em>value</em>, <em>width=80</em><big>)</big><a class="headerlink" href="#center" title="Permalink to this definition">¶</a></dt>
 <dd>Centers the value in a field of a given width.</dd></dl>
 
 <dl class="function">
 <dt id="default">
-<!--[default]--><tt class="descname">default</tt><big>(</big><em>value</em>, <em>default_value=u''</em>, <em>boolean=False</em><big>)</big><a class="headerlink" href="#default" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">default</tt><big>(</big><em>value</em>, <em>default_value=u''</em>, <em>boolean=False</em><big>)</big><a class="headerlink" href="#default" title="Permalink to this definition">¶</a></dt>
 <dd><p>If the value is undefined it will return the passed default value,
 otherwise the value of the variable:</p>
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">my_variable</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;my_variable is not defined&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
@@ -1055,7 +1097,7 @@ set the second parameter to <cite>true</cite>:</p>
 
 <dl class="function">
 <dt id="dictsort">
-<!--[dictsort]--><tt class="descname">dictsort</tt><big>(</big><em>value</em>, <em>case_sensitive=False</em>, <em>by='key'</em><big>)</big><a class="headerlink" href="#dictsort" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dictsort</tt><big>(</big><em>value</em>, <em>case_sensitive=False</em>, <em>by='key'</em><big>)</big><a class="headerlink" href="#dictsort" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sort a dict and yield (key, value) pairs. Because python dicts are
 unsorted you may want to use this function to order them by either
 key or value:</p>
@@ -1074,8 +1116,8 @@ key or value:</p>
 
 <dl class="function">
 <dt id="escape">
-<!--[escape]--><tt class="descname">escape</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#escape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert the characters &amp;, &lt;, &gt;, &#8216; and &#8221; in string s to HTML-safe
+<tt class="descname">escape</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#escape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the characters &amp;, &lt;, &gt;, &#8216;, and &#8221; in string s to HTML-safe
 sequences.  Use this if you need to display text that might contain
 such characters in HTML.  Marks return value as markup string.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1090,32 +1132,32 @@ such characters in HTML.  Marks return value as markup string.</p>
 
 <dl class="function">
 <dt id="filesizeformat">
-<!--[filesizeformat]--><tt class="descname">filesizeformat</tt><big>(</big><em>value</em>, <em>binary=False</em><big>)</big><a class="headerlink" href="#filesizeformat" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">filesizeformat</tt><big>(</big><em>value</em>, <em>binary=False</em><big>)</big><a class="headerlink" href="#filesizeformat" title="Permalink to this definition">¶</a></dt>
 <dd>Format the value like a &#8216;human-readable&#8217; file size (i.e. 13 KB,
 4.1 MB, 102 bytes, etc).  Per default decimal prefixes are used (mega,
-giga etc.), if the second parameter is set to <cite>True</cite> the binary
-prefixes are (mebi, gibi).</dd></dl>
+giga, etc.), if the second parameter is set to <cite>True</cite> the binary
+prefixes are used (mebi, gibi).</dd></dl>
 
 <dl class="function">
 <dt id="first">
-<!--[first]--><tt class="descname">first</tt><big>(</big><em>seq</em><big>)</big><a class="headerlink" href="#first" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">first</tt><big>(</big><em>seq</em><big>)</big><a class="headerlink" href="#first" title="Permalink to this definition">¶</a></dt>
 <dd>Return the first item of a sequence.</dd></dl>
 
 <dl class="function">
 <dt id="float">
-<!--[float]--><tt class="descname">float</tt><big>(</big><em>value</em>, <em>default=0.0</em><big>)</big><a class="headerlink" href="#float" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">float</tt><big>(</big><em>value</em>, <em>default=0.0</em><big>)</big><a class="headerlink" href="#float" title="Permalink to this definition">¶</a></dt>
 <dd>Convert the value into a floating point number. If the
 conversion doesn&#8217;t work it will return <tt class="docutils literal"><span class="pre">0.0</span></tt>. You can
 override this default using the first parameter.</dd></dl>
 
 <dl class="function">
 <dt id="forceescape">
-<!--[forceescape]--><tt class="descname">forceescape</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#forceescape" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">forceescape</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#forceescape" title="Permalink to this definition">¶</a></dt>
 <dd>Enforce HTML escaping.  This will probably double escape variables.</dd></dl>
 
 <dl class="function">
 <dt id="format">
-<!--[format]--><tt class="descname">format</tt><big>(</big><em>value</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#format" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">format</tt><big>(</big><em>value</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#format" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply python string formatting on an object:</p>
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="s2">&quot;%s - %s&quot;</span><span class="o">|</span><span class="nf">format</span><span class="o">(</span><span class="s2">&quot;Hello?&quot;</span><span class="o">,</span> <span class="s2">&quot;Foo!&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 <span class="x">    -&gt; Hello? - Foo!</span>
@@ -1125,7 +1167,7 @@ override this default using the first parameter.</dd></dl>
 
 <dl class="function">
 <dt id="groupby">
-<!--[groupby]--><tt class="descname">groupby</tt><big>(</big><em>value</em>, <em>attribute</em><big>)</big><a class="headerlink" href="#groupby" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">groupby</tt><big>(</big><em>value</em>, <em>attribute</em><big>)</big><a class="headerlink" href="#groupby" title="Permalink to this definition">¶</a></dt>
 <dd><p>Group a sequence of objects by a common attribute.</p>
 <p>If you for example have a list of dicts or objects that represent persons
 with <cite>gender</cite>, <cite>first_name</cite> and <cite>last_name</cite> attributes and you want to
@@ -1157,7 +1199,7 @@ in common.</p>
 
 <dl class="function">
 <dt id="indent">
-<!--[indent]--><tt class="descname">indent</tt><big>(</big><em>s</em>, <em>width=4</em>, <em>indentfirst=False</em><big>)</big><a class="headerlink" href="#indent" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">indent</tt><big>(</big><em>s</em>, <em>width=4</em>, <em>indentfirst=False</em><big>)</big><a class="headerlink" href="#indent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of the passed string, each line indented by
 4 spaces. The first line is not indented. If you want to
 change the number of spaces or indent the first line too
@@ -1170,14 +1212,14 @@ you can pass additional parameters to the filter:</p>
 
 <dl class="function">
 <dt id="int">
-<!--[int]--><tt class="descname">int</tt><big>(</big><em>value</em>, <em>default=0</em><big>)</big><a class="headerlink" href="#int" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">int</tt><big>(</big><em>value</em>, <em>default=0</em><big>)</big><a class="headerlink" href="#int" title="Permalink to this definition">¶</a></dt>
 <dd>Convert the value into an integer. If the
 conversion doesn&#8217;t work it will return <tt class="docutils literal"><span class="pre">0</span></tt>. You can
 override this default using the first parameter.</dd></dl>
 
 <dl class="function">
 <dt id="join">
-<!--[join]--><tt class="descname">join</tt><big>(</big><em>value</em>, <em>d=u''</em><big>)</big><a class="headerlink" href="#join" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">join</tt><big>(</big><em>value</em>, <em>d=u''</em><big>)</big><a class="headerlink" href="#join" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a string which is the concatenation of the strings in the
 sequence. The separator between elements is an empty string per
 default, you can define it with the optional parameter:</p>
@@ -1192,12 +1234,12 @@ default, you can define it with the optional parameter:</p>
 
 <dl class="function">
 <dt id="last">
-<!--[last]--><tt class="descname">last</tt><big>(</big><em>seq</em><big>)</big><a class="headerlink" href="#last" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">last</tt><big>(</big><em>seq</em><big>)</big><a class="headerlink" href="#last" title="Permalink to this definition">¶</a></dt>
 <dd>Return the last item of a sequence.</dd></dl>
 
 <dl class="function">
 <dt id="length">
-<!--[length]--><tt class="descname">length</tt><big>(</big><em>object</em><big>)</big><a class="headerlink" href="#length" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">length</tt><big>(</big><em>object</em><big>)</big><a class="headerlink" href="#length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of items of a sequence or mapping.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1211,18 +1253,18 @@ default, you can define it with the optional parameter:</p>
 
 <dl class="function">
 <dt id="list">
-<!--[list]--><tt class="descname">list</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#list" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">list</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#list" title="Permalink to this definition">¶</a></dt>
 <dd>Convert the value into a list.  If it was a string the returned list
 will be a list of characters.</dd></dl>
 
 <dl class="function">
 <dt id="lower">
-<!--[lower]--><tt class="descname">lower</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#lower" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">lower</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#lower" title="Permalink to this definition">¶</a></dt>
 <dd>Convert a value to lowercase.</dd></dl>
 
 <dl class="function">
 <dt id="pprint">
-<!--[pprint]--><tt class="descname">pprint</tt><big>(</big><em>value</em>, <em>verbose=False</em><big>)</big><a class="headerlink" href="#pprint" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">pprint</tt><big>(</big><em>value</em>, <em>verbose=False</em><big>)</big><a class="headerlink" href="#pprint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pretty print a variable. Useful for debugging.</p>
 <p>With Jinja 1.2 onwards you can pass it a parameter.  If this parameter
 is truthy the output will be more verbose (this requires <cite>pretty</cite>)</p>
@@ -1230,12 +1272,12 @@ is truthy the output will be more verbose (this requires <cite>pretty</cite>)</p
 
 <dl class="function">
 <dt id="random">
-<!--[random]--><tt class="descname">random</tt><big>(</big><em>seq</em><big>)</big><a class="headerlink" href="#random" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">random</tt><big>(</big><em>seq</em><big>)</big><a class="headerlink" href="#random" title="Permalink to this definition">¶</a></dt>
 <dd>Return a random item from the sequence.</dd></dl>
 
 <dl class="function">
 <dt id="replace">
-<!--[replace]--><tt class="descname">replace</tt><big>(</big><em>s</em>, <em>old</em>, <em>new</em>, <em>count=None</em><big>)</big><a class="headerlink" href="#replace" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">replace</tt><big>(</big><em>s</em>, <em>old</em>, <em>new</em>, <em>count=None</em><big>)</big><a class="headerlink" href="#replace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of the value with all occurrences of a substring
 replaced with a new one. The first argument is the substring
 that should be replaced, the second is the replacement string.
@@ -1252,13 +1294,13 @@ If the optional third argument <tt class="docutils literal"><span class="pre">co
 
 <dl class="function">
 <dt id="reverse">
-<!--[reverse]--><tt class="descname">reverse</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#reverse" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">reverse</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#reverse" title="Permalink to this definition">¶</a></dt>
 <dd>Reverse the object or return an iterator the iterates over it the other
 way round.</dd></dl>
 
 <dl class="function">
 <dt id="round">
-<!--[round]--><tt class="descname">round</tt><big>(</big><em>value</em>, <em>precision=0</em>, <em>method='common'</em><big>)</big><a class="headerlink" href="#round" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">round</tt><big>(</big><em>value</em>, <em>precision=0</em>, <em>method='common'</em><big>)</big><a class="headerlink" href="#round" title="Permalink to this definition">¶</a></dt>
 <dd><p>Round the number to a given precision. The first
 parameter specifies the precision (default is <tt class="docutils literal"><span class="pre">0</span></tt>), the
 second the rounding method:</p>
@@ -1278,16 +1320,16 @@ second the rounding method:</p>
 
 <dl class="function">
 <dt id="safe">
-<!--[safe]--><tt class="descname">safe</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#safe" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">safe</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#safe" title="Permalink to this definition">¶</a></dt>
 <dd>Mark the value as safe which means that in an environment with automatic
 escaping enabled this variable will not be escaped.</dd></dl>
 
 <dl class="function">
 <dt id="slice">
-<!--[slice]--><tt class="descname">slice</tt><big>(</big><em>value</em>, <em>slices</em>, <em>fill_with=None</em><big>)</big><a class="headerlink" href="#slice" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">slice</tt><big>(</big><em>value</em>, <em>slices</em>, <em>fill_with=None</em><big>)</big><a class="headerlink" href="#slice" title="Permalink to this definition">¶</a></dt>
 <dd><p>Slice an iterator and return a list of lists containing
 those items. Useful if you want to create a div containing
-three div tags that represent columns:</p>
+three ul tags that represent columns:</p>
 <div class="highlight-html+jinja"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;columwrapper&quot;</span><span class="nt">&gt;</span>
   <span class="cp">{%</span>- <span class="k">for</span> <span class="nv">column</span> <span class="k">in</span> <span class="nv">items</span><span class="o">|</span><span class="nf">slice</span><span class="o">(</span><span class="m">3</span><span class="o">)</span> <span class="cp">%}</span>
     <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;column-</span><span class="cp">{{</span> <span class="nb">loop</span><span class="nv">.index</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>
@@ -1305,41 +1347,41 @@ values on the last iteration.</p>
 
 <dl class="function">
 <dt id="sort">
-<!--[sort]--><tt class="descname">sort</tt><big>(</big><em>value</em>, <em>reverse=False</em><big>)</big><a class="headerlink" href="#sort" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sort</tt><big>(</big><em>value</em>, <em>reverse=False</em><big>)</big><a class="headerlink" href="#sort" title="Permalink to this definition">¶</a></dt>
 <dd>Sort a sequence. Per default it sorts ascending, if you pass it
 true as first argument it will reverse the sorting.</dd></dl>
 
 <dl class="function">
 <dt id="string">
-<!--[string]--><tt class="descname">string</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#string" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">string</tt><big>(</big><em>object</em><big>)</big><a class="headerlink" href="#string" title="Permalink to this definition">¶</a></dt>
 <dd>Make a string unicode if it isn&#8217;t already.  That way a markup
 string is not converted back to unicode.</dd></dl>
 
 <dl class="function">
 <dt id="striptags">
-<!--[striptags]--><tt class="descname">striptags</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#striptags" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">striptags</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#striptags" title="Permalink to this definition">¶</a></dt>
 <dd>Strip SGML/XML tags and replace adjacent whitespace by one space.</dd></dl>
 
 <dl class="function">
 <dt id="sum">
-<!--[sum]--><tt class="descname">sum</tt><big>(</big><em>sequence</em>, <em>start=0</em><big>)</big><a class="headerlink" href="#sum" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sum</tt><big>(</big><em>sequence</em>, <em>start=0</em><big>)</big><a class="headerlink" href="#sum" title="Permalink to this definition">¶</a></dt>
 <dd>Returns the sum of a sequence of numbers (NOT strings) plus the value
 of parameter &#8216;start&#8217;.  When the sequence is empty, returns start.</dd></dl>
 
 <dl class="function">
 <dt id="title">
-<!--[title]--><tt class="descname">title</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#title" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">title</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#title" title="Permalink to this definition">¶</a></dt>
 <dd>Return a titlecased version of the value. I.e. words will start with
 uppercase letters, all remaining characters are lowercase.</dd></dl>
 
 <dl class="function">
 <dt id="trim">
-<!--[trim]--><tt class="descname">trim</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#trim" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">trim</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#trim" title="Permalink to this definition">¶</a></dt>
 <dd>Strip leading and trailing whitespace.</dd></dl>
 
 <dl class="function">
 <dt id="truncate">
-<!--[truncate]--><tt class="descname">truncate</tt><big>(</big><em>s</em>, <em>length=255</em>, <em>killwords=False</em>, <em>end='...'</em><big>)</big><a class="headerlink" href="#truncate" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">truncate</tt><big>(</big><em>s</em>, <em>length=255</em>, <em>killwords=False</em>, <em>end='...'</em><big>)</big><a class="headerlink" href="#truncate" title="Permalink to this definition">¶</a></dt>
 <dd>Return a truncated copy of the string. The length is specified
 with the first parameter which defaults to <tt class="docutils literal"><span class="pre">255</span></tt>. If the second
 parameter is <tt class="docutils literal"><span class="pre">true</span></tt> the filter will cut the text at length. Otherwise
@@ -1350,12 +1392,12 @@ third parameter.</dd></dl>
 
 <dl class="function">
 <dt id="upper">
-<!--[upper]--><tt class="descname">upper</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#upper" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">upper</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#upper" title="Permalink to this definition">¶</a></dt>
 <dd>Convert a value to uppercase.</dd></dl>
 
 <dl class="function">
 <dt id="urlize">
-<!--[urlize]--><tt class="descname">urlize</tt><big>(</big><em>value</em>, <em>trim_url_limit=None</em>, <em>nofollow=False</em><big>)</big><a class="headerlink" href="#urlize" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">urlize</tt><big>(</big><em>value</em>, <em>trim_url_limit=None</em>, <em>nofollow=False</em><big>)</big><a class="headerlink" href="#urlize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts URLs in plain text into clickable links.</p>
 <p>If you pass the filter an additional integer it will shorten the urls
 to that number. Also a third argument exists that makes the urls
@@ -1368,12 +1410,12 @@ to that number. Also a third argument exists that makes the urls
 
 <dl class="function">
 <dt id="wordcount">
-<!--[wordcount]--><tt class="descname">wordcount</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#wordcount" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">wordcount</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#wordcount" title="Permalink to this definition">¶</a></dt>
 <dd>Count the words in that string.</dd></dl>
 
 <dl class="function">
 <dt id="wordwrap">
-<!--[wordwrap]--><tt class="descname">wordwrap</tt><big>(</big><em>s</em>, <em>width=79</em>, <em>break_long_words=True</em><big>)</big><a class="headerlink" href="#wordwrap" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">wordwrap</tt><big>(</big><em>s</em>, <em>width=79</em>, <em>break_long_words=True</em><big>)</big><a class="headerlink" href="#wordwrap" title="Permalink to this definition">¶</a></dt>
 <dd>Return a copy of the string passed to the filter wrapped after
 <tt class="docutils literal"><span class="pre">79</span></tt> characters.  You can override this default using the first
 parameter.  If you set the second parameter to <cite>false</cite> Jinja will not
@@ -1381,7 +1423,7 @@ split words apart if they are longer than <cite>width</cite>.</dd></dl>
 
 <dl class="function">
 <dt id="xmlattr">
-<!--[xmlattr]--><tt class="descname">xmlattr</tt><big>(</big><em>d</em>, <em>autospace=True</em><big>)</big><a class="headerlink" href="#xmlattr" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">xmlattr</tt><big>(</big><em>d</em>, <em>autospace=True</em><big>)</big><a class="headerlink" href="#xmlattr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an SGML/XML attribute string based on the items in a dict.
 All values that are neither <cite>none</cite> nor <cite>undefined</cite> are automatically
 escaped:</p>
@@ -1406,13 +1448,13 @@ if the filter returned something unless the second parameter is false.</p>
 <span id="builtin-tests"></span><h2>List of Builtin Tests<a class="headerlink" href="#list-of-builtin-tests" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="callable">
-<!--[callable]--><tt class="descname">callable</tt><big>(</big><em>object</em><big>)</big><a class="headerlink" href="#callable" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">callable</tt><big>(</big><em>object</em><big>)</big><a class="headerlink" href="#callable" title="Permalink to this definition">¶</a></dt>
 <dd>Return whether the object is callable (i.e., some kind of function).
 Note that classes are callable, as are instances with a __call__() method.</dd></dl>
 
 <dl class="function">
 <dt id="defined">
-<!--[defined]--><tt class="descname">defined</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#defined" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">defined</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#defined" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return true if the variable is defined:</p>
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">if</span> <span class="nv">variable</span> <span class="k">is</span> <span class="nf">defined</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">    value of variable: </span><span class="cp">{{</span> <span class="nv">variable</span> <span class="cp">}}</span><span class="x"></span>
@@ -1427,22 +1469,22 @@ variables.</p>
 
 <dl class="function">
 <dt id="divisibleby">
-<!--[divisibleby]--><tt class="descname">divisibleby</tt><big>(</big><em>value</em>, <em>num</em><big>)</big><a class="headerlink" href="#divisibleby" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">divisibleby</tt><big>(</big><em>value</em>, <em>num</em><big>)</big><a class="headerlink" href="#divisibleby" title="Permalink to this definition">¶</a></dt>
 <dd>Check if a variable is divisible by a number.</dd></dl>
 
 <dl class="function">
 <dt id="escaped">
-<!--[escaped]--><tt class="descname">escaped</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#escaped" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">escaped</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#escaped" title="Permalink to this definition">¶</a></dt>
 <dd>Check if the value is escaped.</dd></dl>
 
 <dl class="function">
 <dt id="even">
-<!--[even]--><tt class="descname">even</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#even" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">even</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#even" title="Permalink to this definition">¶</a></dt>
 <dd>Return true if the variable is even.</dd></dl>
 
 <dl class="function">
 <dt id="iterable">
-<!--[iterable]--><tt class="descname">iterable</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#iterable" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iterable</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#iterable" title="Permalink to this definition">¶</a></dt>
 <dd>Check if it&#8217;s possible to iterate over an object.</dd></dl>
 
 <dl class="function">
@@ -1452,22 +1494,22 @@ variables.</p>
 
 <dl class="function">
 <dt id="none">
-<!--[none]--><tt class="descname">none</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#none" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">none</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#none" title="Permalink to this definition">¶</a></dt>
 <dd>Return true if the variable is none.</dd></dl>
 
 <dl class="function">
 <dt id="number">
-<!--[number]--><tt class="descname">number</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#number" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">number</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#number" title="Permalink to this definition">¶</a></dt>
 <dd>Return true if the variable is a number.</dd></dl>
 
 <dl class="function">
 <dt id="odd">
-<!--[odd]--><tt class="descname">odd</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#odd" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">odd</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#odd" title="Permalink to this definition">¶</a></dt>
 <dd>Return true if the variable is odd.</dd></dl>
 
 <dl class="function">
 <dt id="sameas">
-<!--[sameas]--><tt class="descname">sameas</tt><big>(</big><em>value</em>, <em>other</em><big>)</big><a class="headerlink" href="#sameas" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sameas</tt><big>(</big><em>value</em>, <em>other</em><big>)</big><a class="headerlink" href="#sameas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if an object points to the same memory address than another
 object:</p>
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">if</span> <span class="nv">foo.attribute</span> <span class="k">is</span> <span class="nf">sameas</span> <span class="kp">false</span> <span class="cp">%}</span><span class="x"></span>
@@ -1479,7 +1521,7 @@ object:</p>
 
 <dl class="function">
 <dt id="sequence">
-<!--[sequence]--><tt class="descname">sequence</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#sequence" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sequence</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#sequence" title="Permalink to this definition">¶</a></dt>
 <dd>Return true if the variable is a sequence. Sequences are variables
 that are iterable.</dd></dl>
 
@@ -1490,7 +1532,7 @@ that are iterable.</dd></dl>
 
 <dl class="function">
 <dt id="undefined">
-<!--[undefined]--><tt class="descname">undefined</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#undefined" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">undefined</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#undefined" title="Permalink to this definition">¶</a></dt>
 <dd>Like <a title="defined" class="reference internal" href="#defined"><tt class="xref docutils literal"><span class="pre">defined()</span></tt></a> but the other way round.</dd></dl>
 
 <dl class="function">
@@ -1504,7 +1546,7 @@ that are iterable.</dd></dl>
 <p>The following functions are available in the global scope by default:</p>
 <dl class="function">
 <dt id="range">
-<!--[range]--><tt class="descname">range</tt><big>(</big><span class="optional">[</span><em>start</em><span class="optional">]</span>, <em>stop</em><span class="optional">[</span>, <em>step</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#range" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">range</tt><big>(</big><span class="optional">[</span><em>start</em><span class="optional">]</span>, <em>stop</em><span class="optional">[</span>, <em>step</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#range" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list containing an arithmetic progression of integers.
 range(i, j) returns [i, i+1, i+2, ..., j-1]; start (!) defaults to 0.
 When step is given, it specifies the increment (or decrement).
@@ -1527,7 +1569,7 @@ render three empty items to enforce a height with CSS:</p>
 
 <dl class="function">
 <dt id="lipsum">
-<!--[lipsum]--><tt class="descname">lipsum</tt><big>(</big><em>n=5</em>, <em>html=True</em>, <em>min=20</em>, <em>max=100</em><big>)</big><a class="headerlink" href="#lipsum" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">lipsum</tt><big>(</big><em>n=5</em>, <em>html=True</em>, <em>min=20</em>, <em>max=100</em><big>)</big><a class="headerlink" href="#lipsum" title="Permalink to this definition">¶</a></dt>
 <dd>Generates some lorem ipsum for the template.  Per default five paragraphs
 with HTML are generated each paragraph between 20 and 100 words.  If html
 is disabled regular text is returned.  This is useful to generate simple
@@ -1535,18 +1577,18 @@ contents for layout testing.</dd></dl>
 
 <dl class="function">
 <dt id="dict">
-<!--[dict]--><tt class="descname">dict</tt><big>(</big><em>**items</em><big>)</big><a class="headerlink" href="#dict" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dict</tt><big>(</big><em>**items</em><big>)</big><a class="headerlink" href="#dict" title="Permalink to this definition">¶</a></dt>
 <dd>A convenient alternative to dict literals.  <tt class="docutils literal"><span class="pre">{'foo':</span> <span class="pre">'bar'}</span></tt> is the same
 as <tt class="docutils literal"><span class="pre">dict(foo='bar')</span></tt>.</dd></dl>
 
 <dl class="class">
 <dt id="cycler">
-<!--[cycler]-->class <tt class="descname">cycler</tt><big>(</big><em>*items</em><big>)</big><a class="headerlink" href="#cycler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descname">cycler</tt><big>(</big><em>*items</em><big>)</big><a class="headerlink" href="#cycler" title="Permalink to this definition">¶</a></dt>
 <dd><p>The cycler allows you to cycle among values similar to how <cite>loop.cycle</cite>
 works.  Unlike <cite>loop.cycle</cite> however you can use this cycler outside of
 loops or over multiple loops.</p>
 <p>This is for example very useful if you want to show a list of folders and
-files, with the folders on top, but both in the same list with alteranting
+files, with the folders on top, but both in the same list with alternating
 row colors.</p>
 <p>The following example shows how <cite>cycler</cite> can be used:</p>
 <div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">set</span> <span class="nv">row_class</span> <span class="o">=</span> <span class="nv">cycler</span><span class="o">(</span><span class="s1">&#39;odd&#39;</span><span class="o">,</span> <span class="s1">&#39;even&#39;</span><span class="o">)</span> <span class="cp">%}</span>
@@ -1563,17 +1605,17 @@ row colors.</p>
 <p>A cycler has the following attributes and methods:</p>
 <dl class="method">
 <dt id="cycler.reset">
-<!--[cycler.reset]--><tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#cycler.reset" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#cycler.reset" title="Permalink to this definition">¶</a></dt>
 <dd>Resets the cycle to the first item.</dd></dl>
 
 <dl class="method">
 <dt id="cycler.next">
-<!--[cycler.next]--><tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#cycler.next" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#cycler.next" title="Permalink to this definition">¶</a></dt>
 <dd>Goes one item a head and returns the then current item.</dd></dl>
 
 <dl class="attribute">
 <dt id="cycler.current">
-<!--[cycler.current]--><tt class="descname">current</tt><a class="headerlink" href="#cycler.current" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">current</tt><a class="headerlink" href="#cycler.current" title="Permalink to this definition">¶</a></dt>
 <dd>Returns the current item.</dd></dl>
 
 <p><strong>new in Jinja 2.1</strong></p>
@@ -1581,7 +1623,7 @@ row colors.</p>
 
 <dl class="class">
 <dt id="joiner">
-<!--[joiner]-->class <tt class="descname">joiner</tt><big>(</big><em>sep='</em>, <em>'</em><big>)</big><a class="headerlink" href="#joiner" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descname">joiner</tt><big>(</big><em>sep='</em>, <em>'</em><big>)</big><a class="headerlink" href="#joiner" title="Permalink to this definition">¶</a></dt>
 <dd><p>A tiny helper that can be use to &#8220;join&#8221; multiple sections.  A joiner is
 passed a string and will return that string every time it&#8217;s calld, except
 the first time in which situation it returns an empty string.  You can

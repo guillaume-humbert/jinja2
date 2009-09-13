@@ -3,10 +3,11 @@
     unit test for the test functions
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: 2007 by Armin Ronacher.
+    :copyright: (c) 2009 by the Jinja Team.
     :license: BSD, see LICENSE for more details.
 """
 from jinja2 import Environment, Markup
+env = Environment()
 
 
 DEFINED = '''{{ missing is defined }}|{{ true is defined }}'''
@@ -34,47 +35,47 @@ TYPECHECKS = '''\
 {{ range(5) is iterable }}'''
 
 
-def test_defined(env):
+def test_defined():
     tmpl = env.from_string(DEFINED)
     assert tmpl.render() == 'False|True'
 
 
-def test_even(env):
+def test_even():
     tmpl = env.from_string(EVEN)
     assert tmpl.render() == 'False|True'
 
 
-def test_odd(env):
+def test_odd():
     tmpl = env.from_string(ODD)
     assert tmpl.render() == 'True|False'
 
 
-def test_lower(env):
+def test_lower():
     tmpl = env.from_string(LOWER)
     assert tmpl.render() == 'True|False'
 
 
-def test_typechecks(env):
+def test_typechecks():
     tmpl = env.from_string(TYPECHECKS)
     assert tmpl.render() == ''
 
 
-def test_sequence(env):
+def test_sequence():
     tmpl = env.from_string(SEQUENCE)
     assert tmpl.render() == 'True|True|False'
 
 
-def test_upper(env):
+def test_upper():
     tmpl = env.from_string(UPPER)
     assert tmpl.render() == 'True|False'
 
 
-def test_sameas(env):
+def test_sameas():
     tmpl = env.from_string(SAMEAS)
     assert tmpl.render(foo=False) == 'True|False'
 
 
-def test_typechecks(env):
+def test_typechecks():
     tmpl = env.from_string(TYPECHECKS)
     assert tmpl.render() == (
         'False\nTrue\nFalse\nTrue\nTrue\nFalse\n'
@@ -82,7 +83,7 @@ def test_typechecks(env):
     )
 
 
-def test_no_paren_for_arg1(env):
+def test_no_paren_for_arg1():
     tmpl = env.from_string(NOPARENFORARG1)
     assert tmpl.render(foo=None) == 'True'
 

@@ -7,7 +7,7 @@
     tags work.  By default two example extensions exist: an i18n and a cache
     extension.
 
-    :copyright: Copyright 2008 by Armin Ronacher.
+    :copyright: (c) 2009 by the Jinja Team.
     :license: BSD.
 """
 from collections import deque
@@ -16,7 +16,7 @@ from jinja2.defaults import *
 from jinja2.environment import get_spontaneous_environment
 from jinja2.runtime import Undefined, concat
 from jinja2.exceptions import TemplateAssertionError, TemplateSyntaxError
-from jinja2.utils import contextfunction, import_string, Markup
+from jinja2.utils import contextfunction, import_string, Markup, next
 
 
 # the only real useful gettext functions for a Jinja template.  Note
@@ -167,14 +167,14 @@ class InternationalizationExtension(Extension):
 
     def parse(self, parser):
         """Parse a translatable tag."""
-        lineno = parser.stream.next().lineno
+        lineno = next(parser.stream).lineno
 
         # find all the variables referenced.  Additionally a variable can be
         # defined in the body of the trans block too, but this is checked at
         # a later state.
         plural_expr = None
         variables = {}
-        while parser.stream.current.type is not 'block_end':
+        while parser.stream.current.type != 'block_end':
             if variables:
                 parser.stream.expect('comma')
 
@@ -189,8 +189,8 @@ class InternationalizationExtension(Extension):
                             exc=TemplateAssertionError)
 
             # expressions
-            if parser.stream.current.type is 'assign':
-                parser.stream.next()
+            if parser.stream.current.type == 'assign':
+                next(parser.stream)
                 variables[name.value] = var = parser.parse_expression()
             else:
                 variables[name.value] = var = nodes.Name(name.value, 'load')
@@ -213,8 +213,8 @@ class InternationalizationExtension(Extension):
         # if we have a pluralize block, we parse that too
         if parser.stream.current.test('name:pluralize'):
             have_plural = True
-            parser.stream.next()
-            if parser.stream.current.type is not 'block_end':
+            next(parser.stream)
+            if parser.stream.current.type != 'block_end':
                 name = parser.stream.expect('name')
                 if name.value not in variables:
                     parser.fail('unknown variable %r for pluralization' %
@@ -223,10 +223,10 @@ class InternationalizationExtension(Extension):
                 plural_expr = variables[name.value]
             parser.stream.expect('block_end')
             plural_names, plural = self._parse_block(parser, False)
-            parser.stream.next()
+            next(parser.stream)
             referenced.update(plural_names)
         else:
-            parser.stream.next()
+            next(parser.stream)
 
         # register free names as simple name expressions
         for var in referenced:
@@ -259,17 +259,17 @@ class InternationalizationExtension(Extension):
         referenced = []
         buf = []
         while 1:
-            if parser.stream.current.type is 'data':
+            if parser.stream.current.type == 'data':
                 buf.append(parser.stream.current.value.replace('%', '%%'))
-                parser.stream.next()
-            elif parser.stream.current.type is 'variable_begin':
-                parser.stream.next()
+                next(parser.stream)
+            elif parser.stream.current.type == 'variable_begin':
+                next(parser.stream)
                 name = parser.stream.expect('name').value
                 referenced.append(name)
                 buf.append('%%(%s)s' % name)
                 parser.stream.expect('variable_end')
-            elif parser.stream.current.type is 'block_begin':
-                parser.stream.next()
+            elif parser.stream.current.type == 'block_begin':
+                next(parser.stream)
                 if parser.stream.current.test('name:endtrans'):
                     break
                 elif parser.stream.current.test('name:pluralize'):
@@ -320,7 +320,7 @@ class ExprStmtExtension(Extension):
     tags = set(['do'])
 
     def parse(self, parser):
-        node = nodes.ExprStmt(lineno=parser.stream.next().lineno)
+        node = nodes.ExprStmt(lineno=next(parser.stream).lineno)
         node.node = parser.parse_tuple()
         return node
 
@@ -330,7 +330,7 @@ class LoopControlExtension(Extension):
     tags = set(['break', 'continue'])
 
     def parse(self, parser):
-        token = parser.stream.next()
+        token = next(parser.stream)
         if token.value == 'break':
             return nodes.Break(lineno=token.lineno)
         return nodes.Continue(lineno=token.lineno)
@@ -429,6 +429,7 @@ def babel_extract(fileobj, keywords, comment_tags, options):
         options.get('comment_start_string', COMMENT_START_STRING),
         options.get('comment_end_string', COMMENT_END_STRING),
         options.get('line_statement_prefix') or LINE_STATEMENT_PREFIX,
+        options.get('line_comment_prefix') or LINE_COMMENT_PREFIX,
         str(options.get('trim_blocks', TRIM_BLOCKS)).lower() in \
             ('1', 'on', 'yes', 'true'),
         NEWLINE_SEQUENCE, frozenset(extensions),

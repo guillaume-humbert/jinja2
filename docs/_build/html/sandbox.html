@@ -53,7 +53,7 @@ the following piece of code shows how it works:</p>
 </div>
 <dl class="class">
 <dt id="jinja2.sandbox.SandboxedEnvironment">
-<!--[jinja2.sandbox.SandboxedEnvironment]-->class <tt class="descclassname">jinja2.sandbox.</tt><tt class="descname">SandboxedEnvironment</tt><big>(</big><span class="optional">[</span><em>options</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.sandbox.SandboxedEnvironment" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.sandbox.</tt><tt class="descname">SandboxedEnvironment</tt><big>(</big><span class="optional">[</span><em>options</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.sandbox.SandboxedEnvironment" title="Permalink to this definition">¶</a></dt>
 <dd><p>The sandboxed environment.  It works like the regular environment but
 tells the compiler to generate sandboxed code.  Additionally subclasses of
 this environment may override the methods that tell the runtime what
@@ -61,18 +61,18 @@ attributes or functions are safe to access.</p>
 <p>If the template tries to access insecure code a <a title="jinja2.sandbox.SecurityError" class="reference internal" href="#jinja2.sandbox.SecurityError"><tt class="xref docutils literal"><span class="pre">SecurityError</span></tt></a> is
 raised.  However also other exceptions may occour during the rendering so
 the caller has to ensure that all exceptions are catched.</p>
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.sandbox.SandboxedEnvironment.is_safe_attribute">
-<!--[jinja2.sandbox.SandboxedEnvironment.is_safe_attribute]--><tt class="descname">is_safe_attribute</tt><big>(</big><em>obj</em>, <em>attr</em>, <em>value</em><big>)</big><a class="headerlink" href="#jinja2.sandbox.SandboxedEnvironment.is_safe_attribute" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">is_safe_attribute</tt><a class="headerlink" href="#jinja2.sandbox.SandboxedEnvironment.is_safe_attribute" title="Permalink to this definition">¶</a></dt>
 <dd>The sandboxed environment will call this method to check if the
 attribute of an object is safe to access.  Per default all attributes
 starting with an underscore are considered private as well as the
 special attributes of internal python objects as returned by the
 <a title="jinja2.sandbox.is_internal_attribute" class="reference internal" href="#jinja2.sandbox.is_internal_attribute"><tt class="xref docutils literal"><span class="pre">is_internal_attribute()</span></tt></a> function.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.sandbox.SandboxedEnvironment.is_safe_callable">
-<!--[jinja2.sandbox.SandboxedEnvironment.is_safe_callable]--><tt class="descname">is_safe_callable</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#jinja2.sandbox.SandboxedEnvironment.is_safe_callable" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">is_safe_callable</tt><a class="headerlink" href="#jinja2.sandbox.SandboxedEnvironment.is_safe_callable" title="Permalink to this definition">¶</a></dt>
 <dd>Check if an object is safely callable.  Per default a function is
 considered safe unless the <cite>unsafe_callable</cite> attribute exists and is
 True.  Override this method to alter the behavior, but this won&#8217;t
@@ -82,20 +82,20 @@ affect the <cite>unsafe</cite> decorator from this module.</dd></dl>
 
 <dl class="class">
 <dt id="jinja2.sandbox.ImmutableSandboxedEnvironment">
-<!--[jinja2.sandbox.ImmutableSandboxedEnvironment]-->class <tt class="descclassname">jinja2.sandbox.</tt><tt class="descname">ImmutableSandboxedEnvironment</tt><big>(</big><span class="optional">[</span><em>options</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.sandbox.ImmutableSandboxedEnvironment" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.sandbox.</tt><tt class="descname">ImmutableSandboxedEnvironment</tt><big>(</big><span class="optional">[</span><em>options</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.sandbox.ImmutableSandboxedEnvironment" title="Permalink to this definition">¶</a></dt>
 <dd>Works exactly like the regular <cite>SandboxedEnvironment</cite> but does not
 permit modifications on the builtin mutable objects <cite>list</cite>, <cite>set</cite>, and
 <cite>dict</cite> by using the <a title="jinja2.sandbox.modifies_known_mutable" class="reference internal" href="#jinja2.sandbox.modifies_known_mutable"><tt class="xref docutils literal"><span class="pre">modifies_known_mutable()</span></tt></a> function.</dd></dl>
 
 <dl class="exception">
 <dt id="jinja2.sandbox.SecurityError">
-<!--[jinja2.sandbox.SecurityError]-->exception <tt class="descclassname">jinja2.sandbox.</tt><tt class="descname">SecurityError</tt><a class="headerlink" href="#jinja2.sandbox.SecurityError" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><tt class="descclassname">jinja2.sandbox.</tt><tt class="descname">SecurityError</tt><big>(</big><em>message=None</em><big>)</big><a class="headerlink" href="#jinja2.sandbox.SecurityError" title="Permalink to this definition">¶</a></dt>
 <dd>Raised if a template tries to do something insecure if the
 sandbox is enabled.</dd></dl>
 
 <dl class="function">
 <dt id="jinja2.sandbox.unsafe">
-<!--[jinja2.sandbox.unsafe]--><tt class="descclassname">jinja2.sandbox.</tt><tt class="descname">unsafe</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.sandbox.unsafe" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jinja2.sandbox.</tt><tt class="descname">unsafe</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.sandbox.unsafe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mark a function or method as unsafe:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@unsafe</span>
 <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -106,7 +106,7 @@ sandbox is enabled.</dd></dl>
 
 <dl class="function">
 <dt id="jinja2.sandbox.is_internal_attribute">
-<!--[jinja2.sandbox.is_internal_attribute]--><tt class="descclassname">jinja2.sandbox.</tt><tt class="descname">is_internal_attribute</tt><big>(</big><em>obj</em>, <em>attr</em><big>)</big><a class="headerlink" href="#jinja2.sandbox.is_internal_attribute" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jinja2.sandbox.</tt><tt class="descname">is_internal_attribute</tt><big>(</big><em>obj</em>, <em>attr</em><big>)</big><a class="headerlink" href="#jinja2.sandbox.is_internal_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test if the attribute given is an internal python attribute.  For
 example this function returns <cite>True</cite> for the <cite>func_code</cite> attribute of
 python objects.  This is useful if the environment method
@@ -124,7 +124,7 @@ python objects.  This is useful if the environment method
 
 <dl class="function">
 <dt id="jinja2.sandbox.modifies_known_mutable">
-<!--[jinja2.sandbox.modifies_known_mutable]--><tt class="descclassname">jinja2.sandbox.</tt><tt class="descname">modifies_known_mutable</tt><big>(</big><em>obj</em>, <em>attr</em><big>)</big><a class="headerlink" href="#jinja2.sandbox.modifies_known_mutable" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jinja2.sandbox.</tt><tt class="descname">modifies_known_mutable</tt><big>(</big><em>obj</em>, <em>attr</em><big>)</big><a class="headerlink" href="#jinja2.sandbox.modifies_known_mutable" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function checks if an attribute on a builtin mutable object
 (list, dict, set or deque) would modify it if called.  It also supports
 the &#8220;user&#8221;-versions of the objects (<cite>sets.Set</cite>, <cite>UserDict.*</cite> etc.) and

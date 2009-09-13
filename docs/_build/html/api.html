@@ -46,14 +46,15 @@
 <li><a class="reference external" href="#notes-on-identifiers">Notes on Identifiers</a></li>
 <li><a class="reference external" href="#undefined-types">Undefined Types</a></li>
 <li><a class="reference external" href="#the-context">The Context</a></li>
-<li><a class="reference external" href="#id1">Loaders</a></li>
-<li><a class="reference external" href="#id2">Bytecode Cache</a></li>
+<li><a class="reference external" href="#loaders">Loaders</a></li>
+<li><a class="reference external" href="#bytecode-cache">Bytecode Cache</a></li>
 <li><a class="reference external" href="#utilities">Utilities</a></li>
 <li><a class="reference external" href="#exceptions">Exceptions</a></li>
 <li><a class="reference external" href="#custom-filters">Custom Filters</a></li>
 <li><a class="reference external" href="#custom-tests">Custom Tests</a></li>
 <li><a class="reference external" href="#the-global-namespace">The Global Namespace</a></li>
-<li><a class="reference external" href="#id3">Low Level API</a></li>
+<li><a class="reference external" href="#low-level-api">Low Level API</a></li>
+<li><a class="reference external" href="#the-meta-api">The Meta API</a></li>
 </ul>
 </li>
 </ul>
@@ -70,7 +71,7 @@ to the application and not those who are creating Jinja2 templates.</p>
 <p>Jinja2 uses a central object called the template <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a>.
 Instances of this class are used to store the configuration, global objects
 and are used to load templates from the file system or other locations.
-Even if you are creating templates from string by using the constructor of
+Even if you are creating templates from strings by using the constructor of
 <a title="jinja2.Template" class="reference internal" href="#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a> class, an environment is created automatically for you,
 albeit a shared one.</p>
 <p>Most applications will create one <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a> object on application
@@ -111,7 +112,7 @@ sequence which is per default UNIX style (<tt class="docutils literal"><span cla
 <cite>str</cite> type and the other is the <cite>unicode</cite> type, both of which extend a type
 called <cite>basestring</cite>.  Unfortunately the default is <cite>str</cite> which should not
 be used to store text based information unless only ASCII characters are
-used.  With Python 2.6 it is possible to my <cite>unicode</cite> the default on a per
+used.  With Python 2.6 it is possible to make <cite>unicode</cite> the default on a per
 module level and with Python 3 it will be the default.</p>
 <p>To explicitly use a unicode string you have to prefix the string literal
 with a <cite>u</cite>: <tt class="docutils literal"><span class="pre">u'Hänsel</span> <span class="pre">und</span> <span class="pre">Gretel</span> <span class="pre">sagen</span> <span class="pre">Hallo'</span></tt>.  That way Python will
@@ -156,7 +157,7 @@ render Jinja2 templates.  The <a class="reference internal" href="#low-level-api
 useful if you want to dig deeper into Jinja2 or <a class="reference external" href="extensions.html#jinja-extensions"><em>develop extensions</em></a>.</p>
 <dl class="class">
 <dt id="jinja2.Environment">
-<!--[jinja2.Environment]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">Environment</tt><big>(</big><span class="optional">[</span><em>options</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Environment" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">Environment</tt><big>(</big><span class="optional">[</span><em>options</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Environment" title="Permalink to this definition">¶</a></dt>
 <dd><p>The core component of Jinja is the <cite>Environment</cite>.  It contains
 important shared variables like configuration, filters, tests,
 globals and others.  Instances of this class may be modified if
@@ -183,6 +184,12 @@ Defaults to <tt class="docutils literal"><span class="pre">'{{'</span></tt>.</dd
 <dt><cite>line_statement_prefix</cite></dt>
 <dd>If given and a string, this will be used as prefix for line based
 statements.  See also <a class="reference external" href="templates.html#line-statements"><em>Line Statements</em></a>.</dd>
+<dt><cite>line_comment_prefix</cite></dt>
+<dd><p class="first">If given and a string, this will be used as prefix for line based
+based comments.  See also <a class="reference external" href="templates.html#line-statements"><em>Line Statements</em></a>.</p>
+<p class="last">
+<span class="versionmodified">New in version 2.2.</span></p>
+</dd>
 <dt><cite>trim_blocks</cite></dt>
 <dd>If this is set to <tt class="xref docutils literal"><span class="pre">True</span></tt> the first newline after a block is
 removed (block, not variable tag!).  Defaults to <cite>False</cite>.</dd>
@@ -232,7 +239,7 @@ have to be parsed if they were not changed.</p>
 </blockquote>
 <dl class="attribute">
 <dt id="jinja2.Environment.shared">
-<!--[jinja2.Environment.shared]--><tt class="descname">shared</tt><a class="headerlink" href="#jinja2.Environment.shared" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">shared</tt><a class="headerlink" href="#jinja2.Environment.shared" title="Permalink to this definition">¶</a></dt>
 <dd>If a template was created by using the <a title="jinja2.Template" class="reference internal" href="#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a> constructor
 an environment is created automatically.  These environments are
 created as shared environments which means that multiple templates
@@ -241,14 +248,14 @@ this attribute is <cite>True</cite>, else <cite>False</cite>.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Environment.sandboxed">
-<!--[jinja2.Environment.sandboxed]--><tt class="descname">sandboxed</tt><a class="headerlink" href="#jinja2.Environment.sandboxed" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sandboxed</tt><a class="headerlink" href="#jinja2.Environment.sandboxed" title="Permalink to this definition">¶</a></dt>
 <dd>If the environment is sandboxed this attribute is <cite>True</cite>.  For the
 sandbox mode have a look at the documentation for the
 <a title="jinja2.sandbox.SandboxedEnvironment" class="reference external" href="sandbox.html#jinja2.sandbox.SandboxedEnvironment"><tt class="xref docutils literal"><span class="pre">SandboxedEnvironment</span></tt></a>.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Environment.filters">
-<!--[jinja2.Environment.filters]--><tt class="descname">filters</tt><a class="headerlink" href="#jinja2.Environment.filters" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">filters</tt><a class="headerlink" href="#jinja2.Environment.filters" title="Permalink to this definition">¶</a></dt>
 <dd>A dict of filters for this environment.  As long as no template was
 loaded it&#8217;s safe to add new filters or remove old.  For custom filters
 see <a class="reference internal" href="#writing-filters"><em>Custom Filters</em></a>.  For valid filter names have a look at
@@ -256,7 +263,7 @@ see <a class="reference internal" href="#writing-filters"><em>Custom Filters</em
 
 <dl class="attribute">
 <dt id="jinja2.Environment.tests">
-<!--[jinja2.Environment.tests]--><tt class="descname">tests</tt><a class="headerlink" href="#jinja2.Environment.tests" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">tests</tt><a class="headerlink" href="#jinja2.Environment.tests" title="Permalink to this definition">¶</a></dt>
 <dd>A dict of test functions for this environment.  As long as no
 template was loaded it&#8217;s safe to modify this dict.  For custom tests
 see <a class="reference internal" href="#writing-tests"><em>Custom Tests</em></a>.  For valid test names have a look at
@@ -264,7 +271,7 @@ see <a class="reference internal" href="#writing-tests"><em>Custom Tests</em></a
 
 <dl class="attribute">
 <dt id="jinja2.Environment.globals">
-<!--[jinja2.Environment.globals]--><tt class="descname">globals</tt><a class="headerlink" href="#jinja2.Environment.globals" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">globals</tt><a class="headerlink" href="#jinja2.Environment.globals" title="Permalink to this definition">¶</a></dt>
 <dd>A dict of global variables.  These variables are always available
 in a template.  As long as no template was loaded it&#8217;s safe
 to modify this dict.  For more details see <a class="reference internal" href="#global-namespace"><em>The Global Namespace</em></a>.
@@ -272,7 +279,7 @@ For valid object names have a look at <a class="reference internal" href="#ident
 
 <dl class="method">
 <dt id="jinja2.Environment.overlay">
-<!--[jinja2.Environment.overlay]--><tt class="descname">overlay</tt><big>(</big><span class="optional">[</span><em>options</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Environment.overlay" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">overlay</tt><big>(</big><span class="optional">[</span><em>options</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Environment.overlay" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new overlay environment that shares all the data with the
 current environment except of cache and the overriden attributes.
 Extensions cannot be removed for a overlayed environment.  A overlayed
@@ -286,13 +293,13 @@ through.</p>
 
 <dl class="method">
 <dt id="jinja2.Environment.undefined">
-<!--[jinja2.Environment.undefined]--><tt class="descname">undefined</tt><big>(</big><span class="optional">[</span><em>hint</em>, <em>obj</em>, <em>name</em>, <em>exc</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Environment.undefined" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">undefined</tt><big>(</big><span class="optional">[</span><em>hint</em>, <em>obj</em>, <em>name</em>, <em>exc</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Environment.undefined" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a new <a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a> object for <cite>name</cite>.  This is useful
 for filters or functions that may return undefined objects for
 some operations.  All parameters except of <cite>hint</cite> should be provided
 as keyword parameters for better readability.  The <cite>hint</cite> is used as
 error message for the exception if provided, otherwise the error
-message generated from <cite>obj</cite> and <cite>name</cite> automatically.  The exception
+message will be generated from <cite>obj</cite> and <cite>name</cite> automatically.  The exception
 provided as <cite>exc</cite> is raised if something with the generated undefined
 object is done that the undefined object does not allow.  The default
 exception is <a title="jinja2.UndefinedError" class="reference internal" href="#jinja2.UndefinedError"><tt class="xref docutils literal"><span class="pre">UndefinedError</span></tt></a>.  If a <cite>hint</cite> is provided the
@@ -320,15 +327,15 @@ a custom <cite>hint</cite> is provided.  This gives undefined objects the
 possibility to enhance the error message.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.Environment.from_string">
-<!--[jinja2.Environment.from_string]--><tt class="descname">from_string</tt><big>(</big><em>source</em>, <em>globals=None</em>, <em>template_class=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.from_string" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">from_string</tt><a class="headerlink" href="#jinja2.Environment.from_string" title="Permalink to this definition">¶</a></dt>
 <dd>Load a template from a string.  This parses the source given and
 returns a <a title="jinja2.Template" class="reference internal" href="#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a> object.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.Environment.get_template">
-<!--[jinja2.Environment.get_template]--><tt class="descname">get_template</tt><big>(</big><em>name</em>, <em>parent=None</em>, <em>globals=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.get_template" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_template</tt><a class="headerlink" href="#jinja2.Environment.get_template" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a template from the loader.  If a loader is configured this
 method ask the loader for the template and returns a <a title="jinja2.Template" class="reference internal" href="#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a>.
 If the <cite>parent</cite> parameter is not <cite>None</cite>, <a title="jinja2.Environment.join_path" class="reference internal" href="#jinja2.Environment.join_path"><tt class="xref docutils literal"><span class="pre">join_path()</span></tt></a> is called
@@ -339,9 +346,9 @@ These variables are available in the context at render time.</p>
 raised.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.Environment.join_path">
-<!--[jinja2.Environment.join_path]--><tt class="descname">join_path</tt><big>(</big><em>template</em>, <em>parent</em><big>)</big><a class="headerlink" href="#jinja2.Environment.join_path" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">join_path</tt><a class="headerlink" href="#jinja2.Environment.join_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Join a template with the parent.  By default all the lookups are
 relative to the loader root so this method returns the <cite>template</cite>
 parameter unchanged, but if the paths should be relative to the
@@ -351,16 +358,16 @@ template name.</p>
 joining here.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.Environment.extend">
-<!--[jinja2.Environment.extend]--><tt class="descname">extend</tt><big>(</big><em>**attributes</em><big>)</big><a class="headerlink" href="#jinja2.Environment.extend" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">extend</tt><a class="headerlink" href="#jinja2.Environment.extend" title="Permalink to this definition">¶</a></dt>
 <dd>Add the items to the instance of the environment if they do not exist
 yet.  This is used by <a class="reference external" href="extensions.html#writing-extensions"><em>extensions</em></a> to register
 callbacks and configuration values without breaking inheritance.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.Environment.compile_expression">
-<!--[jinja2.Environment.compile_expression]--><tt class="descname">compile_expression</tt><big>(</big><em>source</em>, <em>undefined_to_none=True</em><big>)</big><a class="headerlink" href="#jinja2.Environment.compile_expression" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">compile_expression</tt><a class="headerlink" href="#jinja2.Environment.compile_expression" title="Permalink to this definition">¶</a></dt>
 <dd><p>A handy helper method that returns a callable that accepts keyword
 arguments that appear as variables in the expression.  If called it
 returns the result of the expression.</p>
@@ -391,7 +398,7 @@ by setting <cite>undefined_to_none</cite> to <cite>False</cite>.</p>
 
 <dl class="class">
 <dt id="jinja2.Template">
-<!--[jinja2.Template]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">Template</tt><a class="headerlink" href="#jinja2.Template" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">Template</tt><a class="headerlink" href="#jinja2.Template" title="Permalink to this definition">¶</a></dt>
 <dd><p>The central template object.  This class represents a compiled template
 and is used to evaluate it.</p>
 <p>Normally the template object is generated from an <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a> but
@@ -421,26 +428,26 @@ and compatible settings.</p>
 </div>
 <dl class="attribute">
 <dt id="jinja2.Template.globals">
-<!--[jinja2.Template.globals]--><tt class="descname">globals</tt><a class="headerlink" href="#jinja2.Template.globals" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">globals</tt><a class="headerlink" href="#jinja2.Template.globals" title="Permalink to this definition">¶</a></dt>
 <dd>The dict with the globals of that template.  It&#8217;s unsafe to modify
 this dict as it may be shared with other templates or the environment
 that loaded the template.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Template.name">
-<!--[jinja2.Template.name]--><tt class="descname">name</tt><a class="headerlink" href="#jinja2.Template.name" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">name</tt><a class="headerlink" href="#jinja2.Template.name" title="Permalink to this definition">¶</a></dt>
 <dd>The loading name of the template.  If the template was loaded from a
 string this is <cite>None</cite>.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Template.filename">
-<!--[jinja2.Template.filename]--><tt class="descname">filename</tt><a class="headerlink" href="#jinja2.Template.filename" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">filename</tt><a class="headerlink" href="#jinja2.Template.filename" title="Permalink to this definition">¶</a></dt>
 <dd>The filename of the template on the file system if it was loaded from
 there.  Otherwise this is <cite>None</cite>.</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Template.render">
-<!--[jinja2.Template.render]--><tt class="descname">render</tt><big>(</big><span class="optional">[</span><em>context</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Template.render" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">render</tt><big>(</big><span class="optional">[</span><em>context</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Template.render" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method accepts the same arguments as the <cite>dict</cite> constructor:
 A dict, a dict subclass or some keyword arguments.  If no arguments
 are given the context will be empty.  These two calls do the same:</p>
@@ -453,7 +460,7 @@ are given the context will be empty.  These two calls do the same:</p>
 
 <dl class="method">
 <dt id="jinja2.Template.generate">
-<!--[jinja2.Template.generate]--><tt class="descname">generate</tt><big>(</big><span class="optional">[</span><em>context</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Template.generate" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">generate</tt><big>(</big><span class="optional">[</span><em>context</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Template.generate" title="Permalink to this definition">¶</a></dt>
 <dd><p>For very large templates it can be useful to not render the whole
 template at once but evaluate each statement after another and yield
 piece for piece.  This method basically does exactly that and returns
@@ -463,13 +470,13 @@ a generator that yields one item after another as unicode strings.</p>
 
 <dl class="method">
 <dt id="jinja2.Template.stream">
-<!--[jinja2.Template.stream]--><tt class="descname">stream</tt><big>(</big><span class="optional">[</span><em>context</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Template.stream" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">stream</tt><big>(</big><span class="optional">[</span><em>context</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Template.stream" title="Permalink to this definition">¶</a></dt>
 <dd>Works exactly like <a title="jinja2.Template.generate" class="reference internal" href="#jinja2.Template.generate"><tt class="xref docutils literal"><span class="pre">generate()</span></tt></a> but returns a
 <tt class="xref docutils literal"><span class="pre">TemplateStream</span></tt>.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Template.module">
-<!--[jinja2.Template.module]--><tt class="descname">module</tt><a class="headerlink" href="#jinja2.Template.module" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">module</tt><a class="headerlink" href="#jinja2.Template.module" title="Permalink to this definition">¶</a></dt>
 <dd><p>The template as module.  This is used for imports in the
 template runtime but is also useful if one wants to access
 exported template variables from the Python layer:</p>
@@ -482,12 +489,12 @@ exported template variables from the Python layer:</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.Template.make_module">
-<!--[jinja2.Template.make_module]--><tt class="descname">make_module</tt><big>(</big><em>vars=None</em>, <em>shared=False</em>, <em>locals=None</em><big>)</big><a class="headerlink" href="#jinja2.Template.make_module" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">make_module</tt><a class="headerlink" href="#jinja2.Template.make_module" title="Permalink to this definition">¶</a></dt>
 <dd>This method works like the <a title="jinja2.Template.module" class="reference internal" href="#jinja2.Template.module"><tt class="xref docutils literal"><span class="pre">module</span></tt></a> attribute when called
-without arguments but it will evaluate the template every call
-rather then caching the template.  It&#8217;s also possible to provide
+without arguments but it will evaluate the template on every call
+rather than caching it.  It&#8217;s also possible to provide
 a dict which is then used as context.  The arguments are the same
 as for the <a title="jinja2.Template.new_context" class="reference internal" href="#jinja2.Template.new_context"><tt class="xref docutils literal"><span class="pre">new_context()</span></tt></a> method.</dd></dl>
 
@@ -495,7 +502,7 @@ as for the <a title="jinja2.Template.new_context" class="reference internal" hre
 
 <dl class="class">
 <dt id="jinja2.environment.TemplateStream">
-<!--[jinja2.environment.TemplateStream]-->class <tt class="descclassname">jinja2.environment.</tt><tt class="descname">TemplateStream</tt><a class="headerlink" href="#jinja2.environment.TemplateStream" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.environment.</tt><tt class="descname">TemplateStream</tt><a class="headerlink" href="#jinja2.environment.TemplateStream" title="Permalink to this definition">¶</a></dt>
 <dd><p>A template stream works pretty much like an ordinary python generator
 but it can buffer multiple items to reduce the number of total iterations.
 Per default the output is unbuffered which means that for every unbuffered
@@ -503,19 +510,19 @@ instruction in the template one unicode string is yielded.</p>
 <p>If buffering is enabled with a buffer size of 5, five items are combined
 into a new unicode string.  This is mainly useful if you are streaming
 big templates to a client via WSGI which flushes after each iteration.</p>
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.environment.TemplateStream.disable_buffering">
-<!--[jinja2.environment.TemplateStream.disable_buffering]--><tt class="descname">disable_buffering</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.environment.TemplateStream.disable_buffering" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">disable_buffering</tt><a class="headerlink" href="#jinja2.environment.TemplateStream.disable_buffering" title="Permalink to this definition">¶</a></dt>
 <dd>Disable the output buffering.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.environment.TemplateStream.enable_buffering">
-<!--[jinja2.environment.TemplateStream.enable_buffering]--><tt class="descname">enable_buffering</tt><big>(</big><em>size=5</em><big>)</big><a class="headerlink" href="#jinja2.environment.TemplateStream.enable_buffering" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">enable_buffering</tt><a class="headerlink" href="#jinja2.environment.TemplateStream.enable_buffering" title="Permalink to this definition">¶</a></dt>
 <dd>Enable buffering.  Buffer <cite>size</cite> items before yielding them.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.environment.TemplateStream.dump">
-<!--[jinja2.environment.TemplateStream.dump]--><tt class="descname">dump</tt><big>(</big><em>fp</em>, <em>encoding=None</em>, <em>errors='strict'</em><big>)</big><a class="headerlink" href="#jinja2.environment.TemplateStream.dump" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dump</tt><a class="headerlink" href="#jinja2.environment.TemplateStream.dump" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dump the complete stream into a file or file-like object.
 Per default unicode strings are written, if you want to encode
 before writing specifiy an <cite>encoding</cite>.</p>
@@ -553,7 +560,7 @@ others fail.</p>
 disallows all operations beside testing if it&#8217;s an undefined object.</p>
 <dl class="class">
 <dt id="jinja2.Undefined">
-<!--[jinja2.Undefined]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">Undefined</tt><a class="headerlink" href="#jinja2.Undefined" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">Undefined</tt><a class="headerlink" href="#jinja2.Undefined" title="Permalink to this definition">¶</a></dt>
 <dd><p>The default undefined type.  This undefined type can be printed and
 iterated over, but every other access will raise an <a title="jinja2.UndefinedError" class="reference internal" href="#jinja2.UndefinedError"><tt class="xref docutils literal"><span class="pre">UndefinedError</span></tt></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span> <span class="o">=</span> <span class="n">Undefined</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;foo&#39;</span><span class="p">)</span>
@@ -569,31 +576,31 @@ iterated over, but every other access will raise an <a title="jinja2.UndefinedEr
 </div>
 <dl class="attribute">
 <dt id="jinja2.Undefined._undefined_hint">
-<!--[jinja2.Undefined._undefined_hint]--><tt class="descname">_undefined_hint</tt><a class="headerlink" href="#jinja2.Undefined._undefined_hint" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">_undefined_hint</tt><a class="headerlink" href="#jinja2.Undefined._undefined_hint" title="Permalink to this definition">¶</a></dt>
 <dd>Either <cite>None</cite> or an unicode string with the error message for
 the undefined object.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Undefined._undefined_obj">
-<!--[jinja2.Undefined._undefined_obj]--><tt class="descname">_undefined_obj</tt><a class="headerlink" href="#jinja2.Undefined._undefined_obj" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">_undefined_obj</tt><a class="headerlink" href="#jinja2.Undefined._undefined_obj" title="Permalink to this definition">¶</a></dt>
 <dd>Either <cite>None</cite> or the owner object that caused the undefined object
 to be created (for example because an attribute does not exist).</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Undefined._undefined_name">
-<!--[jinja2.Undefined._undefined_name]--><tt class="descname">_undefined_name</tt><a class="headerlink" href="#jinja2.Undefined._undefined_name" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">_undefined_name</tt><a class="headerlink" href="#jinja2.Undefined._undefined_name" title="Permalink to this definition">¶</a></dt>
 <dd>The name for the undefined variable / attribute or just <cite>None</cite>
 if no such information exists.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Undefined._undefined_exception">
-<!--[jinja2.Undefined._undefined_exception]--><tt class="descname">_undefined_exception</tt><a class="headerlink" href="#jinja2.Undefined._undefined_exception" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">_undefined_exception</tt><a class="headerlink" href="#jinja2.Undefined._undefined_exception" title="Permalink to this definition">¶</a></dt>
 <dd>The exception that the undefined object wants to raise.  This
 is usually one of <a title="jinja2.UndefinedError" class="reference internal" href="#jinja2.UndefinedError"><tt class="xref docutils literal"><span class="pre">UndefinedError</span></tt></a> or <tt class="xref docutils literal"><span class="pre">SecurityError</span></tt>.</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Undefined._fail_with_undefined_error">
-<!--[jinja2.Undefined._fail_with_undefined_error]--><tt class="descname">_fail_with_undefined_error</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#jinja2.Undefined._fail_with_undefined_error" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">_fail_with_undefined_error</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#jinja2.Undefined._fail_with_undefined_error" title="Permalink to this definition">¶</a></dt>
 <dd>When called with any arguments this method raises
 <a title="jinja2.Undefined._undefined_exception" class="reference internal" href="#jinja2.Undefined._undefined_exception"><tt class="xref docutils literal"><span class="pre">_undefined_exception</span></tt></a> with an error message generated
 from the undefined hints stored on the undefined object.</dd></dl>
@@ -602,7 +609,7 @@ from the undefined hints stored on the undefined object.</dd></dl>
 
 <dl class="class">
 <dt id="jinja2.DebugUndefined">
-<!--[jinja2.DebugUndefined]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">DebugUndefined</tt><a class="headerlink" href="#jinja2.DebugUndefined" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">DebugUndefined</tt><a class="headerlink" href="#jinja2.DebugUndefined" title="Permalink to this definition">¶</a></dt>
 <dd><p>An undefined that returns the debug info when printed.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span> <span class="o">=</span> <span class="n">DebugUndefined</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;foo&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
@@ -619,7 +626,7 @@ from the undefined hints stored on the undefined object.</dd></dl>
 
 <dl class="class">
 <dt id="jinja2.StrictUndefined">
-<!--[jinja2.StrictUndefined]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">StrictUndefined</tt><a class="headerlink" href="#jinja2.StrictUndefined" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">StrictUndefined</tt><a class="headerlink" href="#jinja2.StrictUndefined" title="Permalink to this definition">¶</a></dt>
 <dd><p>An undefined that barks on print and iteration as well as boolean
 tests and all kinds of comparisons.  In other words: you can do nothing
 with it except checking if it&#8217;s defined using the <cite>defined</cite> test.</p>
@@ -671,7 +678,7 @@ but chokes on iteration:</p>
 <h2>The Context<a class="headerlink" href="#the-context" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="jinja2.runtime.Context">
-<!--[jinja2.runtime.Context]-->class <tt class="descclassname">jinja2.runtime.</tt><tt class="descname">Context</tt><a class="headerlink" href="#jinja2.runtime.Context" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.runtime.</tt><tt class="descname">Context</tt><a class="headerlink" href="#jinja2.runtime.Context" title="Permalink to this definition">¶</a></dt>
 <dd><p>The template context holds the variables of a template.  It stores the
 values passed to the template and also the names the template exports.
 Creating instances is neither supported nor useful as it&#8217;s created
@@ -689,7 +696,7 @@ method that doesn&#8217;t fail with a <cite>KeyError</cite> but returns an
 <a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a> object for missing variables.</p>
 <dl class="attribute">
 <dt id="jinja2.Context.parent">
-<!--[jinja2.Context.parent]--><tt class="descname">parent</tt><a class="headerlink" href="#jinja2.Context.parent" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">parent</tt><a class="headerlink" href="#jinja2.Context.parent" title="Permalink to this definition">¶</a></dt>
 <dd>A dict of read only, global variables the template looks up.  These
 can either come from another <tt class="xref docutils literal"><span class="pre">Context</span></tt>, from the
 <a title="jinja2.Environment.globals" class="reference internal" href="#jinja2.Environment.globals"><tt class="xref docutils literal"><span class="pre">Environment.globals</span></tt></a> or <a title="jinja2.Template.globals" class="reference internal" href="#jinja2.Template.globals"><tt class="xref docutils literal"><span class="pre">Template.globals</span></tt></a> or points
@@ -698,7 +705,7 @@ passed to the render function.  It must not be altered.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Context.vars">
-<!--[jinja2.Context.vars]--><tt class="descname">vars</tt><a class="headerlink" href="#jinja2.Context.vars" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">vars</tt><a class="headerlink" href="#jinja2.Context.vars" title="Permalink to this definition">¶</a></dt>
 <dd>The template local variables.  This list contains environment and
 context functions from the <a title="jinja2.Context.parent" class="reference internal" href="#jinja2.Context.parent"><tt class="xref docutils literal"><span class="pre">parent</span></tt></a> scope as well as local
 modifications and exported variables from the template.  The template
@@ -707,24 +714,24 @@ context functions are not allowed to modify it.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Context.environment">
-<!--[jinja2.Context.environment]--><tt class="descname">environment</tt><a class="headerlink" href="#jinja2.Context.environment" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">environment</tt><a class="headerlink" href="#jinja2.Context.environment" title="Permalink to this definition">¶</a></dt>
 <dd>The environment that loaded the template.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Context.exported_vars">
-<!--[jinja2.Context.exported_vars]--><tt class="descname">exported_vars</tt><a class="headerlink" href="#jinja2.Context.exported_vars" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">exported_vars</tt><a class="headerlink" href="#jinja2.Context.exported_vars" title="Permalink to this definition">¶</a></dt>
 <dd>This set contains all the names the template exports.  The values for
 the names are in the <a title="jinja2.Context.vars" class="reference internal" href="#jinja2.Context.vars"><tt class="xref docutils literal"><span class="pre">vars</span></tt></a> dict.  In order to get a copy of the
 exported variables as dict, <tt class="xref docutils literal"><span class="pre">get_exported()</span></tt> can be used.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Context.name">
-<!--[jinja2.Context.name]--><tt class="descname">name</tt><a class="headerlink" href="#jinja2.Context.name" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">name</tt><a class="headerlink" href="#jinja2.Context.name" title="Permalink to this definition">¶</a></dt>
 <dd>The load name of the template owning this context.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Context.blocks">
-<!--[jinja2.Context.blocks]--><tt class="descname">blocks</tt><a class="headerlink" href="#jinja2.Context.blocks" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">blocks</tt><a class="headerlink" href="#jinja2.Context.blocks" title="Permalink to this definition">¶</a></dt>
 <dd>A dict with the current mapping of blocks in the template.  The keys
 in this dict are the names of the blocks, and the values a list of
 blocks registered.  The last item in each list is the current active
@@ -732,26 +739,26 @@ block (latest in the inheritance chain).</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.runtime.Context.call">
-<!--[jinja2.runtime.Context.call]--><tt class="descname">call</tt><big>(</big><em>callable</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#jinja2.runtime.Context.call" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">call</tt><big>(</big><em>callable</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#jinja2.runtime.Context.call" title="Permalink to this definition">¶</a></dt>
 <dd>Call the callable with the arguments and keyword arguments
 provided but inject the active context or environment as first
 argument if the callable is a <a title="jinja2.contextfunction" class="reference internal" href="#jinja2.contextfunction"><tt class="xref docutils literal"><span class="pre">contextfunction()</span></tt></a> or
 <a title="jinja2.environmentfunction" class="reference internal" href="#jinja2.environmentfunction"><tt class="xref docutils literal"><span class="pre">environmentfunction()</span></tt></a>.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.runtime.Context.resolve">
-<!--[jinja2.runtime.Context.resolve]--><tt class="descname">resolve</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#jinja2.runtime.Context.resolve" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">resolve</tt><a class="headerlink" href="#jinja2.runtime.Context.resolve" title="Permalink to this definition">¶</a></dt>
 <dd>Looks up a variable like <cite>__getitem__</cite> or <cite>get</cite> but returns an
 <a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a> object with the name of the name looked up.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.runtime.Context.get_exported">
-<!--[jinja2.runtime.Context.get_exported]--><tt class="descname">get_exported</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.runtime.Context.get_exported" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_exported</tt><a class="headerlink" href="#jinja2.runtime.Context.get_exported" title="Permalink to this definition">¶</a></dt>
 <dd>Get a new dict with the exported variables.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.runtime.Context.get_all">
-<!--[jinja2.runtime.Context.get_all]--><tt class="descname">get_all</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.runtime.Context.get_all" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_all</tt><a class="headerlink" href="#jinja2.runtime.Context.get_all" title="Permalink to this definition">¶</a></dt>
 <dd>Return a copy of the complete context as dict including the
 exported variables.</dd></dl>
 
@@ -768,8 +775,8 @@ looks up the variable in the context, after that the variable is treated
 as if it was defined in the template.</p>
 </div>
 </div>
-<div class="section" id="id1">
-<span id="loaders"></span><h2>Loaders<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="loaders">
+<span id="id1"></span><h2>Loaders<a class="headerlink" href="#loaders" title="Permalink to this headline">¶</a></h2>
 <p>Loaders are responsible for loading templates from a resource such as the
 file system.  The environment will keep the compiled modules in memory like
 Python&#8217;s <cite>sys.modules</cite>.  Unlike <cite>sys.modules</cite> however this cache is limited in
@@ -778,7 +785,7 @@ All loaders are subclasses of <a title="jinja2.BaseLoader" class="reference inte
 own loader, subclass <a title="jinja2.BaseLoader" class="reference internal" href="#jinja2.BaseLoader"><tt class="xref docutils literal"><span class="pre">BaseLoader</span></tt></a> and override <cite>get_source</cite>.</p>
 <dl class="class">
 <dt id="jinja2.BaseLoader">
-<!--[jinja2.BaseLoader]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">BaseLoader</tt><a class="headerlink" href="#jinja2.BaseLoader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">BaseLoader</tt><a class="headerlink" href="#jinja2.BaseLoader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Baseclass for all loaders.  Subclass this and override <cite>get_source</cite> to
 implement a custom loading mechanism.  The environment provides a
 <cite>get_template</cite> method that calls the loader&#8217;s <cite>load</cite> method to get the
@@ -803,9 +810,9 @@ system could look like this:</p>
         <span class="k">return</span> <span class="n">source</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">mtime</span> <span class="o">==</span> <span class="n">getmtime</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 </pre></div>
 </div>
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.BaseLoader.get_source">
-<!--[jinja2.BaseLoader.get_source]--><tt class="descname">get_source</tt><big>(</big><em>environment</em>, <em>template</em><big>)</big><a class="headerlink" href="#jinja2.BaseLoader.get_source" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_source</tt><a class="headerlink" href="#jinja2.BaseLoader.get_source" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the template source, filename and reload helper for a template.
 It&#8217;s passed the environment and template name and has to return a
 tuple in the form <tt class="docutils literal"><span class="pre">(source,</span> <span class="pre">filename,</span> <span class="pre">uptodate)</span></tt> or raise a
@@ -822,9 +829,9 @@ old state somewhere (for example in a closure).  If it returns <cite>False</cite
 the template will be reloaded.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.BaseLoader.load">
-<!--[jinja2.BaseLoader.load]--><tt class="descname">load</tt><big>(</big><em>environment</em>, <em>name</em>, <em>globals=None</em><big>)</big><a class="headerlink" href="#jinja2.BaseLoader.load" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">load</tt><a class="headerlink" href="#jinja2.BaseLoader.load" title="Permalink to this definition">¶</a></dt>
 <dd>Loads a template.  This method looks up the template in the cache
 or loads one by calling <a title="jinja2.BaseLoader.get_source" class="reference internal" href="#jinja2.BaseLoader.get_source"><tt class="xref docutils literal"><span class="pre">get_source()</span></tt></a>.  Subclasses should not
 override this method as loaders working on collections of other
@@ -836,7 +843,7 @@ will not call this method but <cite>get_source</cite> directly.</dd></dl>
 <p>Here a list of the builtin loaders Jinja2 provides:</p>
 <dl class="class">
 <dt id="jinja2.FileSystemLoader">
-<!--[jinja2.FileSystemLoader]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">FileSystemLoader</tt><big>(</big><em>searchpath</em>, <em>encoding='utf-8'</em><big>)</big><a class="headerlink" href="#jinja2.FileSystemLoader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">FileSystemLoader</tt><big>(</big><em>searchpath</em>, <em>encoding='utf-8'</em><big>)</big><a class="headerlink" href="#jinja2.FileSystemLoader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads templates from the file system.  This loader can find templates
 in folders on the file system and is the preferred way to load them.</p>
 <p>The loader takes the path to the templates as string, or if multiple
@@ -852,7 +859,7 @@ by setting the <cite>encoding</cite> parameter to something else.</p>
 
 <dl class="class">
 <dt id="jinja2.PackageLoader">
-<!--[jinja2.PackageLoader]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">PackageLoader</tt><big>(</big><em>package_name</em>, <em>package_path='templates'</em>, <em>encoding='utf-8'</em><big>)</big><a class="headerlink" href="#jinja2.PackageLoader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">PackageLoader</tt><big>(</big><em>package_name</em>, <em>package_path='templates'</em>, <em>encoding='utf-8'</em><big>)</big><a class="headerlink" href="#jinja2.PackageLoader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load templates from python eggs or packages.  It is constructed with
 the name of the python package and the path to the templates in that
 package:</p>
@@ -868,7 +875,7 @@ from the file system and not a zip file.</p>
 
 <dl class="class">
 <dt id="jinja2.DictLoader">
-<!--[jinja2.DictLoader]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">DictLoader</tt><big>(</big><em>mapping</em><big>)</big><a class="headerlink" href="#jinja2.DictLoader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">DictLoader</tt><big>(</big><em>mapping</em><big>)</big><a class="headerlink" href="#jinja2.DictLoader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads a template from a python dict.  It&#8217;s passed a dict of unicode
 strings bound to template names.  This loader is useful for unittesting:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">DictLoader</span><span class="p">({</span><span class="s">&#39;index.html&#39;</span><span class="p">:</span> <span class="s">&#39;source here&#39;</span><span class="p">})</span>
@@ -879,7 +886,7 @@ strings bound to template names.  This loader is useful for unittesting:</p>
 
 <dl class="class">
 <dt id="jinja2.FunctionLoader">
-<!--[jinja2.FunctionLoader]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">FunctionLoader</tt><big>(</big><em>load_func</em><big>)</big><a class="headerlink" href="#jinja2.FunctionLoader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">FunctionLoader</tt><big>(</big><em>load_func</em><big>)</big><a class="headerlink" href="#jinja2.FunctionLoader" title="Permalink to this definition">¶</a></dt>
 <dd><p>A loader that is passed a function which does the loading.  The
 function becomes the name of the template passed and has to return either
 an unicode string with the template source, a tuple in the form <tt class="docutils literal"><span class="pre">(source,</span>
@@ -899,7 +906,7 @@ return value.</p>
 
 <dl class="class">
 <dt id="jinja2.PrefixLoader">
-<!--[jinja2.PrefixLoader]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">PrefixLoader</tt><big>(</big><em>mapping</em>, <em>delimiter='/'</em><big>)</big><a class="headerlink" href="#jinja2.PrefixLoader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">PrefixLoader</tt><big>(</big><em>mapping</em>, <em>delimiter='/'</em><big>)</big><a class="headerlink" href="#jinja2.PrefixLoader" title="Permalink to this definition">¶</a></dt>
 <dd><p>A loader that is passed a dict of loaders where each loader is bound
 to a prefix.  The prefix is delimited from the template by a slash per
 default, which can be changed by setting the <cite>delimiter</cite> argument to
@@ -916,7 +923,7 @@ by loading <tt class="docutils literal"><span class="pre">'app2/index.html'</spa
 
 <dl class="class">
 <dt id="jinja2.ChoiceLoader">
-<!--[jinja2.ChoiceLoader]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">ChoiceLoader</tt><big>(</big><em>loaders</em><big>)</big><a class="headerlink" href="#jinja2.ChoiceLoader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">ChoiceLoader</tt><big>(</big><em>loaders</em><big>)</big><a class="headerlink" href="#jinja2.ChoiceLoader" title="Permalink to this definition">¶</a></dt>
 <dd><p>This loader works like the <cite>PrefixLoader</cite> just that no prefix is
 specified.  If a template could not be found by one loader the next one
 is tried.</p>
@@ -931,8 +938,8 @@ from a different location.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="id2">
-<span id="bytecode-cache"></span><h2>Bytecode Cache<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bytecode-cache">
+<span id="id2"></span><h2>Bytecode Cache<a class="headerlink" href="#bytecode-cache" title="Permalink to this headline">¶</a></h2>
 <p>Jinja 2.1 and higher support external bytecode caching.  Bytecode caches make
 it possible to store the generated bytecode on the file system or a different
 location to avoid parsing the templates on first use.</p>
@@ -942,7 +949,7 @@ the application.</p>
 <p>To use a bytecode cache, instanciate it and pass it to the <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a>.</p>
 <dl class="class">
 <dt id="jinja2.BytecodeCache">
-<!--[jinja2.BytecodeCache]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">BytecodeCache</tt><a class="headerlink" href="#jinja2.BytecodeCache" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">BytecodeCache</tt><a class="headerlink" href="#jinja2.BytecodeCache" title="Permalink to this definition">¶</a></dt>
 <dd><p>To implement your own bytecode cache you have to subclass this class
 and override <a title="jinja2.BytecodeCache.load_bytecode" class="reference internal" href="#jinja2.BytecodeCache.load_bytecode"><tt class="xref docutils literal"><span class="pre">load_bytecode()</span></tt></a> and <a title="jinja2.BytecodeCache.dump_bytecode" class="reference internal" href="#jinja2.BytecodeCache.dump_bytecode"><tt class="xref docutils literal"><span class="pre">dump_bytecode()</span></tt></a>.  Both of
 these methods are passed a <a title="jinja2.bccache.Bucket" class="reference internal" href="#jinja2.bccache.Bucket"><tt class="xref docutils literal"><span class="pre">Bucket</span></tt></a>.</p>
@@ -968,23 +975,23 @@ these methods are passed a <a title="jinja2.bccache.Bucket" class="reference int
 </div>
 <p>A more advanced version of a filesystem based bytecode cache is part of
 Jinja2.</p>
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.BytecodeCache.load_bytecode">
-<!--[jinja2.BytecodeCache.load_bytecode]--><tt class="descname">load_bytecode</tt><big>(</big><em>bucket</em><big>)</big><a class="headerlink" href="#jinja2.BytecodeCache.load_bytecode" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">load_bytecode</tt><a class="headerlink" href="#jinja2.BytecodeCache.load_bytecode" title="Permalink to this definition">¶</a></dt>
 <dd>Subclasses have to override this method to load bytecode into a
 bucket.  If they are not able to find code in the cache for the
 bucket, it must not do anything.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.BytecodeCache.dump_bytecode">
-<!--[jinja2.BytecodeCache.dump_bytecode]--><tt class="descname">dump_bytecode</tt><big>(</big><em>bucket</em><big>)</big><a class="headerlink" href="#jinja2.BytecodeCache.dump_bytecode" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dump_bytecode</tt><a class="headerlink" href="#jinja2.BytecodeCache.dump_bytecode" title="Permalink to this definition">¶</a></dt>
 <dd>Subclasses have to override this method to write the bytecode
 from a bucket back to the cache.  If it unable to do so it must not
 fail silently but raise an exception.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.BytecodeCache.clear">
-<!--[jinja2.BytecodeCache.clear]--><tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.BytecodeCache.clear" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">clear</tt><a class="headerlink" href="#jinja2.BytecodeCache.clear" title="Permalink to this definition">¶</a></dt>
 <dd>Clears the cache.  This method is not used by Jinja2 but should be
 implemented to allow applications to clear the bytecode cache used
 by a particular environment.</dd></dl>
@@ -993,7 +1000,7 @@ by a particular environment.</dd></dl>
 
 <dl class="class">
 <dt id="jinja2.bccache.Bucket">
-<!--[jinja2.bccache.Bucket]-->class <tt class="descclassname">jinja2.bccache.</tt><tt class="descname">Bucket</tt><big>(</big><em>environment</em>, <em>key</em>, <em>checksum</em><big>)</big><a class="headerlink" href="#jinja2.bccache.Bucket" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.bccache.</tt><tt class="descname">Bucket</tt><big>(</big><em>environment</em>, <em>key</em>, <em>checksum</em><big>)</big><a class="headerlink" href="#jinja2.bccache.Bucket" title="Permalink to this definition">¶</a></dt>
 <dd><p>Buckets are used to store the bytecode for one template.  It&#8217;s created
 and initialized by the bytecode cache and passed to the loading functions.</p>
 <p>The buckets get an internal checksum from the cache assigned and use this
@@ -1001,42 +1008,42 @@ to automatically reject outdated cache material.  Individual bytecode
 cache subclasses don&#8217;t have to care about cache invalidation.</p>
 <dl class="attribute">
 <dt id="jinja2.Bucket.environment">
-<!--[jinja2.Bucket.environment]--><tt class="descname">environment</tt><a class="headerlink" href="#jinja2.Bucket.environment" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">environment</tt><a class="headerlink" href="#jinja2.Bucket.environment" title="Permalink to this definition">¶</a></dt>
 <dd>The <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a> that created the bucket.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Bucket.key">
-<!--[jinja2.Bucket.key]--><tt class="descname">key</tt><a class="headerlink" href="#jinja2.Bucket.key" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">key</tt><a class="headerlink" href="#jinja2.Bucket.key" title="Permalink to this definition">¶</a></dt>
 <dd>The unique cache key for this bucket</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Bucket.code">
-<!--[jinja2.Bucket.code]--><tt class="descname">code</tt><a class="headerlink" href="#jinja2.Bucket.code" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">code</tt><a class="headerlink" href="#jinja2.Bucket.code" title="Permalink to this definition">¶</a></dt>
 <dd>The bytecode if it&#8217;s loaded, otherwise <cite>None</cite>.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.bccache.Bucket.write_bytecode">
-<!--[jinja2.bccache.Bucket.write_bytecode]--><tt class="descname">write_bytecode</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.bccache.Bucket.write_bytecode" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">write_bytecode</tt><a class="headerlink" href="#jinja2.bccache.Bucket.write_bytecode" title="Permalink to this definition">¶</a></dt>
 <dd>Dump the bytecode into the file or file like object passed.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.bccache.Bucket.load_bytecode">
-<!--[jinja2.bccache.Bucket.load_bytecode]--><tt class="descname">load_bytecode</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.bccache.Bucket.load_bytecode" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">load_bytecode</tt><a class="headerlink" href="#jinja2.bccache.Bucket.load_bytecode" title="Permalink to this definition">¶</a></dt>
 <dd>Loads bytecode from a file or file like object.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.bccache.Bucket.bytecode_from_string">
-<!--[jinja2.bccache.Bucket.bytecode_from_string]--><tt class="descname">bytecode_from_string</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#jinja2.bccache.Bucket.bytecode_from_string" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">bytecode_from_string</tt><a class="headerlink" href="#jinja2.bccache.Bucket.bytecode_from_string" title="Permalink to this definition">¶</a></dt>
 <dd>Load bytecode from a string.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.bccache.Bucket.bytecode_to_string">
-<!--[jinja2.bccache.Bucket.bytecode_to_string]--><tt class="descname">bytecode_to_string</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.bccache.Bucket.bytecode_to_string" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">bytecode_to_string</tt><a class="headerlink" href="#jinja2.bccache.Bucket.bytecode_to_string" title="Permalink to this definition">¶</a></dt>
 <dd>Return the bytecode as string.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.bccache.Bucket.reset">
-<!--[jinja2.bccache.Bucket.reset]--><tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.bccache.Bucket.reset" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">reset</tt><a class="headerlink" href="#jinja2.bccache.Bucket.reset" title="Permalink to this definition">¶</a></dt>
 <dd>Resets the bucket (unloads the bytecode).</dd></dl>
 
 </dd></dl>
@@ -1044,7 +1051,7 @@ cache subclasses don&#8217;t have to care about cache invalidation.</p>
 <p>Builtin bytecode caches:</p>
 <dl class="class">
 <dt id="jinja2.FileSystemBytecodeCache">
-<!--[jinja2.FileSystemBytecodeCache]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">FileSystemBytecodeCache</tt><big>(</big><em>directory=None</em>, <em>pattern='__jinja2_%s.cache'</em><big>)</big><a class="headerlink" href="#jinja2.FileSystemBytecodeCache" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">FileSystemBytecodeCache</tt><big>(</big><em>directory=None</em>, <em>pattern='__jinja2_%s.cache'</em><big>)</big><a class="headerlink" href="#jinja2.FileSystemBytecodeCache" title="Permalink to this definition">¶</a></dt>
 <dd><p>A bytecode cache that stores bytecode on the filesystem.  It accepts
 two arguments: The directory where the cache items are stored and a
 pattern string that is used to build the filename.</p>
@@ -1060,7 +1067,7 @@ is replaced with the cache key.</p>
 
 <dl class="class">
 <dt id="jinja2.MemcachedBytecodeCache">
-<!--[jinja2.MemcachedBytecodeCache]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">MemcachedBytecodeCache</tt><big>(</big><em>client</em>, <em>prefix='jinja2/bytecode/'</em>, <em>timeout=None</em><big>)</big><a class="headerlink" href="#jinja2.MemcachedBytecodeCache" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">MemcachedBytecodeCache</tt><big>(</big><em>client</em>, <em>prefix='jinja2/bytecode/'</em>, <em>timeout=None</em><big>)</big><a class="headerlink" href="#jinja2.MemcachedBytecodeCache" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class implements a bytecode cache that uses a memcache cache for
 storing the information.  It does not enforce a specific memcache library
 (tummy&#8217;s memcache or cmemcache) but will accept any class that provides
@@ -1078,10 +1085,10 @@ as <cite>django.core.cache.cache._client</cite>.)</p>
 <p>The minimal interface for the client passed to the constructor is this:</p>
 <dl class="class">
 <dt id="jinja2.MemcachedBytecodeCache.MinimalClientInterface">
-<!--[jinja2.MemcachedBytecodeCache.MinimalClientInterface]-->class <tt class="descname">MinimalClientInterface</tt><a class="headerlink" href="#jinja2.MemcachedBytecodeCache.MinimalClientInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descname">MinimalClientInterface</tt><a class="headerlink" href="#jinja2.MemcachedBytecodeCache.MinimalClientInterface" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="jinja2.MemcachedBytecodeCache.MinimalClientInterface.set">
-<!--[jinja2.MemcachedBytecodeCache.MinimalClientInterface.set]--><tt class="descname">set</tt><big>(</big><em>key</em>, <em>value</em><span class="optional">[</span>, <em>timeout</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.MemcachedBytecodeCache.MinimalClientInterface.set" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set</tt><big>(</big><em>key</em>, <em>value</em><span class="optional">[</span>, <em>timeout</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.MemcachedBytecodeCache.MinimalClientInterface.set" title="Permalink to this definition">¶</a></dt>
 <dd>Stores the bytecode in the cache.  <cite>value</cite> is a string and
 <cite>timeout</cite> the timeout of the key.  If timeout is not provided
 a default timeout or no timeout should be assumed, if it&#8217;s
@@ -1090,7 +1097,7 @@ item should exist.</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.MemcachedBytecodeCache.MinimalClientInterface.get">
-<!--[jinja2.MemcachedBytecodeCache.MinimalClientInterface.get]--><tt class="descname">get</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#jinja2.MemcachedBytecodeCache.MinimalClientInterface.get" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#jinja2.MemcachedBytecodeCache.MinimalClientInterface.get" title="Permalink to this definition">¶</a></dt>
 <dd>Returns the value for the cache key.  If the item does not
 exist in the cache the return value must be <cite>None</cite>.</dd></dl>
 
@@ -1110,19 +1117,19 @@ The clear method is a no-operation function.</p>
 functions to a Jinja2 environment.</p>
 <dl class="function">
 <dt id="jinja2.environmentfilter">
-<!--[jinja2.environmentfilter]--><tt class="descclassname">jinja2.</tt><tt class="descname">environmentfilter</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.environmentfilter" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jinja2.</tt><tt class="descname">environmentfilter</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.environmentfilter" title="Permalink to this definition">¶</a></dt>
 <dd>Decorator for marking evironment dependent filters.  The current
 <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a> is passed to the filter as first argument.</dd></dl>
 
 <dl class="function">
 <dt id="jinja2.contextfilter">
-<!--[jinja2.contextfilter]--><tt class="descclassname">jinja2.</tt><tt class="descname">contextfilter</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.contextfilter" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jinja2.</tt><tt class="descname">contextfilter</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.contextfilter" title="Permalink to this definition">¶</a></dt>
 <dd>Decorator for marking context dependent filters. The current
 <tt class="xref docutils literal"><span class="pre">Context</span></tt> will be passed as first argument.</dd></dl>
 
 <dl class="function">
 <dt id="jinja2.environmentfunction">
-<!--[jinja2.environmentfunction]--><tt class="descclassname">jinja2.</tt><tt class="descname">environmentfunction</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.environmentfunction" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jinja2.</tt><tt class="descname">environmentfunction</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.environmentfunction" title="Permalink to this definition">¶</a></dt>
 <dd>This decorator can be used to mark a function or method as environment
 callable.  This decorator works exactly like the <a title="jinja2.contextfunction" class="reference internal" href="#jinja2.contextfunction"><tt class="xref docutils literal"><span class="pre">contextfunction()</span></tt></a>
 decorator just that the first argument is the active <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a>
@@ -1130,7 +1137,7 @@ and not context.</dd></dl>
 
 <dl class="function">
 <dt id="jinja2.contextfunction">
-<!--[jinja2.contextfunction]--><tt class="descclassname">jinja2.</tt><tt class="descname">contextfunction</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.contextfunction" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jinja2.</tt><tt class="descname">contextfunction</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.contextfunction" title="Permalink to this definition">¶</a></dt>
 <dd><p>This decorator can be used to mark a function or method context callable.
 A context callable is passed the active <tt class="xref docutils literal"><span class="pre">Context</span></tt> as first argument when
 called from the template.  This is useful if a function wants to get access
@@ -1146,7 +1153,7 @@ template exports could look like this:</p>
 
 <dl class="function">
 <dt id="jinja2.escape">
-<!--[jinja2.escape]--><tt class="descclassname">jinja2.</tt><tt class="descname">escape</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#jinja2.escape" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jinja2.</tt><tt class="descname">escape</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#jinja2.escape" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the characters <tt class="docutils literal"><span class="pre">&amp;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;</span></tt>, <tt class="docutils literal"><span class="pre">&gt;</span></tt>, <tt class="docutils literal"><span class="pre">'</span></tt>, and <tt class="docutils literal"><span class="pre">&quot;</span></tt> in string <cite>s</cite>
 to HTML-safe sequences.  Use this if you need to display text that might
 contain such characters in HTML.  This function will not escaped objects
@@ -1156,7 +1163,7 @@ that do have an HTML representation such as already escaped data.</p>
 
 <dl class="function">
 <dt id="jinja2.clear_caches">
-<!--[jinja2.clear_caches]--><tt class="descclassname">jinja2.</tt><tt class="descname">clear_caches</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.clear_caches" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jinja2.</tt><tt class="descname">clear_caches</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.clear_caches" title="Permalink to this definition">¶</a></dt>
 <dd>Jinja2 keeps internal caches for environments and lexers.  These are
 used so that Jinja2 doesn&#8217;t have to recreate environments and lexers all
 the time.  Normally you don&#8217;t have to care about that but if you are
@@ -1164,7 +1171,7 @@ messuring memory consumption you may want to clean the caches.</dd></dl>
 
 <dl class="function">
 <dt id="jinja2.is_undefined">
-<!--[jinja2.is_undefined]--><tt class="descclassname">jinja2.</tt><tt class="descname">is_undefined</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#jinja2.is_undefined" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">jinja2.</tt><tt class="descname">is_undefined</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#jinja2.is_undefined" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the object passed is undefined.  This does nothing more than
 performing an instance check against <a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a> but looks nicer.
 This can be used for custom filters or tests that want to react to
@@ -1180,7 +1187,7 @@ this:</p>
 
 <dl class="class">
 <dt id="jinja2.Markup">
-<!--[jinja2.Markup]-->class <tt class="descclassname">jinja2.</tt><tt class="descname">Markup</tt><big>(</big><span class="optional">[</span><em>string</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Markup" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">Markup</tt><big>(</big><span class="optional">[</span><em>string</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Markup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Marks a string as being safe for inclusion in HTML/XML output without
 needing to be escaped.  This implements the <cite>__html__</cite> interface a couple
 of frameworks and web applications use.  <a title="jinja2.Markup" class="reference internal" href="#jinja2.Markup"><tt class="xref docutils literal"><span class="pre">Markup</span></tt></a> is a direct
@@ -1222,17 +1229,16 @@ arguments are passed through the <a title="escape" class="reference external" hr
 <span class="go">Markup(u&#39;&lt;em&gt;Hello&lt;/em&gt; &amp;lt;foo&amp;gt;&#39;)</span>
 </pre></div>
 </div>
-<dl class="staticmethod">
+<dl class="attribute">
 <dt id="jinja2.Markup.escape">
-<!--[jinja2.Markup.escape]--><em class="property">
-static </em><tt class="descname">escape</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#jinja2.Markup.escape" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">escape</tt><a class="headerlink" href="#jinja2.Markup.escape" title="Permalink to this definition">¶</a></dt>
 <dd>Escape the string.  Works like <a title="escape" class="reference external" href="templates.html#escape"><tt class="xref docutils literal"><span class="pre">escape()</span></tt></a> with the difference
 that for subclasses of <a title="jinja2.Markup" class="reference internal" href="#jinja2.Markup"><tt class="xref docutils literal"><span class="pre">Markup</span></tt></a> this function would return the
 correct subclass.</dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.Markup.unescape">
-<!--[jinja2.Markup.unescape]--><tt class="descname">unescape</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.Markup.unescape" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">unescape</tt><a class="headerlink" href="#jinja2.Markup.unescape" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unescape markup again into an unicode string.  This also resolves
 known HTML4 and XHTML entities:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Markup</span><span class="p">(</span><span class="s">&quot;Main &amp;raquo; &lt;em&gt;About&lt;/em&gt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">unescape</span><span class="p">()</span>
@@ -1241,9 +1247,9 @@ known HTML4 and XHTML entities:</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="jinja2.Markup.striptags">
-<!--[jinja2.Markup.striptags]--><tt class="descname">striptags</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.Markup.striptags" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">striptags</tt><a class="headerlink" href="#jinja2.Markup.striptags" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unescape markup into an unicode string and strip all tags.  This
 also resolves known HTML4 and XHTML entities.  Whitespace is
 normalized to one:</p>
@@ -1266,41 +1272,41 @@ up the <cite>__html__</cite> concept soon.</p>
 <h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
 <dl class="exception">
 <dt id="jinja2.TemplateError">
-<!--[jinja2.TemplateError]-->exception <tt class="descclassname">jinja2.</tt><tt class="descname">TemplateError</tt><a class="headerlink" href="#jinja2.TemplateError" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><tt class="descclassname">jinja2.</tt><tt class="descname">TemplateError</tt><big>(</big><em>message=None</em><big>)</big><a class="headerlink" href="#jinja2.TemplateError" title="Permalink to this definition">¶</a></dt>
 <dd>Baseclass for all template errors.</dd></dl>
 
 <dl class="exception">
 <dt id="jinja2.UndefinedError">
-<!--[jinja2.UndefinedError]-->exception <tt class="descclassname">jinja2.</tt><tt class="descname">UndefinedError</tt><a class="headerlink" href="#jinja2.UndefinedError" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><tt class="descclassname">jinja2.</tt><tt class="descname">UndefinedError</tt><big>(</big><em>message=None</em><big>)</big><a class="headerlink" href="#jinja2.UndefinedError" title="Permalink to this definition">¶</a></dt>
 <dd>Raised if a template tries to operate on <a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a>.</dd></dl>
 
 <dl class="exception">
 <dt id="jinja2.TemplateNotFound">
-<!--[jinja2.TemplateNotFound]-->exception <tt class="descclassname">jinja2.</tt><tt class="descname">TemplateNotFound</tt><a class="headerlink" href="#jinja2.TemplateNotFound" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><tt class="descclassname">jinja2.</tt><tt class="descname">TemplateNotFound</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#jinja2.TemplateNotFound" title="Permalink to this definition">¶</a></dt>
 <dd>Raised if a template does not exist.</dd></dl>
 
 <dl class="exception">
 <dt id="jinja2.TemplateSyntaxError">
-<!--[jinja2.TemplateSyntaxError]-->exception <tt class="descclassname">jinja2.</tt><tt class="descname">TemplateSyntaxError</tt><a class="headerlink" href="#jinja2.TemplateSyntaxError" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><tt class="descclassname">jinja2.</tt><tt class="descname">TemplateSyntaxError</tt><big>(</big><em>message</em>, <em>lineno</em>, <em>name=None</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#jinja2.TemplateSyntaxError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised to tell the user that there is a problem with the template.</p>
 <dl class="attribute">
 <dt id="jinja2.TemplateSyntaxError.message">
-<!--[jinja2.TemplateSyntaxError.message]--><tt class="descname">message</tt><a class="headerlink" href="#jinja2.TemplateSyntaxError.message" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">message</tt><a class="headerlink" href="#jinja2.TemplateSyntaxError.message" title="Permalink to this definition">¶</a></dt>
 <dd>The error message as utf-8 bytestring.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.TemplateSyntaxError.lineno">
-<!--[jinja2.TemplateSyntaxError.lineno]--><tt class="descname">lineno</tt><a class="headerlink" href="#jinja2.TemplateSyntaxError.lineno" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">lineno</tt><a class="headerlink" href="#jinja2.TemplateSyntaxError.lineno" title="Permalink to this definition">¶</a></dt>
 <dd>The line number where the error occurred</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.TemplateSyntaxError.name">
-<!--[jinja2.TemplateSyntaxError.name]--><tt class="descname">name</tt><a class="headerlink" href="#jinja2.TemplateSyntaxError.name" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">name</tt><a class="headerlink" href="#jinja2.TemplateSyntaxError.name" title="Permalink to this definition">¶</a></dt>
 <dd>The load name for the template as unicode string.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.TemplateSyntaxError.filename">
-<!--[jinja2.TemplateSyntaxError.filename]--><tt class="descname">filename</tt><a class="headerlink" href="#jinja2.TemplateSyntaxError.filename" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">filename</tt><a class="headerlink" href="#jinja2.TemplateSyntaxError.filename" title="Permalink to this definition">¶</a></dt>
 <dd>The filename that loaded the template as bytestring in the encoding
 of the file system (most likely utf-8 or mbcs on Windows systems).</dd></dl>
 
@@ -1311,7 +1317,7 @@ and tracebacks as well as the compiler.  This will change with Python 3.</p>
 
 <dl class="exception">
 <dt id="jinja2.TemplateAssertionError">
-<!--[jinja2.TemplateAssertionError]-->exception <tt class="descclassname">jinja2.</tt><tt class="descname">TemplateAssertionError</tt><a class="headerlink" href="#jinja2.TemplateAssertionError" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><tt class="descclassname">jinja2.</tt><tt class="descname">TemplateAssertionError</tt><big>(</big><em>message</em>, <em>lineno</em>, <em>name=None</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#jinja2.TemplateAssertionError" title="Permalink to this definition">¶</a></dt>
 <dd>Like a template syntax error, but covers cases where something in the
 template caused an error at compile time that wasn&#8217;t necessarily caused
 by a syntax error.  However it&#8217;s a direct subclass of
@@ -1341,7 +1347,7 @@ be applied to datetime objects to format them:</p>
 </pre></div>
 </div>
 <p>Filters can also be passed the current template context or environment.  This
-is useful if a filters wants to return an undefined value or check the current
+is useful if a filter wants to return an undefined value or check the current
 <tt class="xref docutils literal"><span class="pre">autoescape</span></tt> setting.  For this purpose two decorators
 exist: <a title="jinja2.environmentfilter" class="reference internal" href="#jinja2.environmentfilter"><tt class="xref docutils literal"><span class="pre">environmentfilter()</span></tt></a> and <a title="jinja2.contextfilter" class="reference internal" href="#jinja2.contextfilter"><tt class="xref docutils literal"><span class="pre">contextfilter()</span></tt></a>.</p>
 <p>Here a small example filter that breaks a text into HTML line breaks and
@@ -1406,14 +1412,14 @@ that should be available all the time.  Additionally <a title="jinja2.Template.g
 exist that are variables available to a specific template that are available
 to all <a title="jinja2.Template.render" class="reference internal" href="#jinja2.Template.render"><tt class="xref docutils literal"><span class="pre">render()</span></tt></a> calls.</p>
 </div>
-<div class="section" id="id3">
-<span id="low-level-api"></span><h2>Low Level API<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="low-level-api">
+<span id="id3"></span><h2>Low Level API<a class="headerlink" href="#low-level-api" title="Permalink to this headline">¶</a></h2>
 <p>The low level API exposes functionality that can be useful to understand some
 implementation details, debugging purposes or advanced <a class="reference external" href="extensions.html#jinja-extensions"><em>extension</em></a> techniques.  Unless you know exactly what you are doing we
 don&#8217;t recommend using any of those.</p>
 <dl class="method">
 <dt id="jinja2.Environment.lex">
-<!--[jinja2.Environment.lex]--><tt class="descclassname">Environment.</tt><tt class="descname">lex</tt><big>(</big><em>source</em>, <em>name=None</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.lex" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">Environment.</tt><tt class="descname">lex</tt><big>(</big><em>source</em>, <em>name=None</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.lex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lex the given sourcecode and return a generator that yields
 tokens as tuples in the form <tt class="docutils literal"><span class="pre">(lineno,</span> <span class="pre">token_type,</span> <span class="pre">value)</span></tt>.
 This can be useful for <a class="reference external" href="extensions.html#writing-extensions"><em>extension development</em></a>
@@ -1425,7 +1431,7 @@ the <a title="jinja2.Environment.preprocess" class="reference internal" href="#j
 
 <dl class="method">
 <dt id="jinja2.Environment.parse">
-<!--[jinja2.Environment.parse]--><tt class="descclassname">Environment.</tt><tt class="descname">parse</tt><big>(</big><em>source</em>, <em>name=None</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.parse" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">Environment.</tt><tt class="descname">parse</tt><big>(</big><em>source</em>, <em>name=None</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the sourcecode and return the abstract syntax tree.  This
 tree of nodes is used by the compiler to convert the template into
 executable source- or bytecode.  This is useful for debugging or to
@@ -1436,14 +1442,14 @@ this gives you a good overview of the node tree generated.</p>
 
 <dl class="method">
 <dt id="jinja2.Environment.preprocess">
-<!--[jinja2.Environment.preprocess]--><tt class="descclassname">Environment.</tt><tt class="descname">preprocess</tt><big>(</big><em>source</em>, <em>name=None</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.preprocess" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">Environment.</tt><tt class="descname">preprocess</tt><big>(</big><em>source</em>, <em>name=None</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.preprocess" title="Permalink to this definition">¶</a></dt>
 <dd>Preprocesses the source with all extensions.  This is automatically
 called for all parsing and compiling methods but <em>not</em> for <a title="jinja2.Environment.lex" class="reference internal" href="#jinja2.Environment.lex"><tt class="xref docutils literal"><span class="pre">lex()</span></tt></a>
 because there you usually only want the actual source tokenized.</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Template.new_context">
-<!--[jinja2.Template.new_context]--><tt class="descclassname">Template.</tt><tt class="descname">new_context</tt><big>(</big><em>vars=None</em>, <em>shared=False</em>, <em>locals=None</em><big>)</big><a class="headerlink" href="#jinja2.Template.new_context" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">Template.</tt><tt class="descname">new_context</tt><big>(</big><em>vars=None</em>, <em>shared=False</em>, <em>locals=None</em><big>)</big><a class="headerlink" href="#jinja2.Template.new_context" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new <tt class="xref docutils literal"><span class="pre">Context</span></tt> for this template.  The vars
 provided will be passed to the template.  Per default the globals
 are added to the context.  If shared is set to <cite>True</cite> the data
@@ -1453,7 +1459,7 @@ is passed as it to the context without adding the globals.</p>
 
 <dl class="method">
 <dt id="jinja2.Template.root_render_func">
-<!--[jinja2.Template.root_render_func]--><tt class="descclassname">Template.</tt><tt class="descname">root_render_func</tt><big>(</big><em>context</em><big>)</big><a class="headerlink" href="#jinja2.Template.root_render_func" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">Template.</tt><tt class="descname">root_render_func</tt><big>(</big><em>context</em><big>)</big><a class="headerlink" href="#jinja2.Template.root_render_func" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is the low level render function.  It&#8217;s passed a <tt class="xref docutils literal"><span class="pre">Context</span></tt>
 that has to be created by <a title="jinja2.Template.new_context" class="reference internal" href="#jinja2.Template.new_context"><tt class="xref docutils literal"><span class="pre">new_context()</span></tt></a> of the same template or
 a compatible template.  This render function is generated by the
@@ -1467,13 +1473,13 @@ matter of fact this function should only be called from within a
 
 <dl class="attribute">
 <dt id="jinja2.Template.blocks">
-<!--[jinja2.Template.blocks]--><tt class="descclassname">Template.</tt><tt class="descname">blocks</tt><a class="headerlink" href="#jinja2.Template.blocks" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">Template.</tt><tt class="descname">blocks</tt><a class="headerlink" href="#jinja2.Template.blocks" title="Permalink to this definition">¶</a></dt>
 <dd>A dict of block render functions.  Each of these functions works exactly
 like the <a title="jinja2.Template.root_render_func" class="reference internal" href="#jinja2.Template.root_render_func"><tt class="xref docutils literal"><span class="pre">root_render_func()</span></tt></a> with the same limitations.</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Template.is_up_to_date">
-<!--[jinja2.Template.is_up_to_date]--><tt class="descclassname">Template.</tt><tt class="descname">is_up_to_date</tt><a class="headerlink" href="#jinja2.Template.is_up_to_date" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">Template.</tt><tt class="descname">is_up_to_date</tt><a class="headerlink" href="#jinja2.Template.is_up_to_date" title="Permalink to this definition">¶</a></dt>
 <dd>This attribute is <cite>False</cite> if there is a newer version of the template
 available, otherwise <cite>True</cite>.</dd></dl>
 
@@ -1484,6 +1490,56 @@ change it in a backwards incompatible way but modifications in the Jinja2
 core may shine through.  For example if Jinja2 introduces a new AST node
 in later versions that may be returned by <a title="jinja2.Environment.parse" class="reference internal" href="#jinja2.Environment.parse"><tt class="xref docutils literal"><span class="pre">parse()</span></tt></a>.</p>
 </div>
+</div>
+<div class="section" id="the-meta-api">
+<h2>The Meta API<a class="headerlink" href="#the-meta-api" title="Permalink to this headline">¶</a></h2>
+<p>
+<span class="versionmodified">New in version 2.2.</span></p>
+<p>The meta API returns some information about abstract syntax trees that
+could help applications to implement more advanced template concepts.  All
+the functions of the meta API operate on an abstract syntax tree as
+returned by the <a title="jinja2.Environment.parse" class="reference internal" href="#jinja2.Environment.parse"><tt class="xref docutils literal"><span class="pre">Environment.parse()</span></tt></a> method.</p>
+<dl class="function">
+<dt id="jinja2.meta.find_undeclared_variables">
+<tt class="descclassname">jinja2.meta.</tt><tt class="descname">find_undeclared_variables</tt><big>(</big><em>ast</em><big>)</big><a class="headerlink" href="#jinja2.meta.find_undeclared_variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of all variables in the AST that will be looked up from
+the context at runtime.  Because at compile time it&#8217;s not known which
+variables will be used depending on the path the execution takes at
+runtime, all variables are returned.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">meta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ast</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s">&#39;{</span><span class="si">% s</span><span class="s">et foo = 42 %}{{ bar + foo }}&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">meta</span><span class="o">.</span><span class="n">find_undeclared_variables</span><span class="p">(</span><span class="n">ast</span><span class="p">)</span>
+<span class="go">set([&#39;bar&#39;])</span>
+</pre></div>
+</div>
+<div class="admonition-implementation admonition ">
+<p class="first admonition-title">Implementation</p>
+<p class="last">Internally the code generator is used for finding undeclared variables.
+This is good to know because the code generator might raise a
+<a title="jinja2.TemplateAssertionError" class="reference internal" href="#jinja2.TemplateAssertionError"><tt class="xref docutils literal"><span class="pre">TemplateAssertionError</span></tt></a> during compilation and as a matter of
+fact this function can currently raise that exception as well.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="jinja2.meta.find_referenced_templates">
+<tt class="descclassname">jinja2.meta.</tt><tt class="descname">find_referenced_templates</tt><big>(</big><em>ast</em><big>)</big><a class="headerlink" href="#jinja2.meta.find_referenced_templates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds all the referenced templates from the AST.  This will return an
+iterator over all the hardcoded template extensions, inclusions and
+imports.  If dynamic inheritance or inclusion is used, <cite>None</cite> will be
+yielded.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">meta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ast</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s">&#39;{</span><span class="si">% e</span><span class="s">xtends &quot;layout.html&quot; %}{</span><span class="si">% i</span><span class="s">nclude helper %}&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">meta</span><span class="o">.</span><span class="n">find_referenced_templates</span><span class="p">(</span><span class="n">ast</span><span class="p">))</span>
+<span class="go">[&#39;layout.html&#39;, None]</span>
+</pre></div>
+</div>
+<p>This function is useful for dependency tracking.  For example if you want
+to rebuild parts of the website after a layout template has changed.</p>
+</dd></dl>
+
 </div>
 </div>
 

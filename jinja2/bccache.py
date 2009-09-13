@@ -11,7 +11,7 @@
     Situations where this is useful are often forking web applications that
     are initialized on the first request.
 
-    :copyright: Copyright 2008 by Armin Ronacher.
+    :copyright: (c) 2009 by the Jinja Team.
     :license: BSD.
 """
 from os import path, listdir
@@ -28,7 +28,7 @@ from jinja2.utils import open_if_exists
 
 
 bc_version = 1
-bc_magic = 'j2' + pickle.dumps(bc_version, 2)
+bc_magic = 'j2'.encode('ascii') + pickle.dumps(bc_version, 2)
 
 
 class Bucket(object):

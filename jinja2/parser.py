@@ -5,11 +5,12 @@
 
     Implements the template parser.
 
-    :copyright: 2008 by Armin Ronacher.
+    :copyright: (c) 2009 by the Jinja Team.
     :license: BSD, see LICENSE for more details.
 """
 from jinja2 import nodes
 from jinja2.exceptions import TemplateSyntaxError, TemplateAssertionError
+from jinja2.utils import next
 
 
 _statement_keywords = frozenset(['for', 'if', 'block', 'extends', 'print',
@@ -63,7 +64,7 @@ class Parser(object):
     def parse_statement(self):
         """Parse a single statement."""
         token = self.stream.current
-        if token.type is not 'name':
+        if token.type != 'name':
             self.fail('tag name expected', token.lineno)
         if token.value in _statement_keywords:
             return getattr(self, 'parse_' + self.stream.current.value)()
@@ -95,12 +96,12 @@ class Parser(object):
         result = self.subparse(end_tokens)
 
         if drop_needle:
-            self.stream.next()
+            next(self.stream)
         return result
 
     def parse_set(self):
         """Parse an assign statement."""
-        lineno = self.stream.next().lineno
+        lineno = next(self.stream).lineno
         target = self.parse_assign_target()
         self.stream.expect('assign')
         expr = self.parse_tuple()
@@ -118,7 +119,7 @@ class Parser(object):
             test = self.parse_expression()
         recursive = self.stream.skip_if('name:recursive')
         body = self.parse_statements(('name:endfor', 'name:else'))
-        if self.stream.next().value == 'endfor':
+        if next(self.stream).value == 'endfor':
             else_ = []
         else:
             else_ = self.parse_statements(('name:endfor',), drop_needle=True)
@@ -132,7 +133,7 @@ class Parser(object):
             node.test = self.parse_tuple(with_condexpr=False)
             node.body = self.parse_statements(('name:elif', 'name:else',
                                                'name:endif'))
-            token = self.stream.next()
+            token = next(self.stream)
             if token.test('name:elif'):
                 new_node = nodes.If(lineno=self.stream.current.lineno)
                 node.else_ = [new_node]
@@ -147,40 +148,47 @@ class Parser(object):
         return result
 
     def parse_block(self):
-        node = nodes.Block(lineno=self.stream.next().lineno)
+        node = nodes.Block(lineno=next(self.stream).lineno)
         node.name = self.stream.expect('name').value
+        node.scoped = self.stream.skip_if('name:scoped')
         node.body = self.parse_statements(('name:endblock',), drop_needle=True)
         self.stream.skip_if('name:' + node.name)
         return node
 
     def parse_extends(self):
-        node = nodes.Extends(lineno=self.stream.next().lineno)
+        node = nodes.Extends(lineno=next(self.stream).lineno)
         node.template = self.parse_expression()
         return node
 
     def parse_import_context(self, node, default):
         if self.stream.current.test_any('name:with', 'name:without') and \
            self.stream.look().test('name:context'):
-            node.with_context = self.stream.next().value == 'with'
+            node.with_context = next(self.stream).value == 'with'
             self.stream.skip()
         else:
             node.with_context = default
         return node
 
     def parse_include(self):
-        node = nodes.Include(lineno=self.stream.next().lineno)
+        node = nodes.Include(lineno=next(self.stream).lineno)
         node.template = self.parse_expression()
+        if self.stream.current.test('name:ignore') and \
+           self.stream.look().test('name:missing'):
+            node.ignore_missing = True
+            self.stream.skip(2)
+        else:
+            node.ignore_missing = False
         return self.parse_import_context(node, True)
 
     def parse_import(self):
-        node = nodes.Import(lineno=self.stream.next().lineno)
+        node = nodes.Import(lineno=next(self.stream).lineno)
         node.template = self.parse_expression()
         self.stream.expect('name:as')
         node.target = self.parse_assign_target(name_only=True).name
         return self.parse_import_context(node, False)
 
     def parse_from(self):
-        node = nodes.FromImport(lineno=self.stream.next().lineno)
+        node = nodes.FromImport(lineno=next(self.stream).lineno)
         node.template = self.parse_expression()
         self.stream.expect('name:import')
         node.names = []
@@ -188,7 +196,7 @@ class Parser(object):
         def parse_context():
             if self.stream.current.value in ('with', 'without') and \
                self.stream.look().test('name:context'):
-                node.with_context = self.stream.next().value == 'with'
+                node.with_context = next(self.stream).value == 'with'
                 self.stream.skip()
                 return True
             return False
@@ -196,7 +204,7 @@ class Parser(object):
         while 1:
             if node.names:
                 self.stream.expect('comma')
-            if self.stream.current.type is 'name':
+            if self.stream.current.type == 'name':
                 if parse_context():
                     break
                 target = self.parse_assign_target(name_only=True)
@@ -209,7 +217,7 @@ class Parser(object):
                     node.names.append((target.name, alias.name))
                 else:
                     node.names.append(target.name)
-                if parse_context() or self.stream.current.type is not 'comma':
+                if parse_context() or self.stream.current.type != 'comma':
                     break
             else:
                 break
@@ -222,7 +230,7 @@ class Parser(object):
         node.args = args = []
         node.defaults = defaults = []
         self.stream.expect('lparen')
-        while self.stream.current.type is not 'rparen':
+        while self.stream.current.type != 'rparen':
             if args:
                 self.stream.expect('comma')
             arg = self.parse_assign_target(name_only=True)
@@ -233,8 +241,8 @@ class Parser(object):
         self.stream.expect('rparen')
 
     def parse_call_block(self):
-        node = nodes.CallBlock(lineno=self.stream.next().lineno)
-        if self.stream.current.type is 'lparen':
+        node = nodes.CallBlock(lineno=next(self.stream).lineno)
+        if self.stream.current.type == 'lparen':
             self.parse_signature(node)
         else:
             node.args = []
@@ -247,14 +255,14 @@ class Parser(object):
         return node
 
     def parse_filter_block(self):
-        node = nodes.FilterBlock(lineno=self.stream.next().lineno)
+        node = nodes.FilterBlock(lineno=next(self.stream).lineno)
         node.filter = self.parse_filter(None, start_inline=True)
         node.body = self.parse_statements(('name:endfilter',),
                                           drop_needle=True)
         return node
 
     def parse_macro(self):
-        node = nodes.Macro(lineno=self.stream.next().lineno)
+        node = nodes.Macro(lineno=next(self.stream).lineno)
         node.name = self.parse_assign_target(name_only=True).name
         self.parse_signature(node)
         node.body = self.parse_statements(('name:endmacro',),
@@ -262,9 +270,9 @@ class Parser(object):
         return node
 
     def parse_print(self):
-        node = nodes.Output(lineno=self.stream.next().lineno)
+        node = nodes.Output(lineno=next(self.stream).lineno)
         node.nodes = []
-        while self.stream.current.type is not 'block_end':
+        while self.stream.current.type != 'block_end':
             if node.nodes:
                 self.stream.expect('comma')
             node.nodes.append(self.parse_expression())
@@ -327,12 +335,18 @@ class Parser(object):
 
     def parse_and(self):
         lineno = self.stream.current.lineno
-        left = self.parse_compare()
+        left = self.parse_not()
         while self.stream.skip_if('name:and'):
-            right = self.parse_compare()
+            right = self.parse_not()
             left = nodes.And(left, right, lineno=lineno)
             lineno = self.stream.current.lineno
         return left
+
+    def parse_not(self):
+        if self.stream.current.test('name:not'):
+            lineno = next(self.stream).lineno
+            return nodes.Not(self.parse_not(), lineno=lineno)
+        return self.parse_compare()
 
     def parse_compare(self):
         lineno = self.stream.current.lineno
@@ -341,7 +355,7 @@ class Parser(object):
         while 1:
             token_type = self.stream.current.type
             if token_type in _compare_operators:
-                self.stream.next()
+                next(self.stream)
                 ops.append(nodes.Operand(token_type, self.parse_add()))
             elif self.stream.skip_if('name:in'):
                 ops.append(nodes.Operand('in', self.parse_add()))
@@ -359,8 +373,8 @@ class Parser(object):
     def parse_add(self):
         lineno = self.stream.current.lineno
         left = self.parse_sub()
-        while self.stream.current.type is 'add':
-            self.stream.next()
+        while self.stream.current.type == 'add':
+            next(self.stream)
             right = self.parse_sub()
             left = nodes.Add(left, right, lineno=lineno)
             lineno = self.stream.current.lineno
@@ -369,8 +383,8 @@ class Parser(object):
     def parse_sub(self):
         lineno = self.stream.current.lineno
         left = self.parse_concat()
-        while self.stream.current.type is 'sub':
-            self.stream.next()
+        while self.stream.current.type == 'sub':
+            next(self.stream)
             right = self.parse_concat()
             left = nodes.Sub(left, right, lineno=lineno)
             lineno = self.stream.current.lineno
@@ -379,8 +393,8 @@ class Parser(object):
     def parse_concat(self):
         lineno = self.stream.current.lineno
         args = [self.parse_mul()]
-        while self.stream.current.type is 'tilde':
-            self.stream.next()
+        while self.stream.current.type == 'tilde':
+            next(self.stream)
             args.append(self.parse_mul())
         if len(args) == 1:
             return args[0]
@@ -389,8 +403,8 @@ class Parser(object):
     def parse_mul(self):
         lineno = self.stream.current.lineno
         left = self.parse_div()
-        while self.stream.current.type is 'mul':
-            self.stream.next()
+        while self.stream.current.type == 'mul':
+            next(self.stream)
             right = self.parse_div()
             left = nodes.Mul(left, right, lineno=lineno)
             lineno = self.stream.current.lineno
@@ -399,8 +413,8 @@ class Parser(object):
     def parse_div(self):
         lineno = self.stream.current.lineno
         left = self.parse_floordiv()
-        while self.stream.current.type is 'div':
-            self.stream.next()
+        while self.stream.current.type == 'div':
+            next(self.stream)
             right = self.parse_floordiv()
             left = nodes.Div(left, right, lineno=lineno)
             lineno = self.stream.current.lineno
@@ -409,8 +423,8 @@ class Parser(object):
     def parse_floordiv(self):
         lineno = self.stream.current.lineno
         left = self.parse_mod()
-        while self.stream.current.type is 'floordiv':
-            self.stream.next()
+        while self.stream.current.type == 'floordiv':
+            next(self.stream)
             right = self.parse_mod()
             left = nodes.FloorDiv(left, right, lineno=lineno)
             lineno = self.stream.current.lineno
@@ -419,8 +433,8 @@ class Parser(object):
     def parse_mod(self):
         lineno = self.stream.current.lineno
         left = self.parse_pow()
-        while self.stream.current.type is 'mod':
-            self.stream.next()
+        while self.stream.current.type == 'mod':
+            next(self.stream)
             right = self.parse_pow()
             left = nodes.Mod(left, right, lineno=lineno)
             lineno = self.stream.current.lineno
@@ -429,8 +443,8 @@ class Parser(object):
     def parse_pow(self):
         lineno = self.stream.current.lineno
         left = self.parse_unary()
-        while self.stream.current.type is 'pow':
-            self.stream.next()
+        while self.stream.current.type == 'pow':
+            next(self.stream)
             right = self.parse_unary()
             left = nodes.Pow(left, right, lineno=lineno)
             lineno = self.stream.current.lineno
@@ -439,23 +453,19 @@ class Parser(object):
     def parse_unary(self):
         token_type = self.stream.current.type
         lineno = self.stream.current.lineno
-        if token_type is 'name' and self.stream.current.value == 'not':
-            self.stream.next()
-            node = self.parse_unary()
-            return nodes.Not(node, lineno=lineno)
-        if token_type is 'sub':
-            self.stream.next()
+        if token_type == 'sub':
+            next(self.stream)
             node = self.parse_unary()
             return nodes.Neg(node, lineno=lineno)
-        if token_type is 'add':
-            self.stream.next()
+        if token_type == 'add':
+            next(self.stream)
             node = self.parse_unary()
             return nodes.Pos(node, lineno=lineno)
         return self.parse_primary()
 
     def parse_primary(self, with_postfix=True):
         token = self.stream.current
-        if token.type is 'name':
+        if token.type == 'name':
             if token.value in ('true', 'false', 'True', 'False'):
                 node = nodes.Const(token.value in ('true', 'True'),
                                    lineno=token.lineno)
@@ -463,25 +473,25 @@ class Parser(object):
                 node = nodes.Const(None, lineno=token.lineno)
             else:
                 node = nodes.Name(token.value, 'load', lineno=token.lineno)
-            self.stream.next()
-        elif token.type is 'string':
-            self.stream.next()
+            next(self.stream)
+        elif token.type == 'string':
+            next(self.stream)
             buf = [token.value]
             lineno = token.lineno
-            while self.stream.current.type is 'string':
+            while self.stream.current.type == 'string':
                 buf.append(self.stream.current.value)
-                self.stream.next()
+                next(self.stream)
             node = nodes.Const(''.join(buf), lineno=lineno)
         elif token.type in ('integer', 'float'):
-            self.stream.next()
+            next(self.stream)
             node = nodes.Const(token.value, lineno=token.lineno)
-        elif token.type is 'lparen':
-            self.stream.next()
+        elif token.type == 'lparen':
+            next(self.stream)
             node = self.parse_tuple()
             self.stream.expect('rparen')
-        elif token.type is 'lbracket':
+        elif token.type == 'lbracket':
             node = self.parse_list()
-        elif token.type is 'lbrace':
+        elif token.type == 'lbrace':
             node = self.parse_dict()
         else:
             self.fail("unexpected token '%s'" % (token,), token.lineno)
@@ -520,7 +530,7 @@ class Parser(object):
             if self.is_tuple_end(extra_end_rules):
                 break
             args.append(parse())
-            if self.stream.current.type is 'comma':
+            if self.stream.current.type == 'comma':
                 is_tuple = True
             else:
                 break
@@ -532,7 +542,7 @@ class Parser(object):
     def parse_list(self):
         token = self.stream.expect('lbracket')
         items = []
-        while self.stream.current.type is not 'rbracket':
+        while self.stream.current.type != 'rbracket':
             if items:
                 self.stream.expect('comma')
             if self.stream.current.type == 'rbracket':
@@ -544,7 +554,7 @@ class Parser(object):
     def parse_dict(self):
         token = self.stream.expect('lbrace')
         items = []
-        while self.stream.current.type is not 'rbrace':
+        while self.stream.current.type != 'rbrace':
             if items:
                 self.stream.expect('comma')
             if self.stream.current.type == 'rbrace':
@@ -559,34 +569,34 @@ class Parser(object):
     def parse_postfix(self, node):
         while 1:
             token_type = self.stream.current.type
-            if token_type is 'dot' or token_type is 'lbracket':
+            if token_type == 'dot' or token_type == 'lbracket':
                 node = self.parse_subscript(node)
-            elif token_type is 'lparen':
+            elif token_type == 'lparen':
                 node = self.parse_call(node)
-            elif token_type is 'pipe':
+            elif token_type == 'pipe':
                 node = self.parse_filter(node)
-            elif token_type is 'name' and self.stream.current.value == 'is':
+            elif token_type == 'name' and self.stream.current.value == 'is':
                 node = self.parse_test(node)
             else:
                 break
         return node
 
     def parse_subscript(self, node):
-        token = self.stream.next()
-        if token.type is 'dot':
+        token = next(self.stream)
+        if token.type == 'dot':
             attr_token = self.stream.current
-            self.stream.next()
-            if attr_token.type is 'name':
+            next(self.stream)
+            if attr_token.type == 'name':
                 return nodes.Getattr(node, attr_token.value, 'load',
                                      lineno=token.lineno)
-            elif attr_token.type is not 'integer':
+            elif attr_token.type != 'integer':
                 self.fail('expected name or number', attr_token.lineno)
             arg = nodes.Const(attr_token.value, lineno=attr_token.lineno)
             return nodes.Getitem(node, arg, 'load', lineno=token.lineno)
-        if token.type is 'lbracket':
+        if token.type == 'lbracket':
             priority_on_attribute = False
             args = []
-            while self.stream.current.type is not 'rbracket':
+            while self.stream.current.type != 'rbracket':
                 if args:
                     self.stream.expect('comma')
                 args.append(self.parse_subscribed())
@@ -594,32 +604,32 @@ class Parser(object):
             if len(args) == 1:
                 arg = args[0]
             else:
-                arg = nodes.Tuple(args, self.lineno, self.filename)
+                arg = nodes.Tuple(args, 'load', lineno=token.lineno)
             return nodes.Getitem(node, arg, 'load', lineno=token.lineno)
         self.fail('expected subscript expression', self.lineno)
 
     def parse_subscribed(self):
         lineno = self.stream.current.lineno
 
-        if self.stream.current.type is 'colon':
-            self.stream.next()
+        if self.stream.current.type == 'colon':
+            next(self.stream)
             args = [None]
         else:
             node = self.parse_expression()
-            if self.stream.current.type is not 'colon':
+            if self.stream.current.type != 'colon':
                 return node
-            self.stream.next()
+            next(self.stream)
             args = [node]
 
-        if self.stream.current.type is 'colon':
+        if self.stream.current.type == 'colon':
             args.append(None)
         elif self.stream.current.type not in ('rbracket', 'comma'):
             args.append(self.parse_expression())
         else:
             args.append(None)
 
-        if self.stream.current.type is 'colon':
-            self.stream.next()
+        if self.stream.current.type == 'colon':
+            next(self.stream)
             if self.stream.current.type not in ('rbracket', 'comma'):
                 args.append(self.parse_expression())
             else:
@@ -641,24 +651,24 @@ class Parser(object):
                 self.fail('invalid syntax for function call expression',
                           token.lineno)
 
-        while self.stream.current.type is not 'rparen':
+        while self.stream.current.type != 'rparen':
             if require_comma:
                 self.stream.expect('comma')
                 # support for trailing comma
-                if self.stream.current.type is 'rparen':
+                if self.stream.current.type == 'rparen':
                     break
-            if self.stream.current.type is 'mul':
+            if self.stream.current.type == 'mul':
                 ensure(dyn_args is None and dyn_kwargs is None)
-                self.stream.next()
+                next(self.stream)
                 dyn_args = self.parse_expression()
-            elif self.stream.current.type is 'pow':
+            elif self.stream.current.type == 'pow':
                 ensure(dyn_kwargs is None)
-                self.stream.next()
+                next(self.stream)
                 dyn_kwargs = self.parse_expression()
             else:
                 ensure(dyn_args is None and dyn_kwargs is None)
-                if self.stream.current.type is 'name' and \
-                    self.stream.look().type is 'assign':
+                if self.stream.current.type == 'name' and \
+                    self.stream.look().type == 'assign':
                     key = self.stream.current.value
                     self.stream.skip(2)
                     value = self.parse_expression()
@@ -679,13 +689,13 @@ class Parser(object):
     def parse_filter(self, node, start_inline=False):
         while self.stream.current.type == 'pipe' or start_inline:
             if not start_inline:
-                self.stream.next()
+                next(self.stream)
             token = self.stream.expect('name')
             name = token.value
-            while self.stream.current.type is 'dot':
-                self.stream.next()
+            while self.stream.current.type == 'dot':
+                next(self.stream)
                 name += '.' + self.stream.expect('name').value
-            if self.stream.current.type is 'lparen':
+            if self.stream.current.type == 'lparen':
                 args, kwargs, dyn_args, dyn_kwargs = self.parse_call(None)
             else:
                 args = []
@@ -697,19 +707,19 @@ class Parser(object):
         return node
 
     def parse_test(self, node):
-        token = self.stream.next()
+        token = next(self.stream)
         if self.stream.current.test('name:not'):
-            self.stream.next()
+            next(self.stream)
             negated = True
         else:
             negated = False
         name = self.stream.expect('name').value
-        while self.stream.current.type is 'dot':
-            self.stream.next()
+        while self.stream.current.type == 'dot':
+            next(self.stream)
             name += '.' + self.stream.expect('name').value
         dyn_args = dyn_kwargs = None
         kwargs = []
-        if self.stream.current.type is 'lparen':
+        if self.stream.current.type == 'lparen':
             args, kwargs, dyn_args, dyn_kwargs = self.parse_call(None)
         elif self.stream.current.type in ('name', 'string', 'integer',
                                           'float', 'lparen', 'lbracket',
@@ -740,18 +750,18 @@ class Parser(object):
 
         while self.stream:
             token = self.stream.current
-            if token.type is 'data':
+            if token.type == 'data':
                 if token.value:
                     add_data(nodes.TemplateData(token.value,
                                                 lineno=token.lineno))
-                self.stream.next()
-            elif token.type is 'variable_begin':
-                self.stream.next()
+                next(self.stream)
+            elif token.type == 'variable_begin':
+                next(self.stream)
                 add_data(self.parse_tuple(with_condexpr=True))
                 self.stream.expect('variable_end')
-            elif token.type is 'block_begin':
+            elif token.type == 'block_begin':
                 flush_data()
-                self.stream.next()
+                next(self.stream)
                 if end_tokens is not None and \
                    self.stream.current.test_any(*end_tokens):
                     return body

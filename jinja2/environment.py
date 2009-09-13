@@ -5,7 +5,7 @@
 
     Provides a class that holds runtime and parsing time options.
 
-    :copyright: 2008 by Armin Ronacher.
+    :copyright: (c) 2009 by the Jinja Team.
     :license: BSD, see LICENSE for more details.
 """
 import sys
@@ -15,14 +15,18 @@ from jinja2.lexer import get_lexer, TokenStream
 from jinja2.parser import Parser
 from jinja2.optimizer import optimize
 from jinja2.compiler import generate
-from jinja2.runtime import Undefined, Context
+from jinja2.runtime import Undefined, new_context
 from jinja2.exceptions import TemplateSyntaxError
 from jinja2.utils import import_string, LRUCache, Markup, missing, \
-     concat, consume
+     concat, consume, internalcode
 
 
 # for direct template usage we have up to ten living environments
 _spontaneous_environments = LRUCache(10)
+
+# the function to create jinja traceback objects.  This is dynamically
+# imported on the first exception in the exception handler.
+_make_traceback = None
 
 
 def get_spontaneous_environment(*args):
@@ -118,6 +122,12 @@ class Environment(object):
             If given and a string, this will be used as prefix for line based
             statements.  See also :ref:`line-statements`.
 
+        `line_comment_prefix`
+            If given and a string, this will be used as prefix for line based
+            based comments.  See also :ref:`line-statements`.
+
+            .. versionadded:: 2.2
+
         `trim_blocks`
             If this is set to ``True`` the first newline after a block is
             removed (block, not variable tag!).  Defaults to `False`.
@@ -181,7 +191,7 @@ class Environment(object):
     sandboxed = False
 
     #: True if the environment is just an overlay
-    overlay = False
+    overlayed = False
 
     #: the environment this environment is linked to if it is an overlay
     linked_to = None
@@ -189,6 +199,10 @@ class Environment(object):
     #: shared environments have this set to `True`.  A shared environment
     #: must not be modified
     shared = False
+
+    #: these are currently EXPERIMENTAL undocumented features.
+    exception_handler = None
+    exception_formatter = None
 
     def __init__(self,
                  block_start_string=BLOCK_START_STRING,
@@ -198,6 +212,7 @@ class Environment(object):
                  comment_start_string=COMMENT_START_STRING,
                  comment_end_string=COMMENT_END_STRING,
                  line_statement_prefix=LINE_STATEMENT_PREFIX,
+                 line_comment_prefix=LINE_COMMENT_PREFIX,
                  trim_blocks=TRIM_BLOCKS,
                  newline_sequence=NEWLINE_SEQUENCE,
                  extensions=(),
@@ -228,6 +243,7 @@ class Environment(object):
         self.comment_start_string = comment_start_string
         self.comment_end_string = comment_end_string
         self.line_statement_prefix = line_statement_prefix
+        self.line_comment_prefix = line_comment_prefix
         self.trim_blocks = trim_blocks
         self.newline_sequence = newline_sequence
 
@@ -266,10 +282,10 @@ class Environment(object):
     def overlay(self, block_start_string=missing, block_end_string=missing,
                 variable_start_string=missing, variable_end_string=missing,
                 comment_start_string=missing, comment_end_string=missing,
-                line_statement_prefix=missing, trim_blocks=missing,
-                extensions=missing, optimized=missing, undefined=missing,
-                finalize=missing, autoescape=missing, loader=missing,
-                cache_size=missing, auto_reload=missing,
+                line_statement_prefix=missing, line_comment_prefix=missing,
+                trim_blocks=missing, extensions=missing, optimized=missing,
+                undefined=missing, finalize=missing, autoescape=missing,
+                loader=missing, cache_size=missing, auto_reload=missing,
                 bytecode_cache=missing):
         """Create a new overlay environment that shares all the data with the
         current environment except of cache and the overriden attributes.
@@ -287,7 +303,7 @@ class Environment(object):
 
         rv = object.__new__(self.__class__)
         rv.__dict__.update(self.__dict__)
-        rv.overlay = True
+        rv.overlayed = True
         rv.linked_to = self
 
         for key, value in args.iteritems():
@@ -339,6 +355,7 @@ class Environment(object):
         except (TypeError, LookupError, AttributeError):
             return self.undefined(obj=obj, name=attribute)
 
+    @internalcode
     def parse(self, source, name=None, filename=None):
         """Parse the sourcecode and return the abstract syntax tree.  This
         tree of nodes is used by the compiler to convert the template into
@@ -348,13 +365,17 @@ class Environment(object):
         If you are :ref:`developing Jinja2 extensions <writing-extensions>`
         this gives you a good overview of the node tree generated.
         """
+        try:
+            return self._parse(source, name, filename)
+        except TemplateSyntaxError:
+            exc_info = sys.exc_info()
+        self.handle_exception(exc_info, source_hint=source)
+
+    def _parse(self, source, name, filename):
+        """Internal parsing function used by `parse` and `compile`."""
         if isinstance(filename, unicode):
             filename = filename.encode('utf-8')
-        try:
-            return Parser(self, source, name, filename).parse()
-        except TemplateSyntaxError, e:
-            e.source = source
-            raise e
+        return Parser(self, source, name, filename).parse()
 
     def lex(self, source, name=None, filename=None):
         """Lex the given sourcecode and return a generator that yields
@@ -369,9 +390,9 @@ class Environment(object):
         source = unicode(source)
         try:
             return self.lexer.tokeniter(source, name, filename)
-        except TemplateSyntaxError, e:
-            e.source = source
-            raise e
+        except TemplateSyntaxError:
+            exc_info = sys.exc_info()
+        self.handle_exception(exc_info, source_hint=source)
 
     def preprocess(self, source, name=None, filename=None):
         """Preprocesses the source with all extensions.  This is automatically
@@ -393,6 +414,7 @@ class Environment(object):
                 stream = TokenStream(stream, name, filename)
         return stream
 
+    @internalcode
     def compile(self, source, name=None, filename=None, raw=False):
         """Compile a node or template source code.  The `name` parameter is
         the load name of the template after it was joined using
@@ -406,18 +428,24 @@ class Environment(object):
         code equivalent to the bytecode returned otherwise.  This method is
         mainly used internally.
         """
-        if isinstance(source, basestring):
-            source = self.parse(source, name, filename)
-        if self.optimized:
-            source = optimize(source, self)
-        source = generate(source, self, name, filename)
-        if raw:
-            return source
-        if filename is None:
-            filename = '<template>'
-        elif isinstance(filename, unicode):
-            filename = filename.encode('utf-8')
-        return compile(source, filename, 'exec')
+        source_hint = None
+        try:
+            if isinstance(source, basestring):
+                source_hint = source
+                source = self._parse(source, name, filename)
+            if self.optimized:
+                source = optimize(source, self)
+            source = generate(source, self, name, filename)
+            if raw:
+                return source
+            if filename is None:
+                filename = '<template>'
+            elif isinstance(filename, unicode):
+                filename = filename.encode('utf-8')
+            return compile(source, filename, 'exec')
+        except TemplateSyntaxError:
+            exc_info = sys.exc_info()
+        self.handle_exception(exc_info, source_hint=source)
 
     def compile_expression(self, source, undefined_to_none=True):
         """A handy helper method that returns a callable that accepts keyword
@@ -448,18 +476,42 @@ class Environment(object):
         **new in Jinja 2.1**
         """
         parser = Parser(self, source, state='variable')
+        exc_info = None
         try:
             expr = parser.parse_expression()
             if not parser.stream.eos:
                 raise TemplateSyntaxError('chunk after expression',
                                           parser.stream.current.lineno,
                                           None, None)
-        except TemplateSyntaxError, e:
-            e.source = source
-            raise e
+        except TemplateSyntaxError:
+            exc_info = sys.exc_info()
+        if exc_info is not None:
+            self.handle_exception(exc_info, source_hint=source)
         body = [nodes.Assign(nodes.Name('result', 'store'), expr, lineno=1)]
         template = self.from_string(nodes.Template(body, lineno=1))
         return TemplateExpression(template, undefined_to_none)
+
+    def handle_exception(self, exc_info=None, rendered=False, source_hint=None):
+        """Exception handling helper.  This is used internally to either raise
+        rewritten exceptions or return a rendered traceback for the template.
+        """
+        global _make_traceback
+        if exc_info is None:
+            exc_info = sys.exc_info()
+
+        # the debugging module is imported when it's used for the first time.
+        # we're doing a lot of stuff there and for applications that do not
+        # get any exceptions in template rendering there is no need to load
+        # all of that.
+        if _make_traceback is None:
+            from jinja2.debug import make_traceback as _make_traceback
+        traceback = _make_traceback(exc_info, source_hint)
+        if rendered and self.exception_formatter is not None:
+            return self.exception_formatter(traceback)
+        if self.exception_handler is not None:
+            self.exception_handler(traceback)
+        exc_type, exc_value, tb = traceback.standard_exc_info
+        raise exc_type, exc_value, tb
 
     def join_path(self, template, parent):
         """Join a template with the parent.  By default all the lookups are
@@ -473,6 +525,7 @@ class Environment(object):
         """
         return template
 
+    @internalcode
     def get_template(self, name, parent=None, globals=None):
         """Load a template from the loader.  If a loader is configured this
         method ask the loader for the template and returns a :class:`Template`.
@@ -555,6 +608,7 @@ class Template(object):
                 comment_start_string=COMMENT_START_STRING,
                 comment_end_string=COMMENT_END_STRING,
                 line_statement_prefix=LINE_STATEMENT_PREFIX,
+                line_comment_prefix=LINE_COMMENT_PREFIX,
                 trim_blocks=TRIM_BLOCKS,
                 newline_sequence=NEWLINE_SEQUENCE,
                 extensions=(),
@@ -565,9 +619,9 @@ class Template(object):
         env = get_spontaneous_environment(
             block_start_string, block_end_string, variable_start_string,
             variable_end_string, comment_start_string, comment_end_string,
-            line_statement_prefix, trim_blocks, newline_sequence,
-            frozenset(extensions), optimized, undefined, finalize,
-            autoescape, None, 0, False, None)
+            line_statement_prefix, line_comment_prefix, trim_blocks,
+            newline_sequence, frozenset(extensions), optimized, undefined,
+            finalize, autoescape, None, 0, False, None)
         return env.from_string(source, template_class=cls)
 
     @classmethod
@@ -611,9 +665,8 @@ class Template(object):
         try:
             return concat(self.root_render_func(self.new_context(vars)))
         except:
-            from jinja2.debug import translate_exception
-            exc_type, exc_value, tb = translate_exception(sys.exc_info())
-            raise exc_type, exc_value, tb
+            exc_info = sys.exc_info()
+        return self.environment.handle_exception(exc_info, True)
 
     def stream(self, *args, **kwargs):
         """Works exactly like :meth:`generate` but returns a
@@ -634,9 +687,10 @@ class Template(object):
             for event in self.root_render_func(self.new_context(vars)):
                 yield event
         except:
-            from jinja2.debug import translate_exception
-            exc_type, exc_value, tb = translate_exception(sys.exc_info())
-            raise exc_type, exc_value, tb
+            exc_info = sys.exc_info()
+        else:
+            return
+        yield self.environment.handle_exception(exc_info, True)
 
     def new_context(self, vars=None, shared=False, locals=None):
         """Create a new :class:`Context` for this template.  The vars
@@ -646,26 +700,13 @@ class Template(object):
 
         `locals` can be a dict of local variables for internal usage.
         """
-        if vars is None:
-            vars = {}
-        if shared:
-            parent = vars
-        else:
-            parent = dict(self.globals, **vars)
-        if locals:
-            # if the parent is shared a copy should be created because
-            # we don't want to modify the dict passed
-            if shared:
-                parent = dict(parent)
-            for key, value in locals.iteritems():
-                if key[:2] == 'l_' and value is not missing:
-                    parent[key[2:]] = value
-        return Context(self.environment, parent, self.name, self.blocks)
+        return new_context(self.environment, self.name, self.blocks,
+                           vars, shared, self.globals, locals)
 
     def make_module(self, vars=None, shared=False, locals=None):
         """This method works like the :attr:`module` attribute when called
-        without arguments but it will evaluate the template every call
-        rather then caching the template.  It's also possible to provide
+        without arguments but it will evaluate the template on every call
+        rather than caching it.  It's also possible to provide
         a dict which is then used as context.  The arguments are the same
         as for the :meth:`new_context` method.
         """

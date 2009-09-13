@@ -5,7 +5,7 @@
 
     Jinja loader classes.
 
-    :copyright: 2008 by Armin Ronacher.
+    :copyright: (c) 2009 by the Jinja Team.
     :license: BSD, see LICENSE for more details.
 """
 from os import path
@@ -14,7 +14,7 @@ try:
 except ImportError:
     from sha import new as sha1
 from jinja2.exceptions import TemplateNotFound
-from jinja2.utils import LRUCache, open_if_exists
+from jinja2.utils import LRUCache, open_if_exists, internalcode
 
 
 def split_template_path(template):
@@ -79,6 +79,7 @@ class BaseLoader(object):
         """
         raise TemplateNotFound(template)
 
+    @internalcode
     def load(self, environment, name, globals=None):
         """Loads a template.  This method looks up the template in the cache
         or loads one by calling :meth:`get_source`.  Subclasses should not

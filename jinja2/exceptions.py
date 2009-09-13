@@ -5,13 +5,25 @@
 
     Jinja exceptions.
 
-    :copyright: 2008 by Armin Ronacher.
+    :copyright: (c) 2009 by the Jinja Team.
     :license: BSD, see LICENSE for more details.
 """
 
 
 class TemplateError(Exception):
     """Baseclass for all template errors."""
+
+    def __init__(self, message=None):
+        if message is not None:
+            message = unicode(message).encode('utf-8')
+        Exception.__init__(self, message)
+
+    @property
+    def message(self):
+        if self.args:
+            message = self.args[0]
+            if message is not None:
+                return message.decode('utf-8', 'replace')
 
 
 class TemplateNotFound(IOError, LookupError, TemplateError):
@@ -26,16 +38,22 @@ class TemplateSyntaxError(TemplateError):
     """Raised to tell the user that there is a problem with the template."""
 
     def __init__(self, message, lineno, name=None, filename=None):
-        if not isinstance(message, unicode):
-            message = message.decode('utf-8', 'replace')
-        TemplateError.__init__(self, message.encode('utf-8'))
+        TemplateError.__init__(self, message)
         self.lineno = lineno
         self.name = name
         self.filename = filename
         self.source = None
-        self.message = message
+
+        # this is set to True if the debug.translate_syntax_error
+        # function translated the syntax error into a new traceback
+        self.translated = False
 
     def __unicode__(self):
+        # for translated errors we only return the message
+        if self.translated:
+            return self.message.encode('utf-8')
+
+        # otherwise attach some stuff
         location = 'line %d' % self.lineno
         name = self.filename or self.name
         if name:
