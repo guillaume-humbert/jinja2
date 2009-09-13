@@ -2,12 +2,10 @@
 
 #export DH_VERBOSE=1
 
-include /usr/share/quilt/quilt.make
-
 PYVERS=$(shell pyversions -vr)
 PKGDIR=$(CURDIR)/debian/python-jinja2
 
-clean: unpatch
+clean:
 	dh_testdir
 	dh_testroot
 	rm -rf dist build Jinja2.egg-info
@@ -19,17 +17,17 @@ clean: unpatch
 		$(PYVERS:%=install-python%) $(PYVERS:%=build-python%) \
 		$(PYVERS:%=install-debug-python%) $(PYVERS:%=build-debug-python%)
 
-build: patch build-stamp
+build: build-stamp
 
 build-stamp: $(PYVERS:%=build-python%) $(PYVERS:%=build-debug-python%)
 	touch $@
 
-build-python%: patch
-	python$* setup.py build
+build-python%:
+	python$* setup.py --with-speedups build
 	touch $@
 
-build-debug-python%: patch
-	python$*-dbg setup.py build
+build-debug-python%:
+	python$*-dbg setup.py --with-speedups build
 	touch $@
 
 build-docs:
@@ -41,12 +39,12 @@ install-stamp: $(PYVERS:%=install-python%) $(PYVERS:%=install-debug-python%)
 	touch $@
 
 install-python%: build
-	python$* setup.py install \
+	python$* setup.py --with-speedups install \
 		--skip-build --single-version-externally-managed --root $(PKGDIR)
 	touch $@
 
 install-debug-python%: build
-	python$*-dbg setup.py install \
+	python$*-dbg setup.py --with-speedups install \
 		--skip-build --single-version-externally-managed --root $(PKGDIR)-dbg/
 	find $(PKGDIR)-dbg/usr/ ! -type d ! -name '*_d\.so' -delete
 	find $(PKGDIR)-dbg/usr/ -depth -empty -delete
