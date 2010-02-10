@@ -1,3 +1,12 @@
+jinja2 (2.3-1) unstable; urgency=low
+
+  * New upstream release
+  * Hardcode __version__ at build time, no need to use pkg_resources
+    (Closes: #548062)
+  * Standards-version bumped to 3.8.4 (no other changes needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Wed, 10 Feb 2010 22:06:28 +0100
+
 jinja2 (2.2.1-1) unstable; urgency=low
 
   * New upstream release
