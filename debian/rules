@@ -2,10 +2,12 @@
 
 #export DH_VERBOSE=1
 
+include /usr/share/quilt/quilt.make
+
 PYVERS=$(shell pyversions -vr)
 PKGDIR=$(CURDIR)/debian/python-jinja2
 
-clean:
+clean: unpatch
 	dh_testdir
 	dh_testroot
 	rm -rf dist build Jinja2.egg-info
@@ -17,7 +19,7 @@ clean:
 		$(PYVERS:%=install-python%) $(PYVERS:%=build-python%) \
 		$(PYVERS:%=install-debug-python%) $(PYVERS:%=build-debug-python%)
 
-build: build-stamp
+build: patch build-stamp
 
 build-stamp: $(PYVERS:%=build-python%) $(PYVERS:%=build-debug-python%)
 	touch $@
@@ -33,7 +35,7 @@ build-debug-python%:
 build-docs:
 	PYTHONPATH=$(CURDIR) make -C docs html
 
-install: install-stamp
+install: patch install-stamp
 install-stamp: $(PYVERS:%=install-python%) $(PYVERS:%=install-debug-python%)
 	dh_install
 	touch $@
@@ -50,12 +52,14 @@ install-debug-python%: build
 	find $(PKGDIR)-dbg/usr/ -depth -empty -delete
 	touch $@
 
+VERSION=$(shell sed -rn 's,^Version: (.*),\1,p' $(CURDIR)/PKG-INFO)
 binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs -a CHANGES
 	dh_installdocs -a
 	dh_pysupport -a
+	sed -i -e 's,REPLACE_ME_WITH_PROPER_VERSION,$(VERSION),' $(PKGDIR)/usr/share/pyshared/jinja2/__init__.py
 	dh_makeshlibs -a
 	dh_strip -ppython-jinja2 --dbg-package=python-jinja2-dbg
 	rm -rf $(PKGDIR)-dbg/usr/share/doc/python-jinja2-dbg

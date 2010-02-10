@@ -44,6 +44,7 @@
 <li><a class="reference external" href="#i18n-extension">i18n Extension</a></li>
 <li><a class="reference external" href="#expression-statement">Expression Statement</a></li>
 <li><a class="reference external" href="#loop-controls">Loop Controls</a></li>
+<li><a class="reference external" href="#with-statement">With Statement</a></li>
 <li><a class="reference external" href="#module-jinja2.ext">Writing Extensions</a><ul>
 <li><a class="reference external" href="#example-extension">Example Extension</a></li>
 <li><a class="reference external" href="#extension-api">Extension API</a></li>
@@ -150,6 +151,16 @@ return value.</p>
 <p>This extension adds support for <cite>break</cite> and <cite>continue</cite> in loops.  After
 enabling Jinja2 provides those two keywords which work exactly like in
 Python.</p>
+</div>
+<div class="section" id="with-statement">
+<span id="with-extension"></span><h2>With Statement<a class="headerlink" href="#with-statement" title="Permalink to this headline">¶</a></h2>
+<p><strong>Import name:</strong> <cite>jinja2.ext.with_</cite></p>
+<p>
+<span class="versionmodified">New in version 2.3.</span></p>
+<p>This extension adds support for the with keyword.  Using this keyword it
+is possible to enforce a nested scope in a template.  Variables can be
+declared directly in the opening block of the with statement or using a
+standard <cite>set</cite> statement directly within.</p>
 </div>
 <div class="section" id="module-jinja2.ext">
 <span id="writing-extensions"></span><h2>Writing Extensions<a class="headerlink" href="#module-jinja2.ext" title="Permalink to this headline">¶</a></h2>
@@ -371,6 +382,9 @@ forwarded to <tt class="xref docutils literal"><span class="pre">parse_expressio
 an extra hint is needed that marks the end of a tuple.  For example
 for loops support tuples between <cite>for</cite> and <cite>in</cite>.  In that case the
 <cite>extra_end_rules</cite> is set to <tt class="docutils literal"><span class="pre">['name:in']</span></tt>.</p>
+<p><cite>explicit_parentheses</cite> is true if the parsing was triggered by an
+expression in parentheses.  This is used to figure out if an empty
+tuple is a valid expression or not.</p>
 </dd></dl>
 
 <dl class="attribute">

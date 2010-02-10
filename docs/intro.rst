@@ -37,7 +37,7 @@ that can create python extensions should be installed for the debugger.  If no
 C-compiler is available and you are using Python 2.4 the `ctypes`_ module
 should be installed.
 
-If you don't have a working C compiler and you are trying to install the source
+If you don't have a working C-compiler and you are trying to install the source
 release with the speedups you will get a compiler error.  This however can be
 circumvented by passing the ``--without-speedups`` command line argument to the
 setup script::
@@ -77,11 +77,12 @@ From the tarball release
 2.  Unpack the tarball
 3.  ``sudo python setup.py install``
 
-Note that the last command will automatically download and install
-`setuptools`_ if you don't already have it installed. This requires a working
-internet connection.
+Note that you either have to have setuptools or `distribute`_ installed,
+the latter is preferred.
 
 This will install Jinja2 into your Python installation's site-packages directory.
+
+.. _distribute: http://pypi.python.org/pypi/distribute
 
 Installing the development version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,17 +93,17 @@ Installing the development version
 4.  ``ln -s jinja2 /usr/lib/python2.X/site-packages``
 
 As an alternative to steps 4 you can also do ``python setup.py develop``
-which will install the package via setuptools in development mode.  This also
+which will install the package via distribute in development mode.  This also
 has the advantage that the C extensions are compiled.
 
-Alternative you can use `easy_install`_ to install the current development
+Alternative you can use `pip`_ to install the current development
 snapshot::
 
-    sudo easy_install Jinja2==dev
-
-Or the new `pip`_ command::
-
     sudo pip install Jinja2==dev
+
+Or the `easy_install`_ command::
+
+    sudo easy_install Jinja2==dev
 
 .. _download page: http://pypi.python.org/pypi/Jinja2
 .. _setuptools: http://peak.telecommunity.com/DevCenter/setuptools
@@ -112,8 +113,8 @@ Or the new `pip`_ command::
 
 .. _enable-speedups:
 
-Enaable the speedups Module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Enable the speedups Module
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default Jinja2 will not compile the speedups module.  Enabling this
 will fail if you don't have the Python headers or a working compiler.  This
@@ -151,3 +152,19 @@ of the template.
 What you can see here is that Jinja2 is using unicode internally and the
 return value is an unicode string.  So make sure that your application is
 indeed using unicode internally.
+
+
+Experimental Python 3 Support
+-----------------------------
+
+Jinja 2.3 brings experimental support for Python 3.  It means that all
+unittests pass on the new version, but there might still be small bugs in
+there and behavior might be inconsistent.  If you notice any bugs, please
+provide feedback in the `Jinja bug tracker`_.
+
+Also please keep in mind that the documentation is written with Python 2
+in mind, you will have to adapt the shown code examples to Python 3 syntax
+for yourself.
+
+
+.. _Jinja bug tracker: http://dev.pocoo.org/projects/jinja/

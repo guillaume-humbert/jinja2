@@ -1,6 +1,27 @@
 Jinja2 Changelog
 ================
 
+Version 2.3
+-----------
+(codename to be selected, release date will be February 9th 2010)
+
+- fixes issue with code generator that causes unbound variables
+  to be generated if set was used in if-blocks and other small
+  identifier problems.
+- include tags are now able to select between multiple templates
+  and take the first that exists, if a list of templates is
+  given.
+- fixed a problem with having call blocks in outer scopes that
+  have an argument that is also used as local variable in an
+  inner frame (#360).
+- greatly improved error message reporting (#339)
+- implicit tuple expressions can no longer be totally empty.
+  This change makes ``{% if %}...{% endif %}`` a syntax error
+  now. (#364)
+- added support for translator comments if extracted via babel.
+- added with-statement extension.
+- experimental Python 3 support.
+
 Version 2.2.1
 -------------
 (bugfix release, released on September 14th 2009)

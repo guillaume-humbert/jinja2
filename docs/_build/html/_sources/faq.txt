@@ -152,4 +152,30 @@ harder to maintain the code for older Python versions.  If you really need
 Python 2.3 support you either have to use `Jinja 1`_ or other templating
 engines that still support 2.3.
 
+My Macros are overriden by something
+------------------------------------
+
+In some situations the Jinja scoping appears arbitrary:
+
+layout.tmpl:
+
+.. sourcecode:: jinja
+
+    {% macro foo() %}LAYOUT{% endmacro %}
+    {% block body %}{% endblock %}
+
+child.tmpl:
+
+.. sourcecode:: jinja
+
+    {% extends 'layout.tmpl' %}
+    {% macro foo() %}CHILD{% endmacro %}
+    {% block body %}{{ foo() }}{% endblock %}
+
+This will print ``LAYOUT`` in Jinja2.  This is a side effect of having
+the parent template evaluated after the child one.  This allows child
+templates passing information to the parent template.  To avoid this
+issue rename the macro or variable in the parent template to have an
+uncommon prefix.
+
 .. _Jinja 1: http://jinja.pocoo.org/1/

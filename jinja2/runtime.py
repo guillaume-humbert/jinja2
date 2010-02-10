@@ -5,7 +5,7 @@
 
     Runtime helpers.
 
-    :copyright: (c) 2009 by the Jinja Team.
+    :copyright: (c) 2010 by the Jinja Team.
     :license: BSD.
 """
 import sys
@@ -111,7 +111,7 @@ class Context(object):
 
     def __init__(self, environment, parent, name, blocks):
         self.parent = parent
-        self.vars = vars = {}
+        self.vars = {}
         self.environment = environment
         self.exported_vars = set()
         self.name = name
@@ -454,6 +454,10 @@ class Undefined(object):
     def __str__(self):
         return unicode(self).encode('utf-8')
 
+    # unicode goes after __str__ because we configured 2to3 to rename
+    # __unicode__ to __str__.  because the 2to3 tree is not designed to
+    # remove nodes from it, we leave the above __str__ around and let
+    # it override at runtime.
     def __unicode__(self):
         return u''
 
@@ -517,8 +521,8 @@ class StrictUndefined(Undefined):
     UndefinedError: 'foo' is undefined
     """
     __slots__ = ()
-    __iter__ = __unicode__ = __len__ = __nonzero__ = __eq__ = __ne__ = \
-        Undefined._fail_with_undefined_error
+    __iter__ = __unicode__ = __str__ = __len__ = __nonzero__ = __eq__ = \
+        __ne__ = Undefined._fail_with_undefined_error
 
 
 # remove remaining slots attributes, after the metaclass did the magic they

@@ -4,9 +4,9 @@ Priority: optional
 Maintainer: Piotr Ożarowski <piotr@debian.org>
 Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
 Build-Depends: debhelper (>= 5), python-support (>= 0.6.4),
- python-setuptools (>= 0.6b3-1~), python-all-dev (>= 2.3.5-11), python-all-dbg
+ python-setuptools (>= 0.6b3-1~), python-all-dev (>= 2.3.5-11), python-all-dbg, quilt
 Build-Depends-Indep: python-sphinx (>= 0.6), python-pygments
-Standards-Version: 3.8.3
+Standards-Version: 3.8.4
 Homepage: http://jinja.pocoo.org/2/
 XS-Python-Version: >= 2.4
 Vcs-Svn: svn://svn.debian.org/python-modules/packages/jinja2/trunk
@@ -42,7 +42,7 @@ Package: python-jinja2-doc
 Section: doc
 Architecture: all
 Priority: extra
-Depends: libjs-jquery
+Depends: libjs-jquery, ${misc:Depends}
 Recommends: python-jinja2
 Description: documentation for the Jinja2 Python library
  Jinja2 is a small but fast and easy to use stand-alone template engine
@@ -54,7 +54,7 @@ Package: python-jinja2-dbg
 Architecture: any
 Section: debug
 Priority: extra
-Depends: python-jinja2 (= ${binary:Version}), python-dbg, ${shlibs:Depends}
+Depends: python-jinja2 (= ${binary:Version}), python-dbg, ${shlibs:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: small but fast and easy to use stand-alone template engine

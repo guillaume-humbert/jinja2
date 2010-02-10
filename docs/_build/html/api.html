@@ -104,7 +104,7 @@ a lot easier to use it also enables template inheritance.</p>
 </div>
 <div class="section" id="unicode">
 <h2>Unicode<a class="headerlink" href="#unicode" title="Permalink to this headline">¶</a></h2>
-<p>Jinja2 is using unicode internally which means that you have to pass unicode
+<p>Jinja2 is using Unicode internally which means that you have to pass Unicode
 objects to the render function or bytestrings that only consist of ASCII
 characters.  Additionally newlines are normalized to one end of line
 sequence which is per default UNIX style (<tt class="docutils literal"><span class="pre">\n</span></tt>).</p>
@@ -114,13 +114,13 @@ called <cite>basestring</cite>.  Unfortunately the default is <cite>str</cite> w
 be used to store text based information unless only ASCII characters are
 used.  With Python 2.6 it is possible to make <cite>unicode</cite> the default on a per
 module level and with Python 3 it will be the default.</p>
-<p>To explicitly use a unicode string you have to prefix the string literal
+<p>To explicitly use a Unicode string you have to prefix the string literal
 with a <cite>u</cite>: <tt class="docutils literal"><span class="pre">u'Hänsel</span> <span class="pre">und</span> <span class="pre">Gretel</span> <span class="pre">sagen</span> <span class="pre">Hallo'</span></tt>.  That way Python will
-store the string as unicode by decoding the string with the character
+store the string as Unicode by decoding the string with the character
 encoding from the current Python module.  If no encoding is specified this
 defaults to &#8216;ASCII&#8217; which means that you can&#8217;t use any non ASCII identifier.</p>
 <p>To set a better module encoding add the following comment to the first or
-second line of the Python module using the unicode literal:</p>
+second line of the Python module using the Unicode literal:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># -*- coding: utf-8 -*-</span>
 </pre></div>
 </div>
@@ -128,18 +128,18 @@ second line of the Python module using the unicode literal:</p>
 possible to represent every Unicode character in utf-8 and because it&#8217;s
 backwards compatible to ASCII.  For Jinja2 the default encoding of templates
 is assumed to be utf-8.</p>
-<p>It is not possible to use Jinja2 to process non unicode data.  The reason
+<p>It is not possible to use Jinja2 to process non-Unicode data.  The reason
 for this is that Jinja2 uses Unicode already on the language level.  For
 example Jinja2 treats the non-breaking space as valid whitespace inside
 expressions which requires knowledge of the encoding or operating on an
-unicode string.</p>
-<p>For more details about unicode in Python have a look at the excellent
+Unicode string.</p>
+<p>For more details about Unicode in Python have a look at the excellent
 <a class="reference external" href="http://docs.python.org/dev/howto/unicode.html">Unicode documentation</a>.</p>
 <p>Another important thing is how Jinja2 is handling string literals in
-templates.  A naive implementation would be using unicode strings for
+templates.  A naive implementation would be using Unicode strings for
 all string literals but it turned out in the past that this is problematic
 as some libraries are typechecking against <cite>str</cite> explicitly.  For example
-<cite>datetime.strftime</cite> does not accept unicode arguments.  To not break it
+<cite>datetime.strftime</cite> does not accept Unicode arguments.  To not break it
 completely Jinja2 is returning <cite>str</cite> for strings that fit into ASCII and
 for everything else <cite>unicode</cite>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">u&quot;{</span><span class="si">% s</span><span class="s">et a, b = &#39;foo&#39;, &#39;föö&#39; %}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">module</span>
@@ -208,8 +208,9 @@ look at <a class="reference external" href="extensions.html#jinja-extensions"><e
 <dd><a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a> or a subclass of it that is used to represent
 undefined values in the template.</dd>
 <dt><cite>finalize</cite></dt>
-<dd>A callable that finalizes the variable.  Per default no finalizing
-is applied.</dd>
+<dd>A callable that can be used to process the result of a variable
+expression before it is output.  For example one can convert
+<cite>None</cite> implicitly into an empty string here.</dd>
 <dt><cite>autoescape</cite></dt>
 <dd>If set to true the XML/HTML autoescaping feature is enabled.
 For more details about auto escaping see
@@ -281,8 +282,8 @@ For valid object names have a look at <a class="reference internal" href="#ident
 <dt id="jinja2.Environment.overlay">
 <tt class="descname">overlay</tt><big>(</big><span class="optional">[</span><em>options</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Environment.overlay" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new overlay environment that shares all the data with the
-current environment except of cache and the overriden attributes.
-Extensions cannot be removed for a overlayed environment.  A overlayed
+current environment except of cache and the overridden attributes.
+Extensions cannot be removed for an overlayed environment.  An overlayed
 environment automatically gets all the extensions of the environment it
 is linked to plus optional extra extensions.</p>
 <p>Creating overlays should happen after the initial environment was set
@@ -347,6 +348,25 @@ raised.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="jinja2.Environment.select_template">
+<tt class="descname">select_template</tt><a class="headerlink" href="#jinja2.Environment.select_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Works like <a title="jinja2.Environment.get_template" class="reference internal" href="#jinja2.Environment.get_template"><tt class="xref docutils literal"><span class="pre">get_template()</span></tt></a> but tries a number of templates
+before it fails.  If it cannot find any of the templates, it will
+raise a <a title="jinja2.TemplatesNotFound" class="reference internal" href="#jinja2.TemplatesNotFound"><tt class="xref docutils literal"><span class="pre">TemplatesNotFound</span></tt></a> exception.</p>
+<p>
+<span class="versionmodified">New in version 2.3.</span></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="jinja2.Environment.get_or_select_template">
+<tt class="descname">get_or_select_template</tt><a class="headerlink" href="#jinja2.Environment.get_or_select_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does a typecheck and dispatches to <a title="jinja2.Environment.select_template" class="reference internal" href="#jinja2.Environment.select_template"><tt class="xref docutils literal"><span class="pre">select_template()</span></tt></a> if an
+iterable of template names is given, otherwise to <a title="jinja2.Environment.get_template" class="reference internal" href="#jinja2.Environment.get_template"><tt class="xref docutils literal"><span class="pre">get_template()</span></tt></a>.</p>
+<p>
+<span class="versionmodified">New in version 2.3.</span></p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="jinja2.Environment.join_path">
 <tt class="descname">join_path</tt><a class="headerlink" href="#jinja2.Environment.join_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Join a template with the parent.  By default all the lookups are
@@ -391,7 +411,8 @@ by setting <cite>undefined_to_none</cite> to <cite>False</cite>.</p>
 <span class="go">Undefined</span>
 </pre></div>
 </div>
-<p><strong>new in Jinja 2.1</strong></p>
+<p>
+<span class="versionmodified">New in version 2.1.</span></p>
 </dd></dl>
 
 </dd></dl>
@@ -863,7 +884,7 @@ by setting the <cite>encoding</cite> parameter to something else.</p>
 <dd><p>Load templates from python eggs or packages.  It is constructed with
 the name of the python package and the path to the templates in that
 package:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">PackageLoader</span><span class="p">(</span><span class="s">&#39;mypackage&#39;</span><span class="p">,</span> <span class="s">&#39;views&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">loader</span> <span class="o">=</span> <span class="n">PackageLoader</span><span class="p">(</span><span class="s">&#39;mypackage&#39;</span><span class="p">,</span> <span class="s">&#39;views&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>If the package path is not given, <tt class="docutils literal"><span class="pre">'templates'</span></tt> is assumed.</p>
@@ -892,7 +913,7 @@ function becomes the name of the template passed and has to return either
 an unicode string with the template source, a tuple in the form <tt class="docutils literal"><span class="pre">(source,</span>
 <span class="pre">filename,</span> <span class="pre">uptodatefunc)</span></tt> or <cite>None</cite> if the template does not exist.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">load_template</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&#39;index.html&#39;</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&#39;index.html&#39;</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">return</span> <span class="s">&#39;...&#39;</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">FunctionLoader</span><span class="p">(</span><span class="n">load_template</span><span class="p">)</span>
@@ -910,11 +931,11 @@ return value.</p>
 <dd><p>A loader that is passed a dict of loaders where each loader is bound
 to a prefix.  The prefix is delimited from the template by a slash per
 default, which can be changed by setting the <cite>delimiter</cite> argument to
-something else.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">PrefixLoader</span><span class="p">({</span>
-<span class="gp">... </span>    <span class="s">&#39;app1&#39;</span><span class="p">:</span>     <span class="n">PackageLoader</span><span class="p">(</span><span class="s">&#39;mypackage.app1&#39;</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="s">&#39;app2&#39;</span><span class="p">:</span>     <span class="n">PackageLoader</span><span class="p">(</span><span class="s">&#39;mypackage.app2&#39;</span><span class="p">)</span>
-<span class="gp">... </span><span class="p">})</span>
+something else:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">loader</span> <span class="o">=</span> <span class="n">PrefixLoader</span><span class="p">({</span>
+    <span class="s">&#39;app1&#39;</span><span class="p">:</span>     <span class="n">PackageLoader</span><span class="p">(</span><span class="s">&#39;mypackage.app1&#39;</span><span class="p">),</span>
+    <span class="s">&#39;app2&#39;</span><span class="p">:</span>     <span class="n">PackageLoader</span><span class="p">(</span><span class="s">&#39;mypackage.app2&#39;</span><span class="p">)</span>
+<span class="p">})</span>
 </pre></div>
 </div>
 <p>By loading <tt class="docutils literal"><span class="pre">'app1/index.html'</span></tt> the file from the app1 package is loaded,
@@ -929,7 +950,7 @@ specified.  If a template could not be found by one loader the next one
 is tried.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">ChoiceLoader</span><span class="p">([</span>
 <span class="gp">... </span>    <span class="n">FileSystemLoader</span><span class="p">(</span><span class="s">&#39;/path/to/user/templates&#39;</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">PackageLoader</span><span class="p">(</span><span class="s">&#39;mypackage&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">FileSystemLoader</span><span class="p">(</span><span class="s">&#39;/path/to/system/templates&#39;</span><span class="p">)</span>
 <span class="gp">... </span><span class="p">])</span>
 </pre></div>
 </div>
@@ -964,12 +985,12 @@ these methods are passed a <a title="jinja2.bccache.Bucket" class="reference int
     <span class="k">def</span> <span class="nf">load_bytecode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">bucket</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-            <span class="k">with</span> <span class="nb">file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">bucket</span><span class="o">.</span><span class="n">load_bytecode</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">dump_bytecode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">bucket</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">bucket</span><span class="o">.</span><span class="n">write_bytecode</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1282,8 +1303,18 @@ up the <cite>__html__</cite> concept soon.</p>
 
 <dl class="exception">
 <dt id="jinja2.TemplateNotFound">
-<em class="property">exception </em><tt class="descclassname">jinja2.</tt><tt class="descname">TemplateNotFound</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#jinja2.TemplateNotFound" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><tt class="descclassname">jinja2.</tt><tt class="descname">TemplateNotFound</tt><big>(</big><em>name</em>, <em>message=None</em><big>)</big><a class="headerlink" href="#jinja2.TemplateNotFound" title="Permalink to this definition">¶</a></dt>
 <dd>Raised if a template does not exist.</dd></dl>
+
+<dl class="exception">
+<dt id="jinja2.TemplatesNotFound">
+<em class="property">exception </em><tt class="descclassname">jinja2.</tt><tt class="descname">TemplatesNotFound</tt><big>(</big><em>names=()</em>, <em>message=None</em><big>)</big><a class="headerlink" href="#jinja2.TemplatesNotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like <a title="jinja2.TemplateNotFound" class="reference internal" href="#jinja2.TemplateNotFound"><tt class="xref docutils literal"><span class="pre">TemplateNotFound</span></tt></a> but raised if multiple templates
+are selected.  This is a subclass of <a title="jinja2.TemplateNotFound" class="reference internal" href="#jinja2.TemplateNotFound"><tt class="xref docutils literal"><span class="pre">TemplateNotFound</span></tt></a>
+exception, so just catching the base exception will catch both.</p>
+<p>
+<span class="versionmodified">New in version 2.2.</span></p>
+</dd></dl>
 
 <dl class="exception">
 <dt id="jinja2.TemplateSyntaxError">

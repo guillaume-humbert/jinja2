@@ -5,11 +5,12 @@
 
     Compiles nodes into python code.
 
-    :copyright: (c) 2009 by the Jinja Team.
-    :license: BSD.
+    :copyright: (c) 2010 by the Jinja Team.
+    :license: BSD, see LICENSE for more details.
 """
 from cStringIO import StringIO
 from itertools import chain
+from copy import deepcopy
 from jinja2 import nodes
 from jinja2.visitor import NodeVisitor, NodeTransformer
 from jinja2.exceptions import TemplateAssertionError
@@ -33,6 +34,14 @@ except SyntaxError:
     have_condexpr = False
 else:
     have_condexpr = True
+
+
+# what method to iterate over items do we want to use for dict iteration
+# in generated code?  on 2.x let's go with iteritems, on 3.x with items
+if hasattr(dict, 'iteritems'):
+    dict_item_iter = 'iteritems'
+else:
+    dict_item_iter = 'items'
 
 
 def generate(node, environment, name, filename, stream=None):
@@ -114,6 +123,9 @@ class Identifiers(object):
         if local_only:
             return False
         return name in self.declared
+
+    def copy(self):
+        return deepcopy(self)
 
 
 class Frame(object):
@@ -265,6 +277,37 @@ class FrameIdentifierVisitor(NodeVisitor):
              self.identifiers.is_declared(node.name, self.hard_scope):
             self.identifiers.undeclared.add(node.name)
 
+    def visit_If(self, node):
+        self.visit(node.test)
+        real_identifiers = self.identifiers
+
+        old_names = real_identifiers.declared | \
+                    real_identifiers.declared_locally | \
+                    real_identifiers.declared_parameter
+
+        def inner_visit(nodes):
+            if not nodes:
+                return set()
+            self.identifiers = real_identifiers.copy()
+            for subnode in nodes:
+                self.visit(subnode)
+            rv = self.identifiers.declared_locally - old_names
+            # we have to remember the undeclared variables of this branch
+            # because we will have to pull them.
+            real_identifiers.undeclared.update(self.identifiers.undeclared)
+            self.identifiers = real_identifiers
+            return rv
+
+        body = inner_visit(node.body)
+        else_ = inner_visit(node.else_ or ())
+
+        # the differences between the two branches are also pulled as
+        # undeclared variables
+        real_identifiers.undeclared.update(body.symmetric_difference(else_))
+
+        # remember those that are declared.
+        real_identifiers.declared_locally.update(body | else_)
+
     def visit_Macro(self, node):
         self.identifiers.declared_locally.add(node.name)
 
@@ -292,8 +335,7 @@ class FrameIdentifierVisitor(NodeVisitor):
         self.visit(node.iter)
 
     def visit_CallBlock(self, node):
-        for child in node.iter_child_nodes(exclude=('body',)):
-            self.visit(child)
+        self.visit(node.call)
 
     def visit_FilterBlock(self, node):
         self.visit(node.filter)
@@ -321,6 +363,7 @@ class CodeGenerator(NodeVisitor):
         self.name = name
         self.filename = filename
         self.stream = stream
+        self.created_block_context = False
 
         # aliases for imports
         self.import_aliases = {}
@@ -794,10 +837,7 @@ class CodeGenerator(NodeVisitor):
                 self.writeline('if parent_template is None:')
                 self.indent()
                 level += 1
-        if node.scoped:
-            context = 'context.derived(locals())'
-        else:
-            context = 'context'
+        context = node.scoped and 'context.derived(locals())' or 'context'
         self.writeline('for event in context.blocks[%r][0](%s):' % (
                        node.name, context), node)
         self.indent()
@@ -835,7 +875,7 @@ class CodeGenerator(NodeVisitor):
         self.visit(node.template, frame)
         self.write(', %r)' % self.name)
         self.writeline('for name, parent_block in parent_template.'
-                       'blocks.iteritems():')
+                       'blocks.%s():' % dict_item_iter)
         self.indent()
         self.writeline('context.blocks.setdefault(name, []).'
                        'append(parent_block)')
@@ -857,7 +897,17 @@ class CodeGenerator(NodeVisitor):
         if node.ignore_missing:
             self.writeline('try:')
             self.indent()
-        self.writeline('template = environment.get_template(', node)
+
+        func_name = 'get_or_select_template'
+        if isinstance(node.template, nodes.Const):
+            if isinstance(node.template.value, basestring):
+                func_name = 'get_template'
+            elif isinstance(node.template.value, (tuple, list)):
+                func_name = 'select_template'
+        elif isinstance(node.template, (nodes.Tuple, nodes.List)):
+            func_name = 'select_template'
+
+        self.writeline('template = environment.%s(' % func_name, node)
         self.visit(node.template, frame)
         self.write(', %r)' % self.name)
         if node.ignore_missing:
