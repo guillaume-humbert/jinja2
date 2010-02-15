@@ -17,7 +17,8 @@ Architecture: any
 Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
 Recommends: python-pkg-resources
 Provides: ${python:Provides}
-Suggests: python-pybabel, python-jinja2-doc
+Suggests: python-jinja2-doc
+Enhances: python-pybabel
 XB-Python-Version: ${python:Versions}
 Description: small but fast and easy to use stand-alone template engine
  Jinja2 is a template engine written in pure Python. It provides a Django

@@ -1,6 +1,6 @@
 jinja2 (2.3-2) UNRELEASED; urgency=low
 
-  * Move python-pybabel from Recommends to Suggests
+  * Move python-pybabel from Recommends to Enhances
 
  -- Piotr Ożarowski <piotr@debian.org>  Thu, 11 Feb 2010 19:39:47 +0100
 
