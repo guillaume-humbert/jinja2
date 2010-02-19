@@ -1,3 +1,10 @@
+jinja2 (2.3.1-1) unstable; urgency=low
+
+  * New upstream release
+  * Move python-pybabel from Recommends to Enhances
+
+ -- Piotr Ożarowski <piotr@debian.org>  Fri, 19 Feb 2010 18:31:52 +0100
+
 jinja2 (2.3-1) unstable; urgency=low
 
   * New upstream release
