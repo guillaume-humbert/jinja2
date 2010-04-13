@@ -204,6 +204,16 @@ class ExtensionsTestCase(JinjaTestCase):
         out = tmpl.render()
         assert out == 'Foo BAR Baz'
 
+    def test_extension_ordering(self):
+        class T1(Extension):
+            priority = 1
+        class T2(Extension):
+            priority = 2
+        env = Environment(extensions=[T1, T2])
+        ext = list(env.iter_extensions())
+        assert ext[0].__class__ is T1
+        assert ext[1].__class__ is T2
+
 
 class InternationalizationTestCase(JinjaTestCase):
 
@@ -256,8 +266,86 @@ class InternationalizationTestCase(JinjaTestCase):
         ]
 
 
+class AutoEscapeTestCase(JinjaTestCase):
+
+    def test_scoped_setting(self):
+        env = Environment(extensions=['jinja2.ext.autoescape'],
+                          autoescape=True)
+        tmpl = env.from_string('''
+            {{ "<HelloWorld>" }}
+            {% autoescape false %}
+                {{ "<HelloWorld>" }}
+            {% endautoescape %}
+            {{ "<HelloWorld>" }}
+        ''')
+        assert tmpl.render().split() == \
+            [u'&lt;HelloWorld&gt;', u'<HelloWorld>', u'&lt;HelloWorld&gt;']
+
+        env = Environment(extensions=['jinja2.ext.autoescape'],
+                          autoescape=False)
+        tmpl = env.from_string('''
+            {{ "<HelloWorld>" }}
+            {% autoescape true %}
+                {{ "<HelloWorld>" }}
+            {% endautoescape %}
+            {{ "<HelloWorld>" }}
+        ''')
+        assert tmpl.render().split() == \
+            [u'<HelloWorld>', u'&lt;HelloWorld&gt;', u'<HelloWorld>']
+
+    def test_nonvolatile(self):
+        env = Environment(extensions=['jinja2.ext.autoescape'],
+                          autoescape=True)
+        tmpl = env.from_string('{{ {"foo": "<test>"}|xmlattr|escape }}')
+        assert tmpl.render() == ' foo="&lt;test&gt;"'
+        tmpl = env.from_string('{% autoescape false %}{{ {"foo": "<test>"}'
+                               '|xmlattr|escape }}{% endautoescape %}')
+        assert tmpl.render() == ' foo=&#34;&amp;lt;test&amp;gt;&#34;'
+
+    def test_volatile(self):
+        env = Environment(extensions=['jinja2.ext.autoescape'],
+                          autoescape=True)
+        tmpl = env.from_string('{% autoescape foo %}{{ {"foo": "<test>"}'
+                               '|xmlattr|escape }}{% endautoescape %}')
+        assert tmpl.render(foo=False) == ' foo=&#34;&amp;lt;test&amp;gt;&#34;'
+        assert tmpl.render(foo=True) == ' foo="&lt;test&gt;"'
+
+    def test_scoping(self):
+        env = Environment(extensions=['jinja2.ext.autoescape'])
+        tmpl = env.from_string('{% autoescape true %}{% set x = "<x>" %}{{ x }}'
+                               '{% endautoescape %}{{ x }}{{ "<y>" }}')
+        assert tmpl.render(x=1) == '&lt;x&gt;1<y>'
+
+    def test_volatile_scoping(self):
+        env = Environment(extensions=['jinja2.ext.autoescape'])
+        tmplsource = '''
+        {% autoescape val %}
+            {% macro foo(x) %}
+                [{{ x }}]
+            {% endmacro %}
+            {{ foo().__class__.__name__ }}
+        {% endautoescape %}
+        {{ '<testing>' }}
+        '''
+        tmpl = env.from_string(tmplsource)
+        assert tmpl.render(val=True).split()[0] == 'Markup'
+        assert tmpl.render(val=False).split()[0] == unicode.__name__
+
+        # looking at the source we should see <testing> there in raw
+        # (and then escaped as well)
+        env = Environment(extensions=['jinja2.ext.autoescape'])
+        pysource = env.compile(tmplsource, raw=True)
+        assert '<testing>\\n' in pysource
+
+        env = Environment(extensions=['jinja2.ext.autoescape'],
+                          autoescape=True)
+        pysource = env.compile(tmplsource, raw=True)
+        assert '&lt;testing&gt;\\n' in pysource
+
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(ExtensionsTestCase))
     suite.addTest(unittest.makeSuite(InternationalizationTestCase))
+    suite.addTest(unittest.makeSuite(AutoEscapeTestCase))
     return suite

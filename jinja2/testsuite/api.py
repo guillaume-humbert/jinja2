@@ -17,7 +17,7 @@ from jinja2.testsuite import JinjaTestCase
 
 from jinja2 import Environment, Undefined, DebugUndefined, \
      StrictUndefined, UndefinedError, Template, meta, \
-     is_undefined
+     is_undefined, Template, DictLoader
 from jinja2.utils import Cycler
 
 env = Environment()
@@ -68,6 +68,30 @@ class ExtendedAPITestCase(JinjaTestCase):
 
         expr = env.compile_expression("42 + foo")
         assert expr(foo=42) == 84
+
+    def test_template_passthrough(self):
+        t = Template('Content')
+        assert env.get_template(t) is t
+        assert env.select_template([t]) is t
+        assert env.get_or_select_template([t]) is t
+        assert env.get_or_select_template(t) is t
+
+    def test_autoescape_autoselect(self):
+        def select_autoescape(name):
+            if name is None or '.' not in name:
+                return False
+            return name.endswith('.html')
+        env = Environment(autoescape=select_autoescape,
+                          loader=DictLoader({
+            'test.txt':     '{{ foo }}',
+            'test.html':    '{{ foo }}'
+        }))
+        t = env.get_template('test.txt')
+        assert t.render(foo='<foo>') == '<foo>'
+        t = env.get_template('test.html')
+        assert t.render(foo='<foo>') == '&lt;foo&gt;'
+        t = env.from_string('{{ foo }}')
+        assert t.render(foo='<foo>') == '<foo>'
 
 
 class MetaTestCase(JinjaTestCase):
@@ -183,6 +207,21 @@ class UndefinedTestCase(JinjaTestCase):
         t = Template("{{ var[42].foo }}")
         assert_raises(UndefinedError, t.render, var=0)
 
+    def test_none_gives_proper_error(self):
+        try:
+            Environment().getattr(None, 'split')
+        except UndefinedError, e:
+            assert e.message == "None has no attribute 'split'"
+        else:
+            assert False, 'expected exception'
+
+    def test_object_repr(self):
+        try:
+            Undefined(obj=42, name='upper')
+        except UndefinedError, e:
+            assert e.message == "'int' object has no attribute 'upper'"
+        else:
+            assert False, 'expected exception'
 
 
 def suite():
