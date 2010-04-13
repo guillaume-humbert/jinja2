@@ -1,3 +1,10 @@
+jinja2 (2.4-2) unstable; urgency=low
+
+  * Add Python 3 support, new binary packages:
+    python3-jinja and python3-jinja-dbg
+
+ -- Piotr Ożarowski <piotr@debian.org>  Tue, 13 Apr 2010 20:44:43 +0200
+
 jinja2 (2.4-1) unstable; urgency=low
 
   * New upstream release
