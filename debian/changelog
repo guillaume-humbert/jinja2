@@ -1,3 +1,11 @@
+jinja2 (2.5-1) unstable; urgency=low
+
+  * New upstream release
+  * python3_builtins.patch removed, no longer needed
+  * add python3.1 to python3-jinja2's Depends
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sun, 30 May 2010 11:01:51 +0200
+
 jinja2 (2.4.1-1) unstable; urgency=low
 
   * New upstream release
