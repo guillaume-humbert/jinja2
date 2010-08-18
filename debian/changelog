@@ -1,3 +1,15 @@
+jinja2 (2.5.2-1) unstable; urgency=low
+
+  * New upstream release
+    - speedups module moved to separate package: MarkupSafe
+  * python-markupsafe added to Depends (jinja2._markupsafe removed from the
+    package)
+  * debian/control: python3-jinja2 binary package updated to latest changes in
+    dh_python3
+  * Standards-version bumped to 3.9.1 (no other changes needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Wed, 18 Aug 2010 11:29:44 +0200
+
 jinja2 (2.5-1) unstable; urgency=low
 
   * New upstream release
