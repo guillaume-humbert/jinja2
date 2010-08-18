@@ -30,11 +30,11 @@ build-stamp: $(PYVERS:%=build-python%) $(PYVERS:%=build-debug-python%)
 	touch $@
 
 build-python%:
-	python$* setup.py --with-speedups build
+	python$* setup.py --with-debugsupport build
 	touch $@
 
 build-debug-python%:
-	python$*-dbg setup.py --with-speedups build
+	python$*-dbg setup.py --with-debugsupport build
 	touch $@
 
 build-docs:
@@ -46,13 +46,14 @@ install-stamp: $(PYVERS:%=install-python%) $(PYVERS:%=install-debug-python%)
 	touch $@
 
 install-python%: build
-	python$* setup.py --with-speedups install $(py_setup_install_args) \
+	python$* setup.py --with-debugsupport install $(py_setup_install_args) \
 		--skip-build --single-version-externally-managed --root $(call pkgdir,$*)
 	sed -i -e 's,REPLACE_ME_WITH_PROPER_VERSION,$(VERSION),' $(call pkgdir,$*)$(call py_libdir,$*)/jinja2/__init__.py
+	rm -f $(call pkgdir,$*)$(call py_libdir,$*)/jinja2/_debugsupport.c
 	touch $@
 
 install-debug-python%: build
-	python$*-dbg setup.py --with-speedups install $(py_setup_install_args) \
+	python$*-dbg setup.py --with-debugsupport install $(py_setup_install_args) \
 		--skip-build --single-version-externally-managed --root $(call pkgdir,$*)-dbg/
 	find $(call pkgdir,$*)-dbg/usr/ ! -type d ! -name '*_d\.so' -delete
 	find $(call pkgdir,$*)-dbg/usr/ -depth -empty -delete
