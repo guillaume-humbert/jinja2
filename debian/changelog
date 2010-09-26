@@ -1,12 +1,12 @@
-jinja2 (2.5.2-3) experimental; urgency=low
+jinja2 (2.5.2-3) unstable; urgency=low
 
   * Rebuild against newer python3-all-dev package (python3.1 now uses
-    /usr/lib/python3/), minimum python3-all version bumped to 3.1.2-9
+    /usr/lib/python3/), minimum python3-all version bumped to 3.1.2-10
   * Use python3's python.mk
   * Drop python3-jinja2.{postinst,prerm} maintainer scripts, dh_python3 will
     generate them
 
- -- Piotr Ożarowski <piotr@debian.org>  Sun, 12 Sep 2010 17:58:34 +0200
+ -- Piotr Ożarowski <piotr@debian.org>  Sun, 26 Sep 2010 21:19:54 +0200
 
 jinja2 (2.5.2-2) unstable; urgency=low
 
