@@ -39,22 +39,22 @@
         <div id="toc">
           <h3>Table Of Contents</h3>
           <ul>
-<li><a class="reference external" href="#">Extensions</a><ul>
-<li><a class="reference external" href="#adding-extensions">Adding Extensions</a></li>
-<li><a class="reference external" href="#i18n-extension">i18n Extension</a><ul>
-<li><a class="reference external" href="#environment-methods">Environment Methods</a></li>
-<li><a class="reference external" href="#newstyle-gettext">Newstyle Gettext</a></li>
+<li><a class="reference internal" href="#">Extensions</a><ul>
+<li><a class="reference internal" href="#adding-extensions">Adding Extensions</a></li>
+<li><a class="reference internal" href="#i18n-extension">i18n Extension</a><ul>
+<li><a class="reference internal" href="#environment-methods">Environment Methods</a></li>
+<li><a class="reference internal" href="#newstyle-gettext">Newstyle Gettext</a></li>
 </ul>
 </li>
-<li><a class="reference external" href="#expression-statement">Expression Statement</a></li>
-<li><a class="reference external" href="#loop-controls">Loop Controls</a></li>
-<li><a class="reference external" href="#with-statement">With Statement</a></li>
-<li><a class="reference external" href="#autoescape-extension">Autoescape Extension</a></li>
-<li><a class="reference external" href="#module-jinja2.ext">Writing Extensions</a><ul>
-<li><a class="reference external" href="#example-extension">Example Extension</a></li>
-<li><a class="reference external" href="#extension-api">Extension API</a></li>
-<li><a class="reference external" href="#parser-api">Parser API</a></li>
-<li><a class="reference external" href="#module-jinja2.nodes">AST</a></li>
+<li><a class="reference internal" href="#expression-statement">Expression Statement</a></li>
+<li><a class="reference internal" href="#loop-controls">Loop Controls</a></li>
+<li><a class="reference internal" href="#with-statement">With Statement</a></li>
+<li><a class="reference internal" href="#autoescape-extension">Autoescape Extension</a></li>
+<li><a class="reference internal" href="#module-jinja2.ext">Writing Extensions</a><ul>
+<li><a class="reference internal" href="#example-extension">Example Extension</a></li>
+<li><a class="reference internal" href="#extension-api">Extension API</a></li>
+<li><a class="reference internal" href="#parser-api">Parser API</a></li>
+<li><a class="reference internal" href="#ast">AST</a></li>
 </ul>
 </li>
 </ul>
@@ -73,7 +73,7 @@ code into a reusable class like adding support for internationalization.</p>
 <p>Extensions are added to the Jinja2 environment at creation time.  Once the
 environment is created additional extensions cannot be added.  To add an
 extension pass a list of extension classes or import paths to the
-<cite>environment</cite> parameter of the <tt class="xref docutils literal"><span class="pre">Environment</span></tt> constructor.  The following
+<cite>environment</cite> parameter of the <tt class="xref py py-class docutils literal"><span class="pre">Environment</span></tt> constructor.  The following
 example creates a Jinja2 environment with the i18n extension loaded:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">jinja_env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;jinja2.ext.i18n&#39;</span><span class="p">])</span>
 </pre></div>
@@ -120,8 +120,8 @@ full internationalization system yet.</p>
 <tt class="descclassname">jinja2.Environment.</tt><tt class="descname">install_gettext_callables</tt><big>(</big><em>gettext</em>, <em>ngettext</em>, <em>newstyle=False</em><big>)</big><a class="headerlink" href="#jinja2.Environment.install_gettext_callables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Installs the given <cite>gettext</cite> and <cite>ngettext</cite> callables into the
 environment as globals.  They are supposed to behave exactly like the
-standard library&#8217;s <tt class="xref docutils literal"><span class="pre">gettext.ugettext()</span></tt> and
-<tt class="xref docutils literal"><span class="pre">gettext.ungettext()</span></tt> functions.</p>
+standard library&#8217;s <tt class="xref py py-func docutils literal"><span class="pre">gettext.ugettext()</span></tt> and
+<tt class="xref py py-func docutils literal"><span class="pre">gettext.ungettext()</span></tt> functions.</p>
 <p>If <cite>newstyle</cite> is activated, the callables are wrapped to work like
 newstyle callables.  See <a class="reference internal" href="#newstyle-gettext"><em>Newstyle Gettext</em></a> for more information.</p>
 <p class="versionadded">
@@ -131,7 +131,8 @@ newstyle callables.  See <a class="reference internal" href="#newstyle-gettext">
 <dl class="method">
 <dt id="jinja2.Environment.uninstall_gettext_translations">
 <tt class="descclassname">jinja2.Environment.</tt><tt class="descname">uninstall_gettext_translations</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.Environment.uninstall_gettext_translations" title="Permalink to this definition">¶</a></dt>
-<dd>Uninstall the translations again.</dd></dl>
+<dd><p>Uninstall the translations again.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Environment.extract_translations">
@@ -146,7 +147,7 @@ string was extracted from embedded Python code), and</li>
 <li><cite>message</cite> is the string itself (a <cite>unicode</cite> object, or a tuple
 of <cite>unicode</cite> objects for functions with multiple string arguments).</li>
 </ul>
-<p>If <a class="reference external" href="http://babel.edgewall.org/">Babel</a> is installed <a class="reference external" href="integration.html#babel-integration"><em>the babel integration</em></a>
+<p>If <a class="reference external" href="http://babel.edgewall.org/">Babel</a> is installed <a class="reference internal" href="integration.html#babel-integration"><em>the babel integration</em></a>
 can be used to extract strings for babel.</p>
 </dd></dl>
 
@@ -162,7 +163,7 @@ translation methods to the environment at environment generation time:</p>
 <p>The <cite>get_gettext_translations</cite> function would return the translator for the
 current configuration.  (For example by using <cite>gettext.find</cite>)</p>
 <p>The usage of the <cite>i18n</cite> extension for template designers is covered as part
-<a class="reference external" href="templates.html#i18n-in-templates"><em>of the template documentation</em></a>.</p>
+<a class="reference internal" href="templates.html#i18n-in-templates"><em>of the template documentation</em></a>.</p>
 </div>
 <div class="section" id="newstyle-gettext">
 <span id="id2"></span><h3>Newstyle Gettext<a class="headerlink" href="#newstyle-gettext" title="Permalink to this headline">¶</a></h3>
@@ -232,12 +233,12 @@ standard <cite>set</cite> statement directly within.</p>
 <p class="versionadded">
 <span class="versionmodified">New in version 2.4.</span></p>
 <p>The autoescape extension allows you to toggle the autoescape feature from
-within the template.  If the environment&#8217;s <tt class="xref docutils literal"><span class="pre">autoescape</span></tt>
+within the template.  If the environment&#8217;s <tt class="xref py py-attr docutils literal"><span class="pre">autoescape</span></tt>
 setting is set to <cite>False</cite> it can be activated, if it&#8217;s <cite>True</cite> it can be
-activated.  The setting overriding is scoped.</p>
+deactivated.  The setting overriding is scoped.</p>
 </div>
 <div class="section" id="module-jinja2.ext">
-<span id="writing-extensions"></span><h2>Writing Extensions<a class="headerlink" href="#module-jinja2.ext" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><span id="writing-extensions"></span><h2>Writing Extensions<a class="headerlink" href="#module-jinja2.ext" title="Permalink to this headline">¶</a></h2>
 <p>By writing extensions you can add custom tags to Jinja2.  This is a non trival
 task and usually not needed as the default tags and expressions cover all
 common use cases.  The i18n extension is a good example of why extensions are
@@ -330,7 +331,7 @@ following example caches a sidebar for 300 seconds:</p>
 </div>
 <div class="section" id="extension-api">
 <h3>Extension API<a class="headerlink" href="#extension-api" title="Permalink to this headline">¶</a></h3>
-<p>Extensions always have to extend the <a title="jinja2.ext.Extension" class="reference internal" href="#jinja2.ext.Extension"><tt class="xref docutils literal"><span class="pre">jinja2.ext.Extension</span></tt></a> class:</p>
+<p>Extensions always have to extend the <a class="reference internal" href="#jinja2.ext.Extension" title="jinja2.ext.Extension"><tt class="xref py py-class docutils literal"><span class="pre">jinja2.ext.Extension</span></tt></a> class:</p>
 <dl class="class">
 <dt id="jinja2.ext.Extension">
 <em class="property">class </em><tt class="descclassname">jinja2.ext.</tt><tt class="descname">Extension</tt><big>(</big><em>environment</em><big>)</big><a class="headerlink" href="#jinja2.ext.Extension" title="Permalink to this definition">¶</a></dt>
@@ -352,29 +353,32 @@ name as includes the name of the extension (fragment cache).</p>
 <dl class="attribute">
 <dt id="jinja2.ext.Extension.identifier">
 <tt class="descname">identifier</tt><a class="headerlink" href="#jinja2.ext.Extension.identifier" title="Permalink to this definition">¶</a></dt>
-<dd>The identifier of the extension.  This is always the true import name
-of the extension class and must not be changed.</dd></dl>
+<dd><p>The identifier of the extension.  This is always the true import name
+of the extension class and must not be changed.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.ext.Extension.tags">
 <tt class="descname">tags</tt><a class="headerlink" href="#jinja2.ext.Extension.tags" title="Permalink to this definition">¶</a></dt>
-<dd>If the extension implements custom tags this is a set of tag names
-the extension is listening for.</dd></dl>
+<dd><p>If the extension implements custom tags this is a set of tag names
+the extension is listening for.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.ext.Extension.preprocess">
 <tt class="descname">preprocess</tt><big>(</big><em>source</em>, <em>name</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#jinja2.ext.Extension.preprocess" title="Permalink to this definition">¶</a></dt>
-<dd>This method is called before the actual lexing and can be used to
+<dd><p>This method is called before the actual lexing and can be used to
 preprocess the source.  The <cite>filename</cite> is optional.  The return value
-must be the preprocessed source.</dd></dl>
+must be the preprocessed source.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.ext.Extension.filter_stream">
 <tt class="descname">filter_stream</tt><big>(</big><em>stream</em><big>)</big><a class="headerlink" href="#jinja2.ext.Extension.filter_stream" title="Permalink to this definition">¶</a></dt>
-<dd><p>It&#8217;s passed a <a title="jinja2.lexer.TokenStream" class="reference internal" href="#jinja2.lexer.TokenStream"><tt class="xref docutils literal"><span class="pre">TokenStream</span></tt></a> that can be used
+<dd><p>It&#8217;s passed a <a class="reference internal" href="#jinja2.lexer.TokenStream" title="jinja2.lexer.TokenStream"><tt class="xref py py-class docutils literal"><span class="pre">TokenStream</span></tt></a> that can be used
 to filter tokens returned.  This method has to return an iterable of
-<a title="jinja2.lexer.Token" class="reference internal" href="#jinja2.lexer.Token"><tt class="xref docutils literal"><span class="pre">Token</span></tt></a>s, but it doesn&#8217;t have to return a
-<a title="jinja2.lexer.TokenStream" class="reference internal" href="#jinja2.lexer.TokenStream"><tt class="xref docutils literal"><span class="pre">TokenStream</span></tt></a>.</p>
+<a class="reference internal" href="#jinja2.lexer.Token" title="jinja2.lexer.Token"><tt class="xref py py-class docutils literal"><span class="pre">Token</span></tt></a>s, but it doesn&#8217;t have to return a
+<a class="reference internal" href="#jinja2.lexer.TokenStream" title="jinja2.lexer.TokenStream"><tt class="xref py py-class docutils literal"><span class="pre">TokenStream</span></tt></a>.</p>
 <p>In the <cite>ext</cite> folder of the Jinja2 source distribution there is a file
 called <cite>inlinegettext.py</cite> which implements a filter that utilizes this
 method.</p>
@@ -383,10 +387,11 @@ method.</p>
 <dl class="method">
 <dt id="jinja2.ext.Extension.parse">
 <tt class="descname">parse</tt><big>(</big><em>parser</em><big>)</big><a class="headerlink" href="#jinja2.ext.Extension.parse" title="Permalink to this definition">¶</a></dt>
-<dd>If any of the <a title="jinja2.ext.Extension.tags" class="reference internal" href="#jinja2.ext.Extension.tags"><tt class="xref docutils literal"><span class="pre">tags</span></tt></a> matched this method is called with the
+<dd><p>If any of the <a class="reference internal" href="#jinja2.ext.Extension.tags" title="jinja2.ext.Extension.tags"><tt class="xref py py-attr docutils literal"><span class="pre">tags</span></tt></a> matched this method is called with the
 parser as first argument.  The token the parser stream is pointing at
 is the name token that matched.  This method has to return one or a
-list of multiple nodes.</dd></dl>
+list of multiple nodes.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.ext.Extension.attr">
@@ -401,15 +406,16 @@ to pass constants on extensions to generated template code:</p>
 <dl class="method">
 <dt id="jinja2.ext.Extension.call_method">
 <tt class="descname">call_method</tt><big>(</big><em>name</em>, <em>args=None</em>, <em>kwargs=None</em>, <em>dyn_args=None</em>, <em>dyn_kwargs=None</em>, <em>lineno=None</em><big>)</big><a class="headerlink" href="#jinja2.ext.Extension.call_method" title="Permalink to this definition">¶</a></dt>
-<dd>Call a method of the extension.  This is a shortcut for
-<a title="attr" class="reference external" href="templates.html#attr"><tt class="xref docutils literal"><span class="pre">attr()</span></tt></a> + <a title="jinja2.nodes.Call" class="reference internal" href="#jinja2.nodes.Call"><tt class="xref docutils literal"><span class="pre">jinja2.nodes.Call</span></tt></a>.</dd></dl>
+<dd><p>Call a method of the extension.  This is a shortcut for
+<a class="reference internal" href="templates.html#attr" title="attr"><tt class="xref py py-meth docutils literal"><span class="pre">attr()</span></tt></a> + <a class="reference internal" href="#jinja2.nodes.Call" title="jinja2.nodes.Call"><tt class="xref py py-class docutils literal"><span class="pre">jinja2.nodes.Call</span></tt></a>.</p>
+</dd></dl>
 
 </dd></dl>
 
 </div>
 <div class="section" id="parser-api">
 <h3>Parser API<a class="headerlink" href="#parser-api" title="Permalink to this headline">¶</a></h3>
-<p>The parser passed to <a title="jinja2.ext.Extension.parse" class="reference internal" href="#jinja2.ext.Extension.parse"><tt class="xref docutils literal"><span class="pre">Extension.parse()</span></tt></a> provides ways to parse
+<p>The parser passed to <a class="reference internal" href="#jinja2.ext.Extension.parse" title="jinja2.ext.Extension.parse"><tt class="xref py py-meth docutils literal"><span class="pre">Extension.parse()</span></tt></a> provides ways to parse
 expressions of different types.  The following methods may be used by
 extensions:</p>
 <dl class="class">
@@ -420,38 +426,42 @@ extensions and can be used to parse expressions or statements.</p>
 <dl class="attribute">
 <dt id="jinja2.ext.Parser.filename">
 <tt class="descname">filename</tt><a class="headerlink" href="#jinja2.ext.Parser.filename" title="Permalink to this definition">¶</a></dt>
-<dd>The filename of the template the parser processes.  This is <strong>not</strong>
-the load name of the template.  For the load name see <a title="jinja2.ext.Parser.name" class="reference internal" href="#jinja2.ext.Parser.name"><tt class="xref docutils literal"><span class="pre">name</span></tt></a>.
+<dd><p>The filename of the template the parser processes.  This is <strong>not</strong>
+the load name of the template.  For the load name see <a class="reference internal" href="#jinja2.ext.Parser.name" title="jinja2.ext.Parser.name"><tt class="xref py py-attr docutils literal"><span class="pre">name</span></tt></a>.
 For templates that were not loaded form the file system this is
-<cite>None</cite>.</dd></dl>
+<cite>None</cite>.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.ext.Parser.name">
 <tt class="descname">name</tt><a class="headerlink" href="#jinja2.ext.Parser.name" title="Permalink to this definition">¶</a></dt>
-<dd>The load name of the template.</dd></dl>
+<dd><p>The load name of the template.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.ext.Parser.stream">
 <tt class="descname">stream</tt><a class="headerlink" href="#jinja2.ext.Parser.stream" title="Permalink to this definition">¶</a></dt>
-<dd>The current <a title="jinja2.lexer.TokenStream" class="reference internal" href="#jinja2.lexer.TokenStream"><tt class="xref docutils literal"><span class="pre">TokenStream</span></tt></a></dd></dl>
+<dd><p>The current <a class="reference internal" href="#jinja2.lexer.TokenStream" title="jinja2.lexer.TokenStream"><tt class="xref py py-class docutils literal"><span class="pre">TokenStream</span></tt></a></p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.parser.Parser.parse_expression">
 <tt class="descname">parse_expression</tt><big>(</big><em>with_condexpr=True</em><big>)</big><a class="headerlink" href="#jinja2.parser.Parser.parse_expression" title="Permalink to this definition">¶</a></dt>
-<dd>Parse an expression.  Per default all expressions are parsed, if
+<dd><p>Parse an expression.  Per default all expressions are parsed, if
 the optional <cite>with_condexpr</cite> parameter is set to <cite>False</cite> conditional
-expressions are not parsed.</dd></dl>
+expressions are not parsed.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.parser.Parser.parse_tuple">
 <tt class="descname">parse_tuple</tt><big>(</big><em>simplified=False</em>, <em>with_condexpr=True</em>, <em>extra_end_rules=None</em>, <em>explicit_parentheses=False</em><big>)</big><a class="headerlink" href="#jinja2.parser.Parser.parse_tuple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Works like <cite>parse_expression</cite> but if multiple expressions are
-delimited by a comma a <a title="jinja2.nodes.Tuple" class="reference internal" href="#jinja2.nodes.Tuple"><tt class="xref docutils literal"><span class="pre">Tuple</span></tt></a> node is created.
+delimited by a comma a <a class="reference internal" href="#jinja2.nodes.Tuple" title="jinja2.nodes.Tuple"><tt class="xref py py-class docutils literal"><span class="pre">Tuple</span></tt></a> node is created.
 This method could also return a regular expression instead of a tuple
 if no commas where found.</p>
 <p>The default parsing mode is a full tuple.  If <cite>simplified</cite> is <cite>True</cite>
 only names and literals are parsed.  The <cite>no_condexpr</cite> parameter is
-forwarded to <tt class="xref docutils literal"><span class="pre">parse_expression()</span></tt>.</p>
+forwarded to <tt class="xref py py-meth docutils literal"><span class="pre">parse_expression()</span></tt>.</p>
 <p>Because tuples do not require delimiters and may end in a bogus comma
 an extra hint is needed that marks the end of a tuple.  For example
 for loops support tuples between <cite>for</cite> and <cite>in</cite>.  In that case the
@@ -464,91 +474,104 @@ tuple is a valid expression or not.</p>
 <dl class="method">
 <dt id="jinja2.parser.Parser.parse_assign_target">
 <tt class="descname">parse_assign_target</tt><big>(</big><em>with_tuple=True</em>, <em>name_only=False</em>, <em>extra_end_rules=None</em><big>)</big><a class="headerlink" href="#jinja2.parser.Parser.parse_assign_target" title="Permalink to this definition">¶</a></dt>
-<dd>Parse an assignment target.  As Jinja2 allows assignments to
+<dd><p>Parse an assignment target.  As Jinja2 allows assignments to
 tuples, this function can parse all allowed assignment targets.  Per
 default assignments to tuples are parsed, that can be disable however
 by setting <cite>with_tuple</cite> to <cite>False</cite>.  If only assignments to names are
 wanted <cite>name_only</cite> can be set to <cite>True</cite>.  The <cite>extra_end_rules</cite>
-parameter is forwarded to the tuple parsing function.</dd></dl>
+parameter is forwarded to the tuple parsing function.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.parser.Parser.parse_statements">
 <tt class="descname">parse_statements</tt><big>(</big><em>end_tokens</em>, <em>drop_needle=False</em><big>)</big><a class="headerlink" href="#jinja2.parser.Parser.parse_statements" title="Permalink to this definition">¶</a></dt>
-<dd>Parse multiple statements into a list until one of the end tokens
+<dd><p>Parse multiple statements into a list until one of the end tokens
 is reached.  This is used to parse the body of statements as it also
 parses template data if appropriate.  The parser checks first if the
 current token is a colon and skips it if there is one.  Then it checks
 for the block end and parses until if one of the <cite>end_tokens</cite> is
 reached.  Per default the active token in the stream at the end of
 the call is the matched end token.  If this is not wanted <cite>drop_needle</cite>
-can be set to <cite>True</cite> and the end token is removed.</dd></dl>
+can be set to <cite>True</cite> and the end token is removed.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.parser.Parser.free_identifier">
 <tt class="descname">free_identifier</tt><big>(</big><em>lineno=None</em><big>)</big><a class="headerlink" href="#jinja2.parser.Parser.free_identifier" title="Permalink to this definition">¶</a></dt>
-<dd>Return a new free identifier as <a title="jinja2.nodes.InternalName" class="reference internal" href="#jinja2.nodes.InternalName"><tt class="xref docutils literal"><span class="pre">InternalName</span></tt></a>.</dd></dl>
+<dd><p>Return a new free identifier as <a class="reference internal" href="#jinja2.nodes.InternalName" title="jinja2.nodes.InternalName"><tt class="xref py py-class docutils literal"><span class="pre">InternalName</span></tt></a>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.parser.Parser.fail">
 <tt class="descname">fail</tt><big>(</big><em>msg</em>, <em>lineno=None</em>, <em>exc=&lt;class 'jinja2.exceptions.TemplateSyntaxError'&gt;</em><big>)</big><a class="headerlink" href="#jinja2.parser.Parser.fail" title="Permalink to this definition">¶</a></dt>
-<dd>Convenience method that raises <cite>exc</cite> with the message, passed
+<dd><p>Convenience method that raises <cite>exc</cite> with the message, passed
 line number or last line number as well as the current name and
-filename.</dd></dl>
+filename.</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="jinja2.lexer.TokenStream">
 <em class="property">class </em><tt class="descclassname">jinja2.lexer.</tt><tt class="descname">TokenStream</tt><big>(</big><em>generator</em>, <em>name</em>, <em>filename</em><big>)</big><a class="headerlink" href="#jinja2.lexer.TokenStream" title="Permalink to this definition">¶</a></dt>
-<dd><p>A token stream is an iterable that yields <tt class="xref docutils literal"><span class="pre">Token</span></tt>s.  The
-parser however does not iterate over it but calls <tt class="xref docutils literal"><span class="pre">next()</span></tt> to go
-one token ahead.  The current active token is stored as <a title="jinja2.ext.TokenStream.current" class="reference internal" href="#jinja2.ext.TokenStream.current"><tt class="xref docutils literal"><span class="pre">current</span></tt></a>.</p>
+<dd><p>A token stream is an iterable that yields <tt class="xref py py-class docutils literal"><span class="pre">Token</span></tt>s.  The
+parser however does not iterate over it but calls <tt class="xref py py-meth docutils literal"><span class="pre">next()</span></tt> to go
+one token ahead.  The current active token is stored as <a class="reference internal" href="#jinja2.ext.TokenStream.current" title="jinja2.ext.TokenStream.current"><tt class="xref py py-attr docutils literal"><span class="pre">current</span></tt></a>.</p>
 <dl class="attribute">
 <dt id="jinja2.ext.TokenStream.current">
 <tt class="descname">current</tt><a class="headerlink" href="#jinja2.ext.TokenStream.current" title="Permalink to this definition">¶</a></dt>
-<dd>The current <a title="jinja2.lexer.Token" class="reference internal" href="#jinja2.lexer.Token"><tt class="xref docutils literal"><span class="pre">Token</span></tt></a>.</dd></dl>
+<dd><p>The current <a class="reference internal" href="#jinja2.lexer.Token" title="jinja2.lexer.Token"><tt class="xref py py-class docutils literal"><span class="pre">Token</span></tt></a>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.lexer.TokenStream.push">
 <tt class="descname">push</tt><big>(</big><em>token</em><big>)</big><a class="headerlink" href="#jinja2.lexer.TokenStream.push" title="Permalink to this definition">¶</a></dt>
-<dd>Push a token back to the stream.</dd></dl>
+<dd><p>Push a token back to the stream.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.lexer.TokenStream.look">
 <tt class="descname">look</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.lexer.TokenStream.look" title="Permalink to this definition">¶</a></dt>
-<dd>Look at the next token.</dd></dl>
+<dd><p>Look at the next token.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.lexer.TokenStream.eos">
 <tt class="descname">eos</tt><a class="headerlink" href="#jinja2.lexer.TokenStream.eos" title="Permalink to this definition">¶</a></dt>
-<dd>Are we at the end of the stream?</dd></dl>
+<dd><p>Are we at the end of the stream?</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.lexer.TokenStream.skip">
 <tt class="descname">skip</tt><big>(</big><em>n=1</em><big>)</big><a class="headerlink" href="#jinja2.lexer.TokenStream.skip" title="Permalink to this definition">¶</a></dt>
-<dd>Got n tokens ahead.</dd></dl>
+<dd><p>Got n tokens ahead.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.lexer.TokenStream.next">
 <tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.lexer.TokenStream.next" title="Permalink to this definition">¶</a></dt>
-<dd>Go one token ahead and return the old one</dd></dl>
+<dd><p>Go one token ahead and return the old one</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.lexer.TokenStream.next_if">
 <tt class="descname">next_if</tt><big>(</big><em>expr</em><big>)</big><a class="headerlink" href="#jinja2.lexer.TokenStream.next_if" title="Permalink to this definition">¶</a></dt>
-<dd>Perform the token test and return the token if it matched.
-Otherwise the return value is <cite>None</cite>.</dd></dl>
+<dd><p>Perform the token test and return the token if it matched.
+Otherwise the return value is <cite>None</cite>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.lexer.TokenStream.skip_if">
 <tt class="descname">skip_if</tt><big>(</big><em>expr</em><big>)</big><a class="headerlink" href="#jinja2.lexer.TokenStream.skip_if" title="Permalink to this definition">¶</a></dt>
-<dd>Like <tt class="xref docutils literal"><span class="pre">next_if()</span></tt> but only returns <cite>True</cite> or <cite>False</cite>.</dd></dl>
+<dd><p>Like <tt class="xref py py-meth docutils literal"><span class="pre">next_if()</span></tt> but only returns <cite>True</cite> or <cite>False</cite>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.lexer.TokenStream.expect">
 <tt class="descname">expect</tt><big>(</big><em>expr</em><big>)</big><a class="headerlink" href="#jinja2.lexer.TokenStream.expect" title="Permalink to this definition">¶</a></dt>
-<dd>Expect a given token type and return it.  This accepts the same
-argument as <a title="jinja2.lexer.Token.test" class="reference internal" href="#jinja2.lexer.Token.test"><tt class="xref docutils literal"><span class="pre">jinja2.lexer.Token.test()</span></tt></a>.</dd></dl>
+<dd><p>Expect a given token type and return it.  This accepts the same
+argument as <a class="reference internal" href="#jinja2.lexer.Token.test" title="jinja2.lexer.Token.test"><tt class="xref py py-meth docutils literal"><span class="pre">jinja2.lexer.Token.test()</span></tt></a>.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -559,30 +582,35 @@ argument as <a title="jinja2.lexer.Token.test" class="reference internal" href="
 <dl class="attribute">
 <dt id="jinja2.ext.Token.lineno">
 <tt class="descname">lineno</tt><a class="headerlink" href="#jinja2.ext.Token.lineno" title="Permalink to this definition">¶</a></dt>
-<dd>The line number of the token</dd></dl>
+<dd><p>The line number of the token</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.ext.Token.type">
 <tt class="descname">type</tt><a class="headerlink" href="#jinja2.ext.Token.type" title="Permalink to this definition">¶</a></dt>
-<dd>The type of the token.  This string is interned so you may compare
-it with arbitrary strings using the <cite>is</cite> operator.</dd></dl>
+<dd><p>The type of the token.  This string is interned so you may compare
+it with arbitrary strings using the <cite>is</cite> operator.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.ext.Token.value">
 <tt class="descname">value</tt><a class="headerlink" href="#jinja2.ext.Token.value" title="Permalink to this definition">¶</a></dt>
-<dd>The value of the token.</dd></dl>
+<dd><p>The value of the token.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.lexer.Token.test">
 <tt class="descname">test</tt><big>(</big><em>expr</em><big>)</big><a class="headerlink" href="#jinja2.lexer.Token.test" title="Permalink to this definition">¶</a></dt>
-<dd>Test a token against a token expression.  This can either be a
+<dd><p>Test a token against a token expression.  This can either be a
 token type or <tt class="docutils literal"><span class="pre">'token_type:token_value'</span></tt>.  This can only test
-against string values and types.</dd></dl>
+against string values and types.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.lexer.Token.test_any">
 <tt class="descname">test_any</tt><big>(</big><em>*iterable</em><big>)</big><a class="headerlink" href="#jinja2.lexer.Token.test_any" title="Permalink to this definition">¶</a></dt>
-<dd>Test against multiple token expressions.</dd></dl>
+<dd><p>Test against multiple token expressions.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -591,29 +619,30 @@ characters in strings:</p>
 <dl class="function">
 <dt id="jinja2.lexer.count_newlines">
 <tt class="descclassname">jinja2.lexer.</tt><tt class="descname">count_newlines</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#jinja2.lexer.count_newlines" title="Permalink to this definition">¶</a></dt>
-<dd>Count the number of newline characters in the string.  This is
-useful for extensions that filter a stream.</dd></dl>
+<dd><p>Count the number of newline characters in the string.  This is
+useful for extensions that filter a stream.</p>
+</dd></dl>
 
 </div>
-<div class="section" id="module-jinja2.nodes">
-<h3>AST<a class="headerlink" href="#module-jinja2.nodes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="ast">
+<h3>AST<a class="headerlink" href="#ast" title="Permalink to this headline">¶</a></h3>
 <p>The AST (Abstract Syntax Tree) is used to represent a template after parsing.
 It&#8217;s build of nodes that the compiler then converts into executable Python
 code objects.  Extensions that provide custom statements can return nodes to
 execute custom Python code.</p>
 <p>The list below describes all nodes that are currently available.  The AST may
 change between Jinja2 versions but will stay backwards compatible.</p>
-<p>For more information have a look at the repr of <a title="jinja2.Environment.parse" class="reference external" href="api.html#jinja2.Environment.parse"><tt class="xref docutils literal"><span class="pre">jinja2.Environment.parse()</span></tt></a>.</p>
-<dl class="class">
+<p>For more information have a look at the repr of <a class="reference internal" href="api.html#jinja2.Environment.parse" title="jinja2.Environment.parse"><tt class="xref py py-meth docutils literal"><span class="pre">jinja2.Environment.parse()</span></tt></a>.</p>
+<span class="target" id="module-jinja2.nodes"></span><dl class="class">
 <dt id="jinja2.nodes.Node">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">Node</tt><a class="headerlink" href="#jinja2.nodes.Node" title="Permalink to this definition">¶</a></dt>
 <dd><p>Baseclass for all Jinja2 nodes.  There are a number of nodes available
 of different types.  There are three major types:</p>
 <ul class="simple">
-<li><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a>: statements</li>
-<li><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a>: expressions</li>
-<li><a title="jinja2.nodes.Helper" class="reference internal" href="#jinja2.nodes.Helper"><tt class="xref docutils literal"><span class="pre">Helper</span></tt></a>: helper nodes</li>
-<li><a title="jinja2.nodes.Template" class="reference internal" href="#jinja2.nodes.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a>: the outermost wrapper node</li>
+<li><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a>: statements</li>
+<li><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a>: expressions</li>
+<li><a class="reference internal" href="#jinja2.nodes.Helper" title="jinja2.nodes.Helper"><tt class="xref py py-class docutils literal"><span class="pre">Helper</span></tt></a>: helper nodes</li>
+<li><a class="reference internal" href="#jinja2.nodes.Template" title="jinja2.nodes.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a>: the outermost wrapper node</li>
 </ul>
 <p>All nodes have fields and attributes.  Fields may be other nodes, lists,
 or arbitrary values.  Fields are passed to the constructor as regular
@@ -624,48 +653,55 @@ all nodes automatically.</p>
 <dl class="method">
 <dt id="jinja2.nodes.Node.find">
 <tt class="descname">find</tt><big>(</big><em>node_type</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Node.find" title="Permalink to this definition">¶</a></dt>
-<dd>Find the first node of a given type.  If no such node exists the
-return value is <cite>None</cite>.</dd></dl>
+<dd><p>Find the first node of a given type.  If no such node exists the
+return value is <cite>None</cite>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.nodes.Node.find_all">
 <tt class="descname">find_all</tt><big>(</big><em>node_type</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Node.find_all" title="Permalink to this definition">¶</a></dt>
-<dd>Find all the nodes of a given type.  If the type is a tuple,
-the check is performed for any of the tuple items.</dd></dl>
+<dd><p>Find all the nodes of a given type.  If the type is a tuple,
+the check is performed for any of the tuple items.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.nodes.Node.iter_child_nodes">
 <tt class="descname">iter_child_nodes</tt><big>(</big><em>exclude=None</em>, <em>only=None</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Node.iter_child_nodes" title="Permalink to this definition">¶</a></dt>
-<dd>Iterates over all direct child nodes of the node.  This iterates
+<dd><p>Iterates over all direct child nodes of the node.  This iterates
 over all fields and yields the values of they are nodes.  If the value
-of a field is a list all the nodes in that list are returned.</dd></dl>
+of a field is a list all the nodes in that list are returned.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.nodes.Node.iter_fields">
 <tt class="descname">iter_fields</tt><big>(</big><em>exclude=None</em>, <em>only=None</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Node.iter_fields" title="Permalink to this definition">¶</a></dt>
-<dd>This method iterates over all fields that are defined and yields
+<dd><p>This method iterates over all fields that are defined and yields
 <tt class="docutils literal"><span class="pre">(key,</span> <span class="pre">value)</span></tt> tuples.  Per default all fields are returned, but
 it&#8217;s possible to limit that to some fields by providing the <cite>only</cite>
 parameter or to exclude some using the <cite>exclude</cite> parameter.  Both
-should be sets or tuples of field names.</dd></dl>
+should be sets or tuples of field names.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.nodes.Node.set_ctx">
 <tt class="descname">set_ctx</tt><big>(</big><em>ctx</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Node.set_ctx" title="Permalink to this definition">¶</a></dt>
-<dd>Reset the context of a node and all child nodes.  Per default the
+<dd><p>Reset the context of a node and all child nodes.  Per default the
 parser will all generate nodes that have a &#8216;load&#8217; context as it&#8217;s the
 most common one.  This method is used in the parser to set assignment
-targets and other nodes to a store context.</dd></dl>
+targets and other nodes to a store context.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.nodes.Node.set_environment">
 <tt class="descname">set_environment</tt><big>(</big><em>environment</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Node.set_environment" title="Permalink to this definition">¶</a></dt>
-<dd>Set the environment for all nodes.</dd></dl>
+<dd><p>Set the environment for all nodes.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.nodes.Node.set_lineno">
 <tt class="descname">set_lineno</tt><big>(</big><em>lineno</em>, <em>override=False</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Node.set_lineno" title="Permalink to this definition">¶</a></dt>
-<dd>Set the line numbers of the node and children.</dd></dl>
+<dd><p>Set the line numbers of the node and children.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -677,7 +713,7 @@ targets and other nodes to a store context.</dd></dl>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Node" class="reference internal" href="#jinja2.nodes.Node"><tt class="xref docutils literal"><span class="pre">Node</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Node" title="jinja2.nodes.Node"><tt class="xref py py-class docutils literal"><span class="pre">Node</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -685,8 +721,8 @@ targets and other nodes to a store context.</dd></dl>
 <dt id="jinja2.nodes.Expr.as_const">
 <tt class="descname">as_const</tt><big>(</big><em>eval_ctx=None</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Expr.as_const" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value of the expression as constant or raise
-<a title="jinja2.nodes.Impossible" class="reference internal" href="#jinja2.nodes.Impossible"><tt class="xref docutils literal"><span class="pre">Impossible</span></tt></a> if this was not possible.</p>
-<p>An <a title="jinja2.nodes.EvalContext" class="reference external" href="api.html#jinja2.nodes.EvalContext"><tt class="xref docutils literal"><span class="pre">EvalContext</span></tt></a> can be provided, if none is given
+<a class="reference internal" href="#jinja2.nodes.Impossible" title="jinja2.nodes.Impossible"><tt class="xref py py-exc docutils literal"><span class="pre">Impossible</span></tt></a> if this was not possible.</p>
+<p>An <a class="reference internal" href="api.html#jinja2.nodes.EvalContext" title="jinja2.nodes.EvalContext"><tt class="xref py py-class docutils literal"><span class="pre">EvalContext</span></tt></a> can be provided, if none is given
 a default context is created which requires the nodes to have
 an attached environment.</p>
 <p class="versionchanged">
@@ -696,7 +732,8 @@ an attached environment.</p>
 <dl class="method">
 <dt id="jinja2.nodes.Expr.can_assign">
 <tt class="descname">can_assign</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.nodes.Expr.can_assign" title="Permalink to this definition">¶</a></dt>
-<dd>Check if it&#8217;s possible to assign something to this node.</dd></dl>
+<dd><p>Check if it&#8217;s possible to assign something to this node.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -708,7 +745,7 @@ an attached environment.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -722,7 +759,7 @@ an attached environment.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.BinExpr" class="reference internal" href="#jinja2.nodes.BinExpr"><tt class="xref docutils literal"><span class="pre">BinExpr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.BinExpr" title="jinja2.nodes.BinExpr"><tt class="xref py py-class docutils literal"><span class="pre">BinExpr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -736,7 +773,7 @@ an attached environment.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.BinExpr" class="reference internal" href="#jinja2.nodes.BinExpr"><tt class="xref docutils literal"><span class="pre">BinExpr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.BinExpr" title="jinja2.nodes.BinExpr"><tt class="xref py py-class docutils literal"><span class="pre">BinExpr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -750,7 +787,7 @@ an attached environment.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.BinExpr" class="reference internal" href="#jinja2.nodes.BinExpr"><tt class="xref docutils literal"><span class="pre">BinExpr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.BinExpr" title="jinja2.nodes.BinExpr"><tt class="xref py py-class docutils literal"><span class="pre">BinExpr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -765,7 +802,7 @@ result into an integer by truncating.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.BinExpr" class="reference internal" href="#jinja2.nodes.BinExpr"><tt class="xref docutils literal"><span class="pre">BinExpr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.BinExpr" title="jinja2.nodes.BinExpr"><tt class="xref py py-class docutils literal"><span class="pre">BinExpr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -779,7 +816,7 @@ result into an integer by truncating.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.BinExpr" class="reference internal" href="#jinja2.nodes.BinExpr"><tt class="xref docutils literal"><span class="pre">BinExpr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.BinExpr" title="jinja2.nodes.BinExpr"><tt class="xref py py-class docutils literal"><span class="pre">BinExpr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -793,7 +830,7 @@ result into an integer by truncating.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.BinExpr" class="reference internal" href="#jinja2.nodes.BinExpr"><tt class="xref docutils literal"><span class="pre">BinExpr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.BinExpr" title="jinja2.nodes.BinExpr"><tt class="xref py py-class docutils literal"><span class="pre">BinExpr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -807,7 +844,7 @@ result into an integer by truncating.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.BinExpr" class="reference internal" href="#jinja2.nodes.BinExpr"><tt class="xref docutils literal"><span class="pre">BinExpr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.BinExpr" title="jinja2.nodes.BinExpr"><tt class="xref py py-class docutils literal"><span class="pre">BinExpr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -821,7 +858,7 @@ result into an integer by truncating.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.BinExpr" class="reference internal" href="#jinja2.nodes.BinExpr"><tt class="xref docutils literal"><span class="pre">BinExpr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.BinExpr" title="jinja2.nodes.BinExpr"><tt class="xref py py-class docutils literal"><span class="pre">BinExpr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -835,7 +872,7 @@ result into an integer by truncating.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.BinExpr" class="reference internal" href="#jinja2.nodes.BinExpr"><tt class="xref docutils literal"><span class="pre">BinExpr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.BinExpr" title="jinja2.nodes.BinExpr"><tt class="xref py py-class docutils literal"><span class="pre">BinExpr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -845,7 +882,7 @@ result into an integer by truncating.</p>
 <dt id="jinja2.nodes.Call">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">Call</tt><big>(</big><em>node</em>, <em>args</em>, <em>kwargs</em>, <em>dyn_args</em>, <em>dyn_kwargs</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Call" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls an expression.  <cite>args</cite> is a list of arguments, <cite>kwargs</cite> a list
-of keyword arguments (list of <a title="jinja2.nodes.Keyword" class="reference internal" href="#jinja2.nodes.Keyword"><tt class="xref docutils literal"><span class="pre">Keyword</span></tt></a> nodes), and <cite>dyn_args</cite>
+of keyword arguments (list of <a class="reference internal" href="#jinja2.nodes.Keyword" title="jinja2.nodes.Keyword"><tt class="xref py py-class docutils literal"><span class="pre">Keyword</span></tt></a> nodes), and <cite>dyn_args</cite>
 and <cite>dyn_kwargs</cite> has to be either <cite>None</cite> or a node that is used as
 node for dynamic positional (<tt class="docutils literal"><span class="pre">*args</span></tt>) or keyword (<tt class="docutils literal"><span class="pre">**kwargs</span></tt>)
 arguments.</p>
@@ -853,7 +890,7 @@ arguments.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -863,12 +900,12 @@ arguments.</p>
 <dt id="jinja2.nodes.Compare">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">Compare</tt><big>(</big><em>expr</em>, <em>ops</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Compare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares an expression with some other expressions.  <cite>ops</cite> must be a
-list of <a title="jinja2.nodes.Operand" class="reference internal" href="#jinja2.nodes.Operand"><tt class="xref docutils literal"><span class="pre">Operand</span></tt></a>s.</p>
+list of <a class="reference internal" href="#jinja2.nodes.Operand" title="jinja2.nodes.Operand"><tt class="xref py py-class docutils literal"><span class="pre">Operand</span></tt></a>s.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -883,7 +920,7 @@ unicode.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -898,7 +935,7 @@ unicode.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -908,8 +945,8 @@ unicode.</p>
 <dt id="jinja2.nodes.ContextReference">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">ContextReference</tt><a class="headerlink" href="#jinja2.nodes.ContextReference" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the current template context.  It can be used like a
-<a title="jinja2.nodes.Name" class="reference internal" href="#jinja2.nodes.Name"><tt class="xref docutils literal"><span class="pre">Name</span></tt></a> node, with a <tt class="docutils literal"><span class="pre">'load'</span></tt> ctx and will return the
-current <a title="jinja2.runtime.Context" class="reference external" href="api.html#jinja2.runtime.Context"><tt class="xref docutils literal"><span class="pre">Context</span></tt></a> object.</p>
+<a class="reference internal" href="#jinja2.nodes.Name" title="jinja2.nodes.Name"><tt class="xref py py-class docutils literal"><span class="pre">Name</span></tt></a> node, with a <tt class="docutils literal"><span class="pre">'load'</span></tt> ctx and will return the
+current <a class="reference internal" href="api.html#jinja2.runtime.Context" title="jinja2.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> object.</p>
 <p>Here an example that assigns the current template name to a
 variable named <cite>foo</cite>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">Assign</span><span class="p">(</span><span class="n">Name</span><span class="p">(</span><span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">),</span>
@@ -920,7 +957,7 @@ variable named <cite>foo</cite>:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -935,7 +972,7 @@ extensions that want to call a callback stored on the environment.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -945,14 +982,14 @@ extensions that want to call a callback stored on the environment.</p>
 <dt id="jinja2.nodes.ExtensionAttribute">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">ExtensionAttribute</tt><big>(</big><em>identifier</em>, <em>name</em><big>)</big><a class="headerlink" href="#jinja2.nodes.ExtensionAttribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the attribute of an extension bound to the environment.
-The identifier is the identifier of the <tt class="xref docutils literal"><span class="pre">Extension</span></tt>.</p>
+The identifier is the identifier of the <tt class="xref py py-class docutils literal"><span class="pre">Extension</span></tt>.</p>
 <p>This node is usually constructed by calling the
-<a title="jinja2.ext.Extension.attr" class="reference internal" href="#jinja2.ext.Extension.attr"><tt class="xref docutils literal"><span class="pre">attr()</span></tt></a> method on an extension.</p>
+<a class="reference internal" href="#jinja2.ext.Extension.attr" title="jinja2.ext.Extension.attr"><tt class="xref py py-meth docutils literal"><span class="pre">attr()</span></tt></a> method on an extension.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -962,14 +999,14 @@ The identifier is the identifier of the <tt class="xref docutils literal"><span 
 <dt id="jinja2.nodes.Filter">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">Filter</tt><big>(</big><em>node</em>, <em>name</em>, <em>args</em>, <em>kwargs</em>, <em>dyn_args</em>, <em>dyn_kwargs</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>This node applies a filter on an expression.  <cite>name</cite> is the name of
-the filter, the rest of the fields are the same as for <a title="jinja2.nodes.Call" class="reference internal" href="#jinja2.nodes.Call"><tt class="xref docutils literal"><span class="pre">Call</span></tt></a>.</p>
+the filter, the rest of the fields are the same as for <a class="reference internal" href="#jinja2.nodes.Call" title="jinja2.nodes.Call"><tt class="xref py py-class docutils literal"><span class="pre">Call</span></tt></a>.</p>
 <p>If the <cite>node</cite> of a filter is <cite>None</cite> the contents of the last buffer are
 filtered.  Buffers are created by macros and filter blocks.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -984,7 +1021,7 @@ bytestring and prefer the attribute.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -998,7 +1035,7 @@ bytestring and prefer the attribute.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1015,7 +1052,7 @@ compiler so there is no need to assign them to local variables.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1026,14 +1063,14 @@ compiler so there is no need to assign them to local variables.</p>
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">InternalName</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#jinja2.nodes.InternalName" title="Permalink to this definition">¶</a></dt>
 <dd><p>An internal name in the compiler.  You cannot create these nodes
 yourself but the parser provides a
-<a title="jinja2.parser.Parser.free_identifier" class="reference internal" href="#jinja2.parser.Parser.free_identifier"><tt class="xref docutils literal"><span class="pre">free_identifier()</span></tt></a> method that creates
+<a class="reference internal" href="#jinja2.parser.Parser.free_identifier" title="jinja2.parser.Parser.free_identifier"><tt class="xref py py-meth docutils literal"><span class="pre">free_identifier()</span></tt></a> method that creates
 a new identifier for you.  This identifier is not available from the
 template and is not threated specially by the compiler.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1047,7 +1084,7 @@ template and is not threated specially by the compiler.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1064,7 +1101,7 @@ representation (objects where <tt class="docutils literal"><span class="pre">eva
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Literal" class="reference internal" href="#jinja2.nodes.Literal"><tt class="xref docutils literal"><span class="pre">Literal</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Literal" title="jinja2.nodes.Literal"><tt class="xref py py-class docutils literal"><span class="pre">Literal</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1074,12 +1111,12 @@ representation (objects where <tt class="docutils literal"><span class="pre">eva
 <dt id="jinja2.nodes.Dict">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">Dict</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Any dict literal such as <tt class="docutils literal"><span class="pre">{1:</span> <span class="pre">2,</span> <span class="pre">3:</span> <span class="pre">4}</span></tt>.  The items must be a list of
-<a title="jinja2.nodes.Pair" class="reference internal" href="#jinja2.nodes.Pair"><tt class="xref docutils literal"><span class="pre">Pair</span></tt></a> nodes.</p>
+<a class="reference internal" href="#jinja2.nodes.Pair" title="jinja2.nodes.Pair"><tt class="xref py py-class docutils literal"><span class="pre">Pair</span></tt></a> nodes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Literal" class="reference internal" href="#jinja2.nodes.Literal"><tt class="xref docutils literal"><span class="pre">Literal</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Literal" title="jinja2.nodes.Literal"><tt class="xref py py-class docutils literal"><span class="pre">Literal</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1093,7 +1130,7 @@ representation (objects where <tt class="docutils literal"><span class="pre">eva
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Literal" class="reference internal" href="#jinja2.nodes.Literal"><tt class="xref docutils literal"><span class="pre">Literal</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Literal" title="jinja2.nodes.Literal"><tt class="xref py py-class docutils literal"><span class="pre">Literal</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1107,7 +1144,7 @@ representation (objects where <tt class="docutils literal"><span class="pre">eva
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Literal" class="reference internal" href="#jinja2.nodes.Literal"><tt class="xref docutils literal"><span class="pre">Literal</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Literal" title="jinja2.nodes.Literal"><tt class="xref py py-class docutils literal"><span class="pre">Literal</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1117,13 +1154,13 @@ representation (objects where <tt class="docutils literal"><span class="pre">eva
 <dt id="jinja2.nodes.Tuple">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">Tuple</tt><big>(</big><em>items</em>, <em>ctx</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Tuple" title="Permalink to this definition">¶</a></dt>
 <dd><p>For loop unpacking and some other things like multiple arguments
-for subscripts.  Like for <a title="jinja2.nodes.Name" class="reference internal" href="#jinja2.nodes.Name"><tt class="xref docutils literal"><span class="pre">Name</span></tt></a> <cite>ctx</cite> specifies if the tuple
+for subscripts.  Like for <a class="reference internal" href="#jinja2.nodes.Name" title="jinja2.nodes.Name"><tt class="xref py py-class docutils literal"><span class="pre">Name</span></tt></a> <cite>ctx</cite> specifies if the tuple
 is used for loading the names or storing.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Literal" class="reference internal" href="#jinja2.nodes.Literal"><tt class="xref docutils literal"><span class="pre">Literal</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Literal" title="jinja2.nodes.Literal"><tt class="xref py py-class docutils literal"><span class="pre">Literal</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1137,7 +1174,7 @@ is used for loading the names or storing.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1154,7 +1191,7 @@ only if autoescaping is active.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1174,7 +1211,7 @@ The <cite>ctx</cite> of the node can be one of the following values:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1184,12 +1221,12 @@ The <cite>ctx</cite> of the node can be one of the following values:</p>
 <dt id="jinja2.nodes.Slice">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">Slice</tt><big>(</big><em>start</em>, <em>stop</em>, <em>step</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Slice" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents a slice object.  This must only be used as argument for
-<tt class="xref docutils literal"><span class="pre">Subscript</span></tt>.</p>
+<tt class="xref py py-class docutils literal"><span class="pre">Subscript</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1199,12 +1236,12 @@ The <cite>ctx</cite> of the node can be one of the following values:</p>
 <dt id="jinja2.nodes.Test">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">Test</tt><big>(</big><em>node</em>, <em>name</em>, <em>args</em>, <em>kwargs</em>, <em>dyn_args</em>, <em>dyn_kwargs</em><big>)</big><a class="headerlink" href="#jinja2.nodes.Test" title="Permalink to this definition">¶</a></dt>
 <dd><p>Applies a test on an expression.  <cite>name</cite> is the name of the test, the
-rest of the fields are the same as for <a title="jinja2.nodes.Call" class="reference internal" href="#jinja2.nodes.Call"><tt class="xref docutils literal"><span class="pre">Call</span></tt></a>.</p>
+rest of the fields are the same as for <a class="reference internal" href="#jinja2.nodes.Call" title="jinja2.nodes.Call"><tt class="xref py py-class docutils literal"><span class="pre">Call</span></tt></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1218,7 +1255,7 @@ rest of the fields are the same as for <a title="jinja2.nodes.Call" class="refer
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Expr" title="jinja2.nodes.Expr"><tt class="xref py py-class docutils literal"><span class="pre">Expr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1232,7 +1269,7 @@ rest of the fields are the same as for <a title="jinja2.nodes.Call" class="refer
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.UnaryExpr" class="reference internal" href="#jinja2.nodes.UnaryExpr"><tt class="xref docutils literal"><span class="pre">UnaryExpr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.UnaryExpr" title="jinja2.nodes.UnaryExpr"><tt class="xref py py-class docutils literal"><span class="pre">UnaryExpr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1246,7 +1283,7 @@ rest of the fields are the same as for <a title="jinja2.nodes.Call" class="refer
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.UnaryExpr" class="reference internal" href="#jinja2.nodes.UnaryExpr"><tt class="xref docutils literal"><span class="pre">UnaryExpr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.UnaryExpr" title="jinja2.nodes.UnaryExpr"><tt class="xref py py-class docutils literal"><span class="pre">UnaryExpr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1260,7 +1297,7 @@ rest of the fields are the same as for <a title="jinja2.nodes.Call" class="refer
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.UnaryExpr" class="reference internal" href="#jinja2.nodes.UnaryExpr"><tt class="xref docutils literal"><span class="pre">UnaryExpr</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.UnaryExpr" title="jinja2.nodes.UnaryExpr"><tt class="xref py py-class docutils literal"><span class="pre">UnaryExpr</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1274,7 +1311,7 @@ rest of the fields are the same as for <a title="jinja2.nodes.Call" class="refer
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Node" class="reference internal" href="#jinja2.nodes.Node"><tt class="xref docutils literal"><span class="pre">Node</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Node" title="jinja2.nodes.Node"><tt class="xref py py-class docutils literal"><span class="pre">Node</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1288,7 +1325,7 @@ rest of the fields are the same as for <a title="jinja2.nodes.Call" class="refer
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Helper" class="reference internal" href="#jinja2.nodes.Helper"><tt class="xref docutils literal"><span class="pre">Helper</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Helper" title="jinja2.nodes.Helper"><tt class="xref py py-class docutils literal"><span class="pre">Helper</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1303,7 +1340,7 @@ The following operators are available: <tt class="docutils literal"><span class=
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Helper" class="reference internal" href="#jinja2.nodes.Helper"><tt class="xref docutils literal"><span class="pre">Helper</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Helper" title="jinja2.nodes.Helper"><tt class="xref py py-class docutils literal"><span class="pre">Helper</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1317,7 +1354,7 @@ The following operators are available: <tt class="docutils literal"><span class=
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Helper" class="reference internal" href="#jinja2.nodes.Helper"><tt class="xref docutils literal"><span class="pre">Helper</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Helper" title="jinja2.nodes.Helper"><tt class="xref py py-class docutils literal"><span class="pre">Helper</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1331,7 +1368,7 @@ The following operators are available: <tt class="docutils literal"><span class=
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Node" class="reference internal" href="#jinja2.nodes.Node"><tt class="xref docutils literal"><span class="pre">Node</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Node" title="jinja2.nodes.Node"><tt class="xref py py-class docutils literal"><span class="pre">Node</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1345,7 +1382,7 @@ The following operators are available: <tt class="docutils literal"><span class=
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1359,7 +1396,7 @@ The following operators are available: <tt class="docutils literal"><span class=
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1373,7 +1410,7 @@ The following operators are available: <tt class="docutils literal"><span class=
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1388,7 +1425,7 @@ the unnamed macro as <cite>caller</cite> argument this node holds.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1402,7 +1439,7 @@ the unnamed macro as <cite>caller</cite> argument this node holds.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1412,7 +1449,7 @@ the unnamed macro as <cite>caller</cite> argument this node holds.</p>
 <dt id="jinja2.nodes.EvalContextModifier">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">EvalContextModifier</tt><big>(</big><em>options</em><big>)</big><a class="headerlink" href="#jinja2.nodes.EvalContextModifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Modifies the eval context.  For each option that should be modified,
-a <a title="jinja2.nodes.Keyword" class="reference internal" href="#jinja2.nodes.Keyword"><tt class="xref docutils literal"><span class="pre">Keyword</span></tt></a> has to be added to the <tt class="xref docutils literal"><span class="pre">options</span></tt> list.</p>
+a <a class="reference internal" href="#jinja2.nodes.Keyword" title="jinja2.nodes.Keyword"><tt class="xref py py-class docutils literal"><span class="pre">Keyword</span></tt></a> has to be added to the <tt class="xref py py-attr docutils literal"><span class="pre">options</span></tt> list.</p>
 <p>Example to change the <cite>autoescape</cite> setting:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">EvalContextModifier</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="n">Keyword</span><span class="p">(</span><span class="s">&#39;autoescape&#39;</span><span class="p">,</span> <span class="n">Const</span><span class="p">(</span><span class="bp">True</span><span class="p">))])</span>
 </pre></div>
@@ -1421,7 +1458,7 @@ a <a title="jinja2.nodes.Keyword" class="reference internal" href="#jinja2.nodes
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1431,13 +1468,13 @@ a <a title="jinja2.nodes.Keyword" class="reference internal" href="#jinja2.nodes
 <dt id="jinja2.nodes.ScopedEvalContextModifier">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">ScopedEvalContextModifier</tt><big>(</big><em>options</em>, <em>body</em><big>)</big><a class="headerlink" href="#jinja2.nodes.ScopedEvalContextModifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Modifies the eval context and reverts it later.  Works exactly like
-<a title="jinja2.nodes.EvalContextModifier" class="reference internal" href="#jinja2.nodes.EvalContextModifier"><tt class="xref docutils literal"><span class="pre">EvalContextModifier</span></tt></a> but will only modify the
-<a title="jinja2.nodes.EvalContext" class="reference external" href="api.html#jinja2.nodes.EvalContext"><tt class="xref docutils literal"><span class="pre">EvalContext</span></tt></a> for nodes in the <tt class="xref docutils literal"><span class="pre">body</span></tt>.</p>
+<a class="reference internal" href="#jinja2.nodes.EvalContextModifier" title="jinja2.nodes.EvalContextModifier"><tt class="xref py py-class docutils literal"><span class="pre">EvalContextModifier</span></tt></a> but will only modify the
+<a class="reference internal" href="api.html#jinja2.nodes.EvalContext" title="jinja2.nodes.EvalContext"><tt class="xref py py-class docutils literal"><span class="pre">EvalContext</span></tt></a> for nodes in the <tt class="xref py py-attr docutils literal"><span class="pre">body</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.EvalContextModifier" class="reference internal" href="#jinja2.nodes.EvalContextModifier"><tt class="xref docutils literal"><span class="pre">EvalContextModifier</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.EvalContextModifier" title="jinja2.nodes.EvalContextModifier"><tt class="xref py py-class docutils literal"><span class="pre">EvalContextModifier</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1451,7 +1488,7 @@ a <a title="jinja2.nodes.Keyword" class="reference internal" href="#jinja2.nodes
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1465,7 +1502,7 @@ a <a title="jinja2.nodes.Keyword" class="reference internal" href="#jinja2.nodes
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1479,7 +1516,7 @@ a <a title="jinja2.nodes.Keyword" class="reference internal" href="#jinja2.nodes
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1489,7 +1526,7 @@ a <a title="jinja2.nodes.Keyword" class="reference internal" href="#jinja2.nodes
 <dt id="jinja2.nodes.For">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">For</tt><big>(</big><em>target</em>, <em>iter</em>, <em>body</em>, <em>else_</em>, <em>test</em>, <em>recursive</em><big>)</big><a class="headerlink" href="#jinja2.nodes.For" title="Permalink to this definition">¶</a></dt>
 <dd><p>The for loop.  <cite>target</cite> is the target for the iteration (usually a
-<a title="jinja2.nodes.Name" class="reference internal" href="#jinja2.nodes.Name"><tt class="xref docutils literal"><span class="pre">Name</span></tt></a> or <a title="jinja2.nodes.Tuple" class="reference internal" href="#jinja2.nodes.Tuple"><tt class="xref docutils literal"><span class="pre">Tuple</span></tt></a>), <cite>iter</cite> the iterable.  <cite>body</cite> is a list
+<a class="reference internal" href="#jinja2.nodes.Name" title="jinja2.nodes.Name"><tt class="xref py py-class docutils literal"><span class="pre">Name</span></tt></a> or <a class="reference internal" href="#jinja2.nodes.Tuple" title="jinja2.nodes.Tuple"><tt class="xref py py-class docutils literal"><span class="pre">Tuple</span></tt></a>), <cite>iter</cite> the iterable.  <cite>body</cite> is a list
 of nodes that are used as loop-body, and <cite>else_</cite> a list of nodes for the
 <cite>else</cite> block.  If no else node exists it has to be an empty list.</p>
 <p>For filtered nodes an expression can be stored as <cite>test</cite>, otherwise <cite>None</cite>.</p>
@@ -1497,7 +1534,7 @@ of nodes that are used as loop-body, and <cite>else_</cite> a list of nodes for 
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1518,7 +1555,7 @@ extra care must be taken.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1532,7 +1569,7 @@ extra care must be taken.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1546,7 +1583,7 @@ extra care must be taken.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1560,7 +1597,7 @@ extra care must be taken.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1576,7 +1613,7 @@ a list of nodes for the macro body.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1591,7 +1628,7 @@ This is used both for the <cite>print</cite> statement and the regular template 
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1605,7 +1642,7 @@ This is used both for the <cite>print</cite> statement and the regular template 
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Stmt" class="reference internal" href="#jinja2.nodes.Stmt"><tt class="xref docutils literal"><span class="pre">Stmt</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Stmt" title="jinja2.nodes.Stmt"><tt class="xref py py-class docutils literal"><span class="pre">Stmt</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1620,7 +1657,7 @@ is passed to the compiler.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Node" class="reference internal" href="#jinja2.nodes.Node"><tt class="xref docutils literal"><span class="pre">Node</span></tt></a></td>
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a class="reference internal" href="#jinja2.nodes.Node" title="jinja2.nodes.Node"><tt class="xref py py-class docutils literal"><span class="pre">Node</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1629,7 +1666,8 @@ is passed to the compiler.</p>
 <dl class="exception">
 <dt id="jinja2.nodes.Impossible">
 <em class="property">exception </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">Impossible</tt><a class="headerlink" href="#jinja2.nodes.Impossible" title="Permalink to this definition">¶</a></dt>
-<dd>Raised if the node could not perform a requested action.</dd></dl>
+<dd><p>Raised if the node could not perform a requested action.</p>
+</dd></dl>
 
 </div>
 </div>

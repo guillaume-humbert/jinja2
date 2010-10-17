@@ -1,3 +1,9 @@
+jinja2 (2.5.4-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sun, 17 Oct 2010 20:48:21 +0200
+
 jinja2 (2.5.2-3) unstable; urgency=low
 
   * Rebuild against newer python3-all-dev package (python3.1 now uses

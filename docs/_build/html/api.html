@@ -39,24 +39,24 @@
         <div id="toc">
           <h3>Table Of Contents</h3>
           <ul>
-<li><a class="reference external" href="#">API</a><ul>
-<li><a class="reference external" href="#basics">Basics</a></li>
-<li><a class="reference external" href="#unicode">Unicode</a></li>
-<li><a class="reference external" href="#high-level-api">High Level API</a></li>
-<li><a class="reference external" href="#autoescaping">Autoescaping</a></li>
-<li><a class="reference external" href="#notes-on-identifiers">Notes on Identifiers</a></li>
-<li><a class="reference external" href="#undefined-types">Undefined Types</a></li>
-<li><a class="reference external" href="#the-context">The Context</a></li>
-<li><a class="reference external" href="#loaders">Loaders</a></li>
-<li><a class="reference external" href="#bytecode-cache">Bytecode Cache</a></li>
-<li><a class="reference external" href="#utilities">Utilities</a></li>
-<li><a class="reference external" href="#exceptions">Exceptions</a></li>
-<li><a class="reference external" href="#custom-filters">Custom Filters</a></li>
-<li><a class="reference external" href="#evaluation-context">Evaluation Context</a></li>
-<li><a class="reference external" href="#custom-tests">Custom Tests</a></li>
-<li><a class="reference external" href="#the-global-namespace">The Global Namespace</a></li>
-<li><a class="reference external" href="#low-level-api">Low Level API</a></li>
-<li><a class="reference external" href="#the-meta-api">The Meta API</a></li>
+<li><a class="reference internal" href="#">API</a><ul>
+<li><a class="reference internal" href="#basics">Basics</a></li>
+<li><a class="reference internal" href="#unicode">Unicode</a></li>
+<li><a class="reference internal" href="#high-level-api">High Level API</a></li>
+<li><a class="reference internal" href="#autoescaping">Autoescaping</a></li>
+<li><a class="reference internal" href="#notes-on-identifiers">Notes on Identifiers</a></li>
+<li><a class="reference internal" href="#undefined-types">Undefined Types</a></li>
+<li><a class="reference internal" href="#the-context">The Context</a></li>
+<li><a class="reference internal" href="#loaders">Loaders</a></li>
+<li><a class="reference internal" href="#bytecode-cache">Bytecode Cache</a></li>
+<li><a class="reference internal" href="#utilities">Utilities</a></li>
+<li><a class="reference internal" href="#exceptions">Exceptions</a></li>
+<li><a class="reference internal" href="#custom-filters">Custom Filters</a></li>
+<li><a class="reference internal" href="#evaluation-context">Evaluation Context</a></li>
+<li><a class="reference internal" href="#custom-tests">Custom Tests</a></li>
+<li><a class="reference internal" href="#the-global-namespace">The Global Namespace</a></li>
+<li><a class="reference internal" href="#low-level-api">Low Level API</a></li>
+<li><a class="reference internal" href="#the-meta-api">The Meta API</a></li>
 </ul>
 </li>
 </ul>
@@ -64,19 +64,19 @@
         </div>
         
   <div class="section" id="module-jinja2">
-<h1>API<a class="headerlink" href="#module-jinja2" title="Permalink to this headline">¶</a></h1>
+<span id="api"></span><h1>API<a class="headerlink" href="#module-jinja2" title="Permalink to this headline">¶</a></h1>
 <p>This document describes the API to Jinja2 and not the template language.  It
 will be most useful as reference to those implementing the template interface
 to the application and not those who are creating Jinja2 templates.</p>
 <div class="section" id="basics">
 <h2>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h2>
-<p>Jinja2 uses a central object called the template <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a>.
+<p>Jinja2 uses a central object called the template <a class="reference internal" href="#jinja2.Environment" title="jinja2.Environment"><tt class="xref py py-class docutils literal"><span class="pre">Environment</span></tt></a>.
 Instances of this class are used to store the configuration, global objects
 and are used to load templates from the file system or other locations.
 Even if you are creating templates from strings by using the constructor of
-<a title="jinja2.Template" class="reference internal" href="#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a> class, an environment is created automatically for you,
+<a class="reference internal" href="#jinja2.Template" title="jinja2.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> class, an environment is created automatically for you,
 albeit a shared one.</p>
-<p>Most applications will create one <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a> object on application
+<p>Most applications will create one <a class="reference internal" href="#jinja2.Environment" title="jinja2.Environment"><tt class="xref py py-class docutils literal"><span class="pre">Environment</span></tt></a> object on application
 initialization and use that to load templates.  In some cases it&#8217;s however
 useful to have multiple environments side by side, if different configurations
 are in use.</p>
@@ -92,16 +92,16 @@ loader that looks up the templates in the <cite>templates</cite> folder inside t
 and you can also write your own if you want to load templates from a
 database or other resources.</p>
 <p>To load a template from this environment you just have to call the
-<tt class="xref docutils literal"><span class="pre">get_template()</span></tt> method which then returns the loaded <a title="jinja2.Template" class="reference internal" href="#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a>:</p>
+<tt class="xref py py-meth docutils literal"><span class="pre">get_template()</span></tt> method which then returns the loaded <a class="reference internal" href="#jinja2.Template" title="jinja2.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s">&#39;mytemplate.html&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>To render it with some variables, just call the <tt class="xref docutils literal"><span class="pre">render()</span></tt> method:</p>
+<p>To render it with some variables, just call the <tt class="xref py py-meth docutils literal"><span class="pre">render()</span></tt> method:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">the</span><span class="o">=</span><span class="s">&#39;variables&#39;</span><span class="p">,</span> <span class="n">go</span><span class="o">=</span><span class="s">&#39;here&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Using a template loader rather then passing strings to <a title="jinja2.Template" class="reference internal" href="#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a>
-or <a title="jinja2.Environment.from_string" class="reference internal" href="#jinja2.Environment.from_string"><tt class="xref docutils literal"><span class="pre">Environment.from_string()</span></tt></a> has multiple advantages.  Besides being
+<p>Using a template loader rather then passing strings to <a class="reference internal" href="#jinja2.Template" title="jinja2.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a>
+or <a class="reference internal" href="#jinja2.Environment.from_string" title="jinja2.Environment.from_string"><tt class="xref py py-meth docutils literal"><span class="pre">Environment.from_string()</span></tt></a> has multiple advantages.  Besides being
 a lot easier to use it also enables template inheritance.</p>
 </div>
 <div class="section" id="unicode">
@@ -156,7 +156,7 @@ for everything else <cite>unicode</cite>:</p>
 <h2>High Level API<a class="headerlink" href="#high-level-api" title="Permalink to this headline">¶</a></h2>
 <p>The high-level API is the API you will use in the application to load and
 render Jinja2 templates.  The <a class="reference internal" href="#low-level-api"><em>Low Level API</em></a> on the other side is only
-useful if you want to dig deeper into Jinja2 or <a class="reference external" href="extensions.html#jinja-extensions"><em>develop extensions</em></a>.</p>
+useful if you want to dig deeper into Jinja2 or <a class="reference internal" href="extensions.html#jinja-extensions"><em>develop extensions</em></a>.</p>
 <dl class="class">
 <dt id="jinja2.Environment">
 <em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">Environment</tt><big>(</big><span class="optional">[</span><em>options</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Environment" title="Permalink to this definition">¶</a></dt>
@@ -185,10 +185,10 @@ Defaults to <tt class="docutils literal"><span class="pre">'{{'</span></tt>.</dd
 <dd>The string marking the end of a comment.  Defaults to <tt class="docutils literal"><span class="pre">'#}'</span></tt>.</dd>
 <dt><cite>line_statement_prefix</cite></dt>
 <dd>If given and a string, this will be used as prefix for line based
-statements.  See also <a class="reference external" href="templates.html#line-statements"><em>Line Statements</em></a>.</dd>
+statements.  See also <a class="reference internal" href="templates.html#line-statements"><em>Line Statements</em></a>.</dd>
 <dt><cite>line_comment_prefix</cite></dt>
 <dd><p class="first">If given and a string, this will be used as prefix for line based
-based comments.  See also <a class="reference external" href="templates.html#line-statements"><em>Line Statements</em></a>.</p>
+based comments.  See also <a class="reference internal" href="templates.html#line-statements"><em>Line Statements</em></a>.</p>
 <p class="last versionadded">
 <span class="versionmodified">New in version 2.2.</span></p>
 </dd>
@@ -203,11 +203,11 @@ applications.</dd>
 <dt><cite>extensions</cite></dt>
 <dd>List of Jinja extensions to use.  This can either be import paths
 as strings or extension classes.  For more information have a
-look at <a class="reference external" href="extensions.html#jinja-extensions"><em>the extensions documentation</em></a>.</dd>
+look at <a class="reference internal" href="extensions.html#jinja-extensions"><em>the extensions documentation</em></a>.</dd>
 <dt><cite>optimized</cite></dt>
 <dd>should the optimizer be enabled?  Default is <cite>True</cite>.</dd>
 <dt><cite>undefined</cite></dt>
-<dd><a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a> or a subclass of it that is used to represent
+<dd><a class="reference internal" href="#jinja2.Undefined" title="jinja2.Undefined"><tt class="xref py py-class docutils literal"><span class="pre">Undefined</span></tt></a> or a subclass of it that is used to represent
 undefined values in the template.</dd>
 <dt><cite>finalize</cite></dt>
 <dd>A callable that can be used to process the result of a variable
@@ -216,7 +216,7 @@ expression before it is output.  For example one can convert
 <dt><cite>autoescape</cite></dt>
 <dd><p class="first">If set to true the XML/HTML autoescaping feature is enabled by
 default.  For more details about auto escaping see
-<tt class="xref docutils literal"><span class="pre">Markup</span></tt>.  As of Jinja 2.4 this can also
+<tt class="xref py py-class docutils literal"><span class="pre">Markup</span></tt>.  As of Jinja 2.4 this can also
 be a callable that is passed the template name and has to
 return <cite>True</cite> or <cite>False</cite> depending on autoescape should be
 enabled by default.</p>
@@ -249,42 +249,47 @@ have to be parsed if they were not changed.</p>
 <dl class="attribute">
 <dt id="jinja2.Environment.shared">
 <tt class="descname">shared</tt><a class="headerlink" href="#jinja2.Environment.shared" title="Permalink to this definition">¶</a></dt>
-<dd>If a template was created by using the <a title="jinja2.Template" class="reference internal" href="#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a> constructor
+<dd><p>If a template was created by using the <a class="reference internal" href="#jinja2.Template" title="jinja2.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> constructor
 an environment is created automatically.  These environments are
 created as shared environments which means that multiple templates
 may have the same anonymous environment.  For all shared environments
-this attribute is <cite>True</cite>, else <cite>False</cite>.</dd></dl>
+this attribute is <cite>True</cite>, else <cite>False</cite>.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Environment.sandboxed">
 <tt class="descname">sandboxed</tt><a class="headerlink" href="#jinja2.Environment.sandboxed" title="Permalink to this definition">¶</a></dt>
-<dd>If the environment is sandboxed this attribute is <cite>True</cite>.  For the
+<dd><p>If the environment is sandboxed this attribute is <cite>True</cite>.  For the
 sandbox mode have a look at the documentation for the
-<a title="jinja2.sandbox.SandboxedEnvironment" class="reference external" href="sandbox.html#jinja2.sandbox.SandboxedEnvironment"><tt class="xref docutils literal"><span class="pre">SandboxedEnvironment</span></tt></a>.</dd></dl>
+<a class="reference internal" href="sandbox.html#jinja2.sandbox.SandboxedEnvironment" title="jinja2.sandbox.SandboxedEnvironment"><tt class="xref py py-class docutils literal"><span class="pre">SandboxedEnvironment</span></tt></a>.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Environment.filters">
 <tt class="descname">filters</tt><a class="headerlink" href="#jinja2.Environment.filters" title="Permalink to this definition">¶</a></dt>
-<dd>A dict of filters for this environment.  As long as no template was
+<dd><p>A dict of filters for this environment.  As long as no template was
 loaded it&#8217;s safe to add new filters or remove old.  For custom filters
 see <a class="reference internal" href="#writing-filters"><em>Custom Filters</em></a>.  For valid filter names have a look at
-<a class="reference internal" href="#identifier-naming"><em>Notes on Identifiers</em></a>.</dd></dl>
+<a class="reference internal" href="#identifier-naming"><em>Notes on Identifiers</em></a>.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Environment.tests">
 <tt class="descname">tests</tt><a class="headerlink" href="#jinja2.Environment.tests" title="Permalink to this definition">¶</a></dt>
-<dd>A dict of test functions for this environment.  As long as no
+<dd><p>A dict of test functions for this environment.  As long as no
 template was loaded it&#8217;s safe to modify this dict.  For custom tests
 see <a class="reference internal" href="#writing-tests"><em>Custom Tests</em></a>.  For valid test names have a look at
-<a class="reference internal" href="#identifier-naming"><em>Notes on Identifiers</em></a>.</dd></dl>
+<a class="reference internal" href="#identifier-naming"><em>Notes on Identifiers</em></a>.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Environment.globals">
 <tt class="descname">globals</tt><a class="headerlink" href="#jinja2.Environment.globals" title="Permalink to this definition">¶</a></dt>
-<dd>A dict of global variables.  These variables are always available
+<dd><p>A dict of global variables.  These variables are always available
 in a template.  As long as no template was loaded it&#8217;s safe
 to modify this dict.  For more details see <a class="reference internal" href="#global-namespace"><em>The Global Namespace</em></a>.
-For valid object names have a look at <a class="reference internal" href="#identifier-naming"><em>Notes on Identifiers</em></a>.</dd></dl>
+For valid object names have a look at <a class="reference internal" href="#identifier-naming"><em>Notes on Identifiers</em></a>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Environment.overlay">
@@ -303,7 +308,7 @@ through.</p>
 <dl class="method">
 <dt id="jinja2.Environment.undefined">
 <tt class="descname">undefined</tt><big>(</big><span class="optional">[</span><em>hint</em>, <em>obj</em>, <em>name</em>, <em>exc</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Environment.undefined" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a new <a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a> object for <cite>name</cite>.  This is useful
+<dd><p>Creates a new <a class="reference internal" href="#jinja2.Undefined" title="jinja2.Undefined"><tt class="xref py py-class docutils literal"><span class="pre">Undefined</span></tt></a> object for <cite>name</cite>.  This is useful
 for filters or functions that may return undefined objects for
 some operations.  All parameters except of <cite>hint</cite> should be provided
 as keyword parameters for better readability.  The <cite>hint</cite> is used as
@@ -311,7 +316,7 @@ error message for the exception if provided, otherwise the error
 message will be generated from <cite>obj</cite> and <cite>name</cite> automatically.  The exception
 provided as <cite>exc</cite> is raised if something with the generated undefined
 object is done that the undefined object does not allow.  The default
-exception is <a title="jinja2.UndefinedError" class="reference internal" href="#jinja2.UndefinedError"><tt class="xref docutils literal"><span class="pre">UndefinedError</span></tt></a>.  If a <cite>hint</cite> is provided the
+exception is <a class="reference internal" href="#jinja2.UndefinedError" title="jinja2.UndefinedError"><tt class="xref py py-exc docutils literal"><span class="pre">UndefinedError</span></tt></a>.  If a <cite>hint</cite> is provided the
 <cite>name</cite> may be ommited.</p>
 <p>The most common way to create an undefined object is by providing
 a name only:</p>
@@ -326,7 +331,7 @@ undefined object the holder object to improve the error message:</p>
 </pre></div>
 </div>
 <p>For a more complex example you can provide a hint.  For example
-the <a title="first" class="reference external" href="templates.html#first"><tt class="xref docutils literal"><span class="pre">first()</span></tt></a> filter creates an undefined object that way:</p>
+the <a class="reference internal" href="templates.html#first" title="first"><tt class="xref py py-func docutils literal"><span class="pre">first()</span></tt></a> filter creates an undefined object that way:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">return</span> <span class="n">environment</span><span class="o">.</span><span class="n">undefined</span><span class="p">(</span><span class="s">&#39;no first item, sequence was empty&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -339,44 +344,45 @@ possibility to enhance the error message.</p>
 <dl class="method">
 <dt id="jinja2.Environment.from_string">
 <tt class="descname">from_string</tt><big>(</big><em>source</em>, <em>globals=None</em>, <em>template_class=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.from_string" title="Permalink to this definition">¶</a></dt>
-<dd>Load a template from a string.  This parses the source given and
-returns a <a title="jinja2.Template" class="reference internal" href="#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a> object.</dd></dl>
+<dd><p>Load a template from a string.  This parses the source given and
+returns a <a class="reference internal" href="#jinja2.Template" title="jinja2.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> object.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Environment.get_template">
 <tt class="descname">get_template</tt><big>(</big><em>name</em>, <em>parent=None</em>, <em>globals=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.get_template" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a template from the loader.  If a loader is configured this
-method ask the loader for the template and returns a <a title="jinja2.Template" class="reference internal" href="#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a>.
-If the <cite>parent</cite> parameter is not <cite>None</cite>, <a title="jinja2.Environment.join_path" class="reference internal" href="#jinja2.Environment.join_path"><tt class="xref docutils literal"><span class="pre">join_path()</span></tt></a> is called
+method ask the loader for the template and returns a <a class="reference internal" href="#jinja2.Template" title="jinja2.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a>.
+If the <cite>parent</cite> parameter is not <cite>None</cite>, <a class="reference internal" href="#jinja2.Environment.join_path" title="jinja2.Environment.join_path"><tt class="xref py py-meth docutils literal"><span class="pre">join_path()</span></tt></a> is called
 to get the real template name before loading.</p>
 <p>The <cite>globals</cite> parameter can be used to provide template wide globals.
 These variables are available in the context at render time.</p>
-<p>If the template does not exist a <a title="jinja2.TemplateNotFound" class="reference internal" href="#jinja2.TemplateNotFound"><tt class="xref docutils literal"><span class="pre">TemplateNotFound</span></tt></a> exception is
+<p>If the template does not exist a <a class="reference internal" href="#jinja2.TemplateNotFound" title="jinja2.TemplateNotFound"><tt class="xref py py-exc docutils literal"><span class="pre">TemplateNotFound</span></tt></a> exception is
 raised.</p>
 <p class="versionchanged">
-<span class="versionmodified">Changed in version 2.4: </span>If <cite>name</cite> is a <a title="jinja2.Template" class="reference internal" href="#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a> object it is returned from the
+<span class="versionmodified">Changed in version 2.4: </span>If <cite>name</cite> is a <a class="reference internal" href="#jinja2.Template" title="jinja2.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> object it is returned from the
 function unchanged.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Environment.select_template">
 <tt class="descname">select_template</tt><big>(</big><em>names</em>, <em>parent=None</em>, <em>globals=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.select_template" title="Permalink to this definition">¶</a></dt>
-<dd><p>Works like <a title="jinja2.Environment.get_template" class="reference internal" href="#jinja2.Environment.get_template"><tt class="xref docutils literal"><span class="pre">get_template()</span></tt></a> but tries a number of templates
+<dd><p>Works like <a class="reference internal" href="#jinja2.Environment.get_template" title="jinja2.Environment.get_template"><tt class="xref py py-meth docutils literal"><span class="pre">get_template()</span></tt></a> but tries a number of templates
 before it fails.  If it cannot find any of the templates, it will
-raise a <a title="jinja2.TemplatesNotFound" class="reference internal" href="#jinja2.TemplatesNotFound"><tt class="xref docutils literal"><span class="pre">TemplatesNotFound</span></tt></a> exception.</p>
+raise a <a class="reference internal" href="#jinja2.TemplatesNotFound" title="jinja2.TemplatesNotFound"><tt class="xref py py-exc docutils literal"><span class="pre">TemplatesNotFound</span></tt></a> exception.</p>
 <p class="versionadded">
 <span class="versionmodified">New in version 2.3.</span></p>
 <p class="versionchanged">
-<span class="versionmodified">Changed in version 2.4: </span>If <cite>names</cite> contains a <a title="jinja2.Template" class="reference internal" href="#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a> object it is returned
+<span class="versionmodified">Changed in version 2.4: </span>If <cite>names</cite> contains a <a class="reference internal" href="#jinja2.Template" title="jinja2.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> object it is returned
 from the function unchanged.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Environment.get_or_select_template">
 <tt class="descname">get_or_select_template</tt><big>(</big><em>template_name_or_list</em>, <em>parent=None</em>, <em>globals=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.get_or_select_template" title="Permalink to this definition">¶</a></dt>
-<dd><p>Does a typecheck and dispatches to <a title="jinja2.Environment.select_template" class="reference internal" href="#jinja2.Environment.select_template"><tt class="xref docutils literal"><span class="pre">select_template()</span></tt></a>
+<dd><p>Does a typecheck and dispatches to <a class="reference internal" href="#jinja2.Environment.select_template" title="jinja2.Environment.select_template"><tt class="xref py py-meth docutils literal"><span class="pre">select_template()</span></tt></a>
 if an iterable of template names is given, otherwise to
-<a title="jinja2.Environment.get_template" class="reference internal" href="#jinja2.Environment.get_template"><tt class="xref docutils literal"><span class="pre">get_template()</span></tt></a>.</p>
+<a class="reference internal" href="#jinja2.Environment.get_template" title="jinja2.Environment.get_template"><tt class="xref py py-meth docutils literal"><span class="pre">get_template()</span></tt></a>.</p>
 <p class="versionadded">
 <span class="versionmodified">New in version 2.3.</span></p>
 </dd></dl>
@@ -396,9 +402,10 @@ joining here.</p>
 <dl class="method">
 <dt id="jinja2.Environment.extend">
 <tt class="descname">extend</tt><big>(</big><em>**attributes</em><big>)</big><a class="headerlink" href="#jinja2.Environment.extend" title="Permalink to this definition">¶</a></dt>
-<dd>Add the items to the instance of the environment if they do not exist
-yet.  This is used by <a class="reference external" href="extensions.html#writing-extensions"><em>extensions</em></a> to register
-callbacks and configuration values without breaking inheritance.</dd></dl>
+<dd><p>Add the items to the instance of the environment if they do not exist
+yet.  This is used by <a class="reference internal" href="extensions.html#writing-extensions"><em>extensions</em></a> to register
+callbacks and configuration values without breaking inheritance.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Environment.compile_expression">
@@ -437,7 +444,7 @@ by setting <cite>undefined_to_none</cite> to <cite>False</cite>.</p>
 <em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">Template</tt><a class="headerlink" href="#jinja2.Template" title="Permalink to this definition">¶</a></dt>
 <dd><p>The central template object.  This class represents a compiled template
 and is used to evaluate it.</p>
-<p>Normally the template object is generated from an <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a> but
+<p>Normally the template object is generated from an <a class="reference internal" href="#jinja2.Environment" title="jinja2.Environment"><tt class="xref py py-class docutils literal"><span class="pre">Environment</span></tt></a> but
 it also has a constructor that makes it possible to create a template
 instance directly using the constructor.  It takes the same arguments as
 the environment constructor but it&#8217;s not possible to specify a loader.</p>
@@ -465,21 +472,24 @@ and compatible settings.</p>
 <dl class="attribute">
 <dt id="jinja2.Template.globals">
 <tt class="descname">globals</tt><a class="headerlink" href="#jinja2.Template.globals" title="Permalink to this definition">¶</a></dt>
-<dd>The dict with the globals of that template.  It&#8217;s unsafe to modify
+<dd><p>The dict with the globals of that template.  It&#8217;s unsafe to modify
 this dict as it may be shared with other templates or the environment
-that loaded the template.</dd></dl>
+that loaded the template.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Template.name">
 <tt class="descname">name</tt><a class="headerlink" href="#jinja2.Template.name" title="Permalink to this definition">¶</a></dt>
-<dd>The loading name of the template.  If the template was loaded from a
-string this is <cite>None</cite>.</dd></dl>
+<dd><p>The loading name of the template.  If the template was loaded from a
+string this is <cite>None</cite>.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Template.filename">
 <tt class="descname">filename</tt><a class="headerlink" href="#jinja2.Template.filename" title="Permalink to this definition">¶</a></dt>
-<dd>The filename of the template on the file system if it was loaded from
-there.  Otherwise this is <cite>None</cite>.</dd></dl>
+<dd><p>The filename of the template on the file system if it was loaded from
+there.  Otherwise this is <cite>None</cite>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Template.render">
@@ -501,14 +511,15 @@ are given the context will be empty.  These two calls do the same:</p>
 template at once but evaluate each statement after another and yield
 piece for piece.  This method basically does exactly that and returns
 a generator that yields one item after another as unicode strings.</p>
-<p>It accepts the same arguments as <a title="jinja2.Template.render" class="reference internal" href="#jinja2.Template.render"><tt class="xref docutils literal"><span class="pre">render()</span></tt></a>.</p>
+<p>It accepts the same arguments as <a class="reference internal" href="#jinja2.Template.render" title="jinja2.Template.render"><tt class="xref py py-meth docutils literal"><span class="pre">render()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Template.stream">
 <tt class="descname">stream</tt><big>(</big><span class="optional">[</span><em>context</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Template.stream" title="Permalink to this definition">¶</a></dt>
-<dd>Works exactly like <a title="jinja2.Template.generate" class="reference internal" href="#jinja2.Template.generate"><tt class="xref docutils literal"><span class="pre">generate()</span></tt></a> but returns a
-<tt class="xref docutils literal"><span class="pre">TemplateStream</span></tt>.</dd></dl>
+<dd><p>Works exactly like <a class="reference internal" href="#jinja2.Template.generate" title="jinja2.Template.generate"><tt class="xref py py-meth docutils literal"><span class="pre">generate()</span></tt></a> but returns a
+<tt class="xref py py-class docutils literal"><span class="pre">TemplateStream</span></tt>.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Template.module">
@@ -528,11 +539,12 @@ exported template variables from the Python layer:</p>
 <dl class="method">
 <dt id="jinja2.Template.make_module">
 <tt class="descname">make_module</tt><big>(</big><em>vars=None</em>, <em>shared=False</em>, <em>locals=None</em><big>)</big><a class="headerlink" href="#jinja2.Template.make_module" title="Permalink to this definition">¶</a></dt>
-<dd>This method works like the <a title="jinja2.Template.module" class="reference internal" href="#jinja2.Template.module"><tt class="xref docutils literal"><span class="pre">module</span></tt></a> attribute when called
+<dd><p>This method works like the <a class="reference internal" href="#jinja2.Template.module" title="jinja2.Template.module"><tt class="xref py py-attr docutils literal"><span class="pre">module</span></tt></a> attribute when called
 without arguments but it will evaluate the template on every call
 rather than caching it.  It&#8217;s also possible to provide
 a dict which is then used as context.  The arguments are the same
-as for the <a title="jinja2.Template.new_context" class="reference internal" href="#jinja2.Template.new_context"><tt class="xref docutils literal"><span class="pre">new_context()</span></tt></a> method.</dd></dl>
+as for the <a class="reference internal" href="#jinja2.Template.new_context" title="jinja2.Template.new_context"><tt class="xref py py-meth docutils literal"><span class="pre">new_context()</span></tt></a> method.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -549,12 +561,14 @@ big templates to a client via WSGI which flushes after each iteration.</p>
 <dl class="method">
 <dt id="jinja2.environment.TemplateStream.disable_buffering">
 <tt class="descname">disable_buffering</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.environment.TemplateStream.disable_buffering" title="Permalink to this definition">¶</a></dt>
-<dd>Disable the output buffering.</dd></dl>
+<dd><p>Disable the output buffering.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.environment.TemplateStream.enable_buffering">
 <tt class="descname">enable_buffering</tt><big>(</big><em>size=5</em><big>)</big><a class="headerlink" href="#jinja2.environment.TemplateStream.enable_buffering" title="Permalink to this definition">¶</a></dt>
-<dd>Enable buffering.  Buffer <cite>size</cite> items before yielding them.</dd></dl>
+<dd><p>Enable buffering.  Buffer <cite>size</cite> items before yielding them.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.environment.TemplateStream.dump">
@@ -576,7 +590,7 @@ before writing specifiy an <cite>encoding</cite>.</p>
 <p class="versionadded">
 <span class="versionmodified">New in version 2.4.</span></p>
 <p>As of Jinja 2.4 the preferred way to do autoescaping is to enable the
-<a class="reference external" href="extensions.html#autoescape-extension"><em>Autoescape Extension</em></a> and to configure a sensible default for
+<a class="reference internal" href="extensions.html#autoescape-extension"><em>Autoescape Extension</em></a> and to configure a sensible default for
 autoescaping.  This makes it possible to enable and disable autoescaping
 on a per-template basis (HTML versus text for instance).</p>
 <p>Here a recommended setup that enables autoescaping for templates ending
@@ -597,7 +611,7 @@ for all other extensions:</p>
 accept <cite>None</cite> as valid template name.  This will be passed when generating
 templates from strings.</p>
 <p>Inside the templates the behaviour can be temporarily changed by using
-the <cite>autoescape</cite> block (see <a class="reference external" href="templates.html#autoescape-overrides"><em>Autoescape Extension</em></a>).</p>
+the <cite>autoescape</cite> block (see <a class="reference internal" href="templates.html#autoescape-overrides"><em>Autoescape Extension</em></a>).</p>
 </div>
 <div class="section" id="notes-on-identifiers">
 <span id="identifier-naming"></span><h2>Notes on Identifiers<a class="headerlink" href="#notes-on-identifiers" title="Permalink to this headline">¶</a></h2>
@@ -614,9 +628,9 @@ expression for filter and test identifiers is
 </div>
 <div class="section" id="undefined-types">
 <h2>Undefined Types<a class="headerlink" href="#undefined-types" title="Permalink to this headline">¶</a></h2>
-<p>These classes can be used as undefined types.  The <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a>
+<p>These classes can be used as undefined types.  The <a class="reference internal" href="#jinja2.Environment" title="jinja2.Environment"><tt class="xref py py-class docutils literal"><span class="pre">Environment</span></tt></a>
 constructor takes an <cite>undefined</cite> parameter that can be one of those classes
-or a custom subclass of <a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a>.  Whenever the template engine is
+or a custom subclass of <a class="reference internal" href="#jinja2.Undefined" title="jinja2.Undefined"><tt class="xref py py-class docutils literal"><span class="pre">Undefined</span></tt></a>.  Whenever the template engine is
 unable to look up a name or access an attribute one of those objects is
 created and returned.  Some operations on undefined values are then allowed,
 others fail.</p>
@@ -626,7 +640,7 @@ disallows all operations beside testing if it&#8217;s an undefined object.</p>
 <dt id="jinja2.Undefined">
 <em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">Undefined</tt><a class="headerlink" href="#jinja2.Undefined" title="Permalink to this definition">¶</a></dt>
 <dd><p>The default undefined type.  This undefined type can be printed and
-iterated over, but every other access will raise an <a title="jinja2.UndefinedError" class="reference internal" href="#jinja2.UndefinedError"><tt class="xref docutils literal"><span class="pre">UndefinedError</span></tt></a>:</p>
+iterated over, but every other access will raise an <a class="reference internal" href="#jinja2.UndefinedError" title="jinja2.UndefinedError"><tt class="xref py py-exc docutils literal"><span class="pre">UndefinedError</span></tt></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">foo</span> <span class="o">=</span> <span class="n">Undefined</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;foo&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
 <span class="go">&#39;&#39;</span>
@@ -641,33 +655,38 @@ iterated over, but every other access will raise an <a title="jinja2.UndefinedEr
 <dl class="attribute">
 <dt id="jinja2.Undefined._undefined_hint">
 <tt class="descname">_undefined_hint</tt><a class="headerlink" href="#jinja2.Undefined._undefined_hint" title="Permalink to this definition">¶</a></dt>
-<dd>Either <cite>None</cite> or an unicode string with the error message for
-the undefined object.</dd></dl>
+<dd><p>Either <cite>None</cite> or an unicode string with the error message for
+the undefined object.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Undefined._undefined_obj">
 <tt class="descname">_undefined_obj</tt><a class="headerlink" href="#jinja2.Undefined._undefined_obj" title="Permalink to this definition">¶</a></dt>
-<dd>Either <cite>None</cite> or the owner object that caused the undefined object
-to be created (for example because an attribute does not exist).</dd></dl>
+<dd><p>Either <cite>None</cite> or the owner object that caused the undefined object
+to be created (for example because an attribute does not exist).</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Undefined._undefined_name">
 <tt class="descname">_undefined_name</tt><a class="headerlink" href="#jinja2.Undefined._undefined_name" title="Permalink to this definition">¶</a></dt>
-<dd>The name for the undefined variable / attribute or just <cite>None</cite>
-if no such information exists.</dd></dl>
+<dd><p>The name for the undefined variable / attribute or just <cite>None</cite>
+if no such information exists.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Undefined._undefined_exception">
 <tt class="descname">_undefined_exception</tt><a class="headerlink" href="#jinja2.Undefined._undefined_exception" title="Permalink to this definition">¶</a></dt>
-<dd>The exception that the undefined object wants to raise.  This
-is usually one of <a title="jinja2.UndefinedError" class="reference internal" href="#jinja2.UndefinedError"><tt class="xref docutils literal"><span class="pre">UndefinedError</span></tt></a> or <tt class="xref docutils literal"><span class="pre">SecurityError</span></tt>.</dd></dl>
+<dd><p>The exception that the undefined object wants to raise.  This
+is usually one of <a class="reference internal" href="#jinja2.UndefinedError" title="jinja2.UndefinedError"><tt class="xref py py-exc docutils literal"><span class="pre">UndefinedError</span></tt></a> or <tt class="xref py py-exc docutils literal"><span class="pre">SecurityError</span></tt>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Undefined._fail_with_undefined_error">
 <tt class="descname">_fail_with_undefined_error</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#jinja2.Undefined._fail_with_undefined_error" title="Permalink to this definition">¶</a></dt>
-<dd>When called with any arguments this method raises
-<a title="jinja2.Undefined._undefined_exception" class="reference internal" href="#jinja2.Undefined._undefined_exception"><tt class="xref docutils literal"><span class="pre">_undefined_exception</span></tt></a> with an error message generated
-from the undefined hints stored on the undefined object.</dd></dl>
+<dd><p>When called with any arguments this method raises
+<a class="reference internal" href="#jinja2.Undefined._undefined_exception" title="jinja2.Undefined._undefined_exception"><tt class="xref py py-attr docutils literal"><span class="pre">_undefined_exception</span></tt></a> with an error message generated
+from the undefined hints stored on the undefined object.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -711,11 +730,11 @@ with it except checking if it&#8217;s defined using the <cite>defined</cite> tes
 </div>
 </dd></dl>
 
-<p>Undefined objects are created by calling <a title="undefined" class="reference external" href="templates.html#undefined"><tt class="xref docutils literal"><span class="pre">undefined</span></tt></a>.</p>
+<p>Undefined objects are created by calling <a class="reference internal" href="templates.html#undefined" title="undefined"><tt class="xref py py-attr docutils literal"><span class="pre">undefined</span></tt></a>.</p>
 <div class="admonition-implementation admonition ">
 <p class="first admonition-title">Implementation</p>
-<p><a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a> objects are implemented by overriding the special
-<cite>__underscore__</cite> methods.  For example the default <a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a>
+<p><a class="reference internal" href="#jinja2.Undefined" title="jinja2.Undefined"><tt class="xref py py-class docutils literal"><span class="pre">Undefined</span></tt></a> objects are implemented by overriding the special
+<cite>__underscore__</cite> methods.  For example the default <a class="reference internal" href="#jinja2.Undefined" title="jinja2.Undefined"><tt class="xref py py-class docutils literal"><span class="pre">Undefined</span></tt></a>
 class implements <cite>__unicode__</cite> in a way that it returns an empty
 string, however <cite>__int__</cite> and others still fail with an exception.  To
 allow conversion to int by returning <tt class="docutils literal"><span class="pre">0</span></tt> you can implement your own:</p>
@@ -727,10 +746,10 @@ allow conversion to int by returning <tt class="docutils literal"><span class="p
 </pre></div>
 </div>
 <p>To disallow a method, just override it and raise
-<a title="jinja2.Undefined._undefined_exception" class="reference internal" href="#jinja2.Undefined._undefined_exception"><tt class="xref docutils literal"><span class="pre">_undefined_exception</span></tt></a>.  Because this is a very common
+<a class="reference internal" href="#jinja2.Undefined._undefined_exception" title="jinja2.Undefined._undefined_exception"><tt class="xref py py-attr docutils literal"><span class="pre">_undefined_exception</span></tt></a>.  Because this is a very common
 idom in undefined objects there is the helper method
-<a title="jinja2.Undefined._fail_with_undefined_error" class="reference internal" href="#jinja2.Undefined._fail_with_undefined_error"><tt class="xref docutils literal"><span class="pre">_fail_with_undefined_error()</span></tt></a> that does the error raising
-automatically.  Here a class that works like the regular <a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a>
+<a class="reference internal" href="#jinja2.Undefined._fail_with_undefined_error" title="jinja2.Undefined._fail_with_undefined_error"><tt class="xref py py-meth docutils literal"><span class="pre">_fail_with_undefined_error()</span></tt></a> that does the error raising
+automatically.  Here a class that works like the regular <a class="reference internal" href="#jinja2.Undefined" title="jinja2.Undefined"><tt class="xref py py-class docutils literal"><span class="pre">Undefined</span></tt></a>
 but chokes on iteration:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">NonIterableUndefined</span><span class="p">(</span><span class="n">Undefined</span><span class="p">):</span>
     <span class="n">__iter__</span> <span class="o">=</span> <span class="n">Undefined</span><span class="o">.</span><span class="n">_fail_with_undefined_error</span>
@@ -748,88 +767,99 @@ values passed to the template and also the names the template exports.
 Creating instances is neither supported nor useful as it&#8217;s created
 automatically at various stages of the template evaluation and should not
 be created by hand.</p>
-<p>The context is immutable.  Modifications on <a title="jinja2.Context.parent" class="reference internal" href="#jinja2.Context.parent"><tt class="xref docutils literal"><span class="pre">parent</span></tt></a> <strong>must not</strong>
-happen and modifications on <a title="jinja2.Context.vars" class="reference internal" href="#jinja2.Context.vars"><tt class="xref docutils literal"><span class="pre">vars</span></tt></a> are allowed from generated
+<p>The context is immutable.  Modifications on <a class="reference internal" href="#jinja2.Context.parent" title="jinja2.Context.parent"><tt class="xref py py-attr docutils literal"><span class="pre">parent</span></tt></a> <strong>must not</strong>
+happen and modifications on <a class="reference internal" href="#jinja2.Context.vars" title="jinja2.Context.vars"><tt class="xref py py-attr docutils literal"><span class="pre">vars</span></tt></a> are allowed from generated
 template code only.  Template filters and global functions marked as
-<a title="jinja2.contextfunction" class="reference internal" href="#jinja2.contextfunction"><tt class="xref docutils literal"><span class="pre">contextfunction()</span></tt></a>s get the active context passed as first argument
+<a class="reference internal" href="#jinja2.contextfunction" title="jinja2.contextfunction"><tt class="xref py py-func docutils literal"><span class="pre">contextfunction()</span></tt></a>s get the active context passed as first argument
 and are allowed to access the context read-only.</p>
 <p>The template context supports read only dict operations (<cite>get</cite>,
 <cite>keys</cite>, <cite>values</cite>, <cite>items</cite>, <cite>iterkeys</cite>, <cite>itervalues</cite>, <cite>iteritems</cite>,
-<cite>__getitem__</cite>, <cite>__contains__</cite>).  Additionally there is a <tt class="xref docutils literal"><span class="pre">resolve()</span></tt>
+<cite>__getitem__</cite>, <cite>__contains__</cite>).  Additionally there is a <tt class="xref py py-meth docutils literal"><span class="pre">resolve()</span></tt>
 method that doesn&#8217;t fail with a <cite>KeyError</cite> but returns an
-<a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a> object for missing variables.</p>
+<a class="reference internal" href="#jinja2.Undefined" title="jinja2.Undefined"><tt class="xref py py-class docutils literal"><span class="pre">Undefined</span></tt></a> object for missing variables.</p>
 <dl class="attribute">
 <dt id="jinja2.Context.parent">
 <tt class="descname">parent</tt><a class="headerlink" href="#jinja2.Context.parent" title="Permalink to this definition">¶</a></dt>
-<dd>A dict of read only, global variables the template looks up.  These
-can either come from another <tt class="xref docutils literal"><span class="pre">Context</span></tt>, from the
-<a title="jinja2.Environment.globals" class="reference internal" href="#jinja2.Environment.globals"><tt class="xref docutils literal"><span class="pre">Environment.globals</span></tt></a> or <a title="jinja2.Template.globals" class="reference internal" href="#jinja2.Template.globals"><tt class="xref docutils literal"><span class="pre">Template.globals</span></tt></a> or points
+<dd><p>A dict of read only, global variables the template looks up.  These
+can either come from another <tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt>, from the
+<a class="reference internal" href="#jinja2.Environment.globals" title="jinja2.Environment.globals"><tt class="xref py py-attr docutils literal"><span class="pre">Environment.globals</span></tt></a> or <a class="reference internal" href="#jinja2.Template.globals" title="jinja2.Template.globals"><tt class="xref py py-attr docutils literal"><span class="pre">Template.globals</span></tt></a> or points
 to a dict created by combining the globals with the variables
-passed to the render function.  It must not be altered.</dd></dl>
+passed to the render function.  It must not be altered.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Context.vars">
 <tt class="descname">vars</tt><a class="headerlink" href="#jinja2.Context.vars" title="Permalink to this definition">¶</a></dt>
-<dd>The template local variables.  This list contains environment and
-context functions from the <a title="jinja2.Context.parent" class="reference internal" href="#jinja2.Context.parent"><tt class="xref docutils literal"><span class="pre">parent</span></tt></a> scope as well as local
+<dd><p>The template local variables.  This list contains environment and
+context functions from the <a class="reference internal" href="#jinja2.Context.parent" title="jinja2.Context.parent"><tt class="xref py py-attr docutils literal"><span class="pre">parent</span></tt></a> scope as well as local
 modifications and exported variables from the template.  The template
 will modify this dict during template evaluation but filters and
-context functions are not allowed to modify it.</dd></dl>
+context functions are not allowed to modify it.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Context.environment">
 <tt class="descname">environment</tt><a class="headerlink" href="#jinja2.Context.environment" title="Permalink to this definition">¶</a></dt>
-<dd>The environment that loaded the template.</dd></dl>
+<dd><p>The environment that loaded the template.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Context.exported_vars">
 <tt class="descname">exported_vars</tt><a class="headerlink" href="#jinja2.Context.exported_vars" title="Permalink to this definition">¶</a></dt>
-<dd>This set contains all the names the template exports.  The values for
-the names are in the <a title="jinja2.Context.vars" class="reference internal" href="#jinja2.Context.vars"><tt class="xref docutils literal"><span class="pre">vars</span></tt></a> dict.  In order to get a copy of the
-exported variables as dict, <tt class="xref docutils literal"><span class="pre">get_exported()</span></tt> can be used.</dd></dl>
+<dd><p>This set contains all the names the template exports.  The values for
+the names are in the <a class="reference internal" href="#jinja2.Context.vars" title="jinja2.Context.vars"><tt class="xref py py-attr docutils literal"><span class="pre">vars</span></tt></a> dict.  In order to get a copy of the
+exported variables as dict, <tt class="xref py py-meth docutils literal"><span class="pre">get_exported()</span></tt> can be used.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Context.name">
 <tt class="descname">name</tt><a class="headerlink" href="#jinja2.Context.name" title="Permalink to this definition">¶</a></dt>
-<dd>The load name of the template owning this context.</dd></dl>
+<dd><p>The load name of the template owning this context.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Context.blocks">
 <tt class="descname">blocks</tt><a class="headerlink" href="#jinja2.Context.blocks" title="Permalink to this definition">¶</a></dt>
-<dd>A dict with the current mapping of blocks in the template.  The keys
+<dd><p>A dict with the current mapping of blocks in the template.  The keys
 in this dict are the names of the blocks, and the values a list of
 blocks registered.  The last item in each list is the current active
-block (latest in the inheritance chain).</dd></dl>
+block (latest in the inheritance chain).</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Context.eval_ctx">
 <tt class="descname">eval_ctx</tt><a class="headerlink" href="#jinja2.Context.eval_ctx" title="Permalink to this definition">¶</a></dt>
-<dd>The current <a class="reference internal" href="#eval-context"><em>Evaluation Context</em></a>.</dd></dl>
+<dd><p>The current <a class="reference internal" href="#eval-context"><em>Evaluation Context</em></a>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.runtime.Context.call">
 <tt class="descname">call</tt><big>(</big><em>callable</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#jinja2.runtime.Context.call" title="Permalink to this definition">¶</a></dt>
-<dd>Call the callable with the arguments and keyword arguments
+<dd><p>Call the callable with the arguments and keyword arguments
 provided but inject the active context or environment as first
-argument if the callable is a <a title="jinja2.contextfunction" class="reference internal" href="#jinja2.contextfunction"><tt class="xref docutils literal"><span class="pre">contextfunction()</span></tt></a> or
-<a title="jinja2.environmentfunction" class="reference internal" href="#jinja2.environmentfunction"><tt class="xref docutils literal"><span class="pre">environmentfunction()</span></tt></a>.</dd></dl>
+argument if the callable is a <a class="reference internal" href="#jinja2.contextfunction" title="jinja2.contextfunction"><tt class="xref py py-func docutils literal"><span class="pre">contextfunction()</span></tt></a> or
+<a class="reference internal" href="#jinja2.environmentfunction" title="jinja2.environmentfunction"><tt class="xref py py-func docutils literal"><span class="pre">environmentfunction()</span></tt></a>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.runtime.Context.resolve">
 <tt class="descname">resolve</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#jinja2.runtime.Context.resolve" title="Permalink to this definition">¶</a></dt>
-<dd>Looks up a variable like <cite>__getitem__</cite> or <cite>get</cite> but returns an
-<a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a> object with the name of the name looked up.</dd></dl>
+<dd><p>Looks up a variable like <cite>__getitem__</cite> or <cite>get</cite> but returns an
+<a class="reference internal" href="#jinja2.Undefined" title="jinja2.Undefined"><tt class="xref py py-class docutils literal"><span class="pre">Undefined</span></tt></a> object with the name of the name looked up.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.runtime.Context.get_exported">
 <tt class="descname">get_exported</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.runtime.Context.get_exported" title="Permalink to this definition">¶</a></dt>
-<dd>Get a new dict with the exported variables.</dd></dl>
+<dd><p>Get a new dict with the exported variables.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.runtime.Context.get_all">
 <tt class="descname">get_all</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.runtime.Context.get_all" title="Permalink to this definition">¶</a></dt>
-<dd>Return a copy of the complete context as dict including the
-exported variables.</dd></dl>
+<dd><p>Return a copy of the complete context as dict including the
+exported variables.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -850,15 +880,15 @@ as if it was defined in the template.</p>
 file system.  The environment will keep the compiled modules in memory like
 Python&#8217;s <cite>sys.modules</cite>.  Unlike <cite>sys.modules</cite> however this cache is limited in
 size by default and templates are automatically reloaded.
-All loaders are subclasses of <a title="jinja2.BaseLoader" class="reference internal" href="#jinja2.BaseLoader"><tt class="xref docutils literal"><span class="pre">BaseLoader</span></tt></a>.  If you want to create your
-own loader, subclass <a title="jinja2.BaseLoader" class="reference internal" href="#jinja2.BaseLoader"><tt class="xref docutils literal"><span class="pre">BaseLoader</span></tt></a> and override <cite>get_source</cite>.</p>
+All loaders are subclasses of <a class="reference internal" href="#jinja2.BaseLoader" title="jinja2.BaseLoader"><tt class="xref py py-class docutils literal"><span class="pre">BaseLoader</span></tt></a>.  If you want to create your
+own loader, subclass <a class="reference internal" href="#jinja2.BaseLoader" title="jinja2.BaseLoader"><tt class="xref py py-class docutils literal"><span class="pre">BaseLoader</span></tt></a> and override <cite>get_source</cite>.</p>
 <dl class="class">
 <dt id="jinja2.BaseLoader">
 <em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">BaseLoader</tt><a class="headerlink" href="#jinja2.BaseLoader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Baseclass for all loaders.  Subclass this and override <cite>get_source</cite> to
 implement a custom loading mechanism.  The environment provides a
 <cite>get_template</cite> method that calls the loader&#8217;s <cite>load</cite> method to get the
-<a title="jinja2.Template" class="reference internal" href="#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a> object.</p>
+<a class="reference internal" href="#jinja2.Template" title="jinja2.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> object.</p>
 <p>A very basic example for a loader that looks up templates on the file
 system could look like this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">BaseLoader</span><span class="p">,</span> <span class="n">TemplateNotFound</span>
@@ -901,11 +931,12 @@ the template will be reloaded.</p>
 <dl class="method">
 <dt id="jinja2.BaseLoader.load">
 <tt class="descname">load</tt><big>(</big><em>environment</em>, <em>name</em>, <em>globals=None</em><big>)</big><a class="headerlink" href="#jinja2.BaseLoader.load" title="Permalink to this definition">¶</a></dt>
-<dd>Loads a template.  This method looks up the template in the cache
-or loads one by calling <a title="jinja2.BaseLoader.get_source" class="reference internal" href="#jinja2.BaseLoader.get_source"><tt class="xref docutils literal"><span class="pre">get_source()</span></tt></a>.  Subclasses should not
+<dd><p>Loads a template.  This method looks up the template in the cache
+or loads one by calling <a class="reference internal" href="#jinja2.BaseLoader.get_source" title="jinja2.BaseLoader.get_source"><tt class="xref py py-meth docutils literal"><span class="pre">get_source()</span></tt></a>.  Subclasses should not
 override this method as loaders working on collections of other
-loaders (such as <a title="jinja2.PrefixLoader" class="reference internal" href="#jinja2.PrefixLoader"><tt class="xref docutils literal"><span class="pre">PrefixLoader</span></tt></a> or <a title="jinja2.ChoiceLoader" class="reference internal" href="#jinja2.ChoiceLoader"><tt class="xref docutils literal"><span class="pre">ChoiceLoader</span></tt></a>)
-will not call this method but <cite>get_source</cite> directly.</dd></dl>
+loaders (such as <a class="reference internal" href="#jinja2.PrefixLoader" title="jinja2.PrefixLoader"><tt class="xref py py-class docutils literal"><span class="pre">PrefixLoader</span></tt></a> or <a class="reference internal" href="#jinja2.ChoiceLoader" title="jinja2.ChoiceLoader"><tt class="xref py py-class docutils literal"><span class="pre">ChoiceLoader</span></tt></a>)
+will not call this method but <cite>get_source</cite> directly.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -969,7 +1000,7 @@ an unicode string with the template source, a tuple in the form <tt class="docut
 </div>
 <p>The <cite>uptodatefunc</cite> is a function that is called if autoreload is enabled
 and has to return <cite>True</cite> if the template is still up to date.  For more
-details have a look at <a title="jinja2.BaseLoader.get_source" class="reference internal" href="#jinja2.BaseLoader.get_source"><tt class="xref docutils literal"><span class="pre">BaseLoader.get_source()</span></tt></a> which has the same
+details have a look at <a class="reference internal" href="#jinja2.BaseLoader.get_source" title="jinja2.BaseLoader.get_source"><tt class="xref py py-meth docutils literal"><span class="pre">BaseLoader.get_source()</span></tt></a> which has the same
 return value.</p>
 </dd></dl>
 
@@ -1015,13 +1046,13 @@ location to avoid parsing the templates on first use.</p>
 <p>This is especially useful if you have a web application that is initialized on
 the first request and Jinja compiles many templates at once which slows down
 the application.</p>
-<p>To use a bytecode cache, instanciate it and pass it to the <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a>.</p>
+<p>To use a bytecode cache, instanciate it and pass it to the <a class="reference internal" href="#jinja2.Environment" title="jinja2.Environment"><tt class="xref py py-class docutils literal"><span class="pre">Environment</span></tt></a>.</p>
 <dl class="class">
 <dt id="jinja2.BytecodeCache">
 <em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">BytecodeCache</tt><a class="headerlink" href="#jinja2.BytecodeCache" title="Permalink to this definition">¶</a></dt>
 <dd><p>To implement your own bytecode cache you have to subclass this class
-and override <a title="jinja2.BytecodeCache.load_bytecode" class="reference internal" href="#jinja2.BytecodeCache.load_bytecode"><tt class="xref docutils literal"><span class="pre">load_bytecode()</span></tt></a> and <a title="jinja2.BytecodeCache.dump_bytecode" class="reference internal" href="#jinja2.BytecodeCache.dump_bytecode"><tt class="xref docutils literal"><span class="pre">dump_bytecode()</span></tt></a>.  Both of
-these methods are passed a <a title="jinja2.bccache.Bucket" class="reference internal" href="#jinja2.bccache.Bucket"><tt class="xref docutils literal"><span class="pre">Bucket</span></tt></a>.</p>
+and override <a class="reference internal" href="#jinja2.BytecodeCache.load_bytecode" title="jinja2.BytecodeCache.load_bytecode"><tt class="xref py py-meth docutils literal"><span class="pre">load_bytecode()</span></tt></a> and <a class="reference internal" href="#jinja2.BytecodeCache.dump_bytecode" title="jinja2.BytecodeCache.dump_bytecode"><tt class="xref py py-meth docutils literal"><span class="pre">dump_bytecode()</span></tt></a>.  Both of
+these methods are passed a <a class="reference internal" href="#jinja2.bccache.Bucket" title="jinja2.bccache.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">Bucket</span></tt></a>.</p>
 <p>A very basic bytecode cache that saves the bytecode on the file system:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
 
@@ -1047,23 +1078,26 @@ Jinja2.</p>
 <dl class="method">
 <dt id="jinja2.BytecodeCache.load_bytecode">
 <tt class="descname">load_bytecode</tt><big>(</big><em>bucket</em><big>)</big><a class="headerlink" href="#jinja2.BytecodeCache.load_bytecode" title="Permalink to this definition">¶</a></dt>
-<dd>Subclasses have to override this method to load bytecode into a
+<dd><p>Subclasses have to override this method to load bytecode into a
 bucket.  If they are not able to find code in the cache for the
-bucket, it must not do anything.</dd></dl>
+bucket, it must not do anything.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.BytecodeCache.dump_bytecode">
 <tt class="descname">dump_bytecode</tt><big>(</big><em>bucket</em><big>)</big><a class="headerlink" href="#jinja2.BytecodeCache.dump_bytecode" title="Permalink to this definition">¶</a></dt>
-<dd>Subclasses have to override this method to write the bytecode
+<dd><p>Subclasses have to override this method to write the bytecode
 from a bucket back to the cache.  If it unable to do so it must not
-fail silently but raise an exception.</dd></dl>
+fail silently but raise an exception.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.BytecodeCache.clear">
 <tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.BytecodeCache.clear" title="Permalink to this definition">¶</a></dt>
-<dd>Clears the cache.  This method is not used by Jinja2 but should be
+<dd><p>Clears the cache.  This method is not used by Jinja2 but should be
 implemented to allow applications to clear the bytecode cache used
-by a particular environment.</dd></dl>
+by a particular environment.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1078,42 +1112,50 @@ cache subclasses don&#8217;t have to care about cache invalidation.</p>
 <dl class="attribute">
 <dt id="jinja2.Bucket.environment">
 <tt class="descname">environment</tt><a class="headerlink" href="#jinja2.Bucket.environment" title="Permalink to this definition">¶</a></dt>
-<dd>The <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a> that created the bucket.</dd></dl>
+<dd><p>The <a class="reference internal" href="#jinja2.Environment" title="jinja2.Environment"><tt class="xref py py-class docutils literal"><span class="pre">Environment</span></tt></a> that created the bucket.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Bucket.key">
 <tt class="descname">key</tt><a class="headerlink" href="#jinja2.Bucket.key" title="Permalink to this definition">¶</a></dt>
-<dd>The unique cache key for this bucket</dd></dl>
+<dd><p>The unique cache key for this bucket</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Bucket.code">
 <tt class="descname">code</tt><a class="headerlink" href="#jinja2.Bucket.code" title="Permalink to this definition">¶</a></dt>
-<dd>The bytecode if it&#8217;s loaded, otherwise <cite>None</cite>.</dd></dl>
+<dd><p>The bytecode if it&#8217;s loaded, otherwise <cite>None</cite>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.bccache.Bucket.write_bytecode">
 <tt class="descname">write_bytecode</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.bccache.Bucket.write_bytecode" title="Permalink to this definition">¶</a></dt>
-<dd>Dump the bytecode into the file or file like object passed.</dd></dl>
+<dd><p>Dump the bytecode into the file or file like object passed.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.bccache.Bucket.load_bytecode">
 <tt class="descname">load_bytecode</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.bccache.Bucket.load_bytecode" title="Permalink to this definition">¶</a></dt>
-<dd>Loads bytecode from a file or file like object.</dd></dl>
+<dd><p>Loads bytecode from a file or file like object.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.bccache.Bucket.bytecode_from_string">
 <tt class="descname">bytecode_from_string</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#jinja2.bccache.Bucket.bytecode_from_string" title="Permalink to this definition">¶</a></dt>
-<dd>Load bytecode from a string.</dd></dl>
+<dd><p>Load bytecode from a string.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.bccache.Bucket.bytecode_to_string">
 <tt class="descname">bytecode_to_string</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.bccache.Bucket.bytecode_to_string" title="Permalink to this definition">¶</a></dt>
-<dd>Return the bytecode as string.</dd></dl>
+<dd><p>Return the bytecode as string.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.bccache.Bucket.reset">
 <tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.bccache.Bucket.reset" title="Permalink to this definition">¶</a></dt>
-<dd>Resets the bucket (unloads the bytecode).</dd></dl>
+<dd><p>Resets the bucket (unloads the bytecode).</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1158,17 +1200,19 @@ as <cite>django.core.cache.cache._client</cite>.)</p>
 <dd><dl class="method">
 <dt id="jinja2.MemcachedBytecodeCache.MinimalClientInterface.set">
 <tt class="descname">set</tt><big>(</big><em>key</em>, <em>value</em><span class="optional">[</span>, <em>timeout</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.MemcachedBytecodeCache.MinimalClientInterface.set" title="Permalink to this definition">¶</a></dt>
-<dd>Stores the bytecode in the cache.  <cite>value</cite> is a string and
+<dd><p>Stores the bytecode in the cache.  <cite>value</cite> is a string and
 <cite>timeout</cite> the timeout of the key.  If timeout is not provided
 a default timeout or no timeout should be assumed, if it&#8217;s
 provided it&#8217;s an integer with the number of seconds the cache
-item should exist.</dd></dl>
+item should exist.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.MemcachedBytecodeCache.MinimalClientInterface.get">
 <tt class="descname">get</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#jinja2.MemcachedBytecodeCache.MinimalClientInterface.get" title="Permalink to this definition">¶</a></dt>
-<dd>Returns the value for the cache key.  If the item does not
-exist in the cache the return value must be <cite>None</cite>.</dd></dl>
+<dd><p>Returns the value for the cache key.  If the item does not
+exist in the cache the return value must be <cite>None</cite>.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1187,14 +1231,16 @@ functions to a Jinja2 environment.</p>
 <dl class="function">
 <dt id="jinja2.environmentfilter">
 <tt class="descclassname">jinja2.</tt><tt class="descname">environmentfilter</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.environmentfilter" title="Permalink to this definition">¶</a></dt>
-<dd>Decorator for marking evironment dependent filters.  The current
-<a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a> is passed to the filter as first argument.</dd></dl>
+<dd><p>Decorator for marking evironment dependent filters.  The current
+<a class="reference internal" href="#jinja2.Environment" title="jinja2.Environment"><tt class="xref py py-class docutils literal"><span class="pre">Environment</span></tt></a> is passed to the filter as first argument.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="jinja2.contextfilter">
 <tt class="descclassname">jinja2.</tt><tt class="descname">contextfilter</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.contextfilter" title="Permalink to this definition">¶</a></dt>
-<dd>Decorator for marking context dependent filters. The current
-<tt class="xref docutils literal"><span class="pre">Context</span></tt> will be passed as first argument.</dd></dl>
+<dd><p>Decorator for marking context dependent filters. The current
+<tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt> will be passed as first argument.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="jinja2.evalcontextfilter">
@@ -1209,16 +1255,17 @@ about the eval context, see <a class="reference internal" href="#eval-context"><
 <dl class="function">
 <dt id="jinja2.environmentfunction">
 <tt class="descclassname">jinja2.</tt><tt class="descname">environmentfunction</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.environmentfunction" title="Permalink to this definition">¶</a></dt>
-<dd>This decorator can be used to mark a function or method as environment
-callable.  This decorator works exactly like the <a title="jinja2.contextfunction" class="reference internal" href="#jinja2.contextfunction"><tt class="xref docutils literal"><span class="pre">contextfunction()</span></tt></a>
-decorator just that the first argument is the active <a title="jinja2.Environment" class="reference internal" href="#jinja2.Environment"><tt class="xref docutils literal"><span class="pre">Environment</span></tt></a>
-and not context.</dd></dl>
+<dd><p>This decorator can be used to mark a function or method as environment
+callable.  This decorator works exactly like the <a class="reference internal" href="#jinja2.contextfunction" title="jinja2.contextfunction"><tt class="xref py py-func docutils literal"><span class="pre">contextfunction()</span></tt></a>
+decorator just that the first argument is the active <a class="reference internal" href="#jinja2.Environment" title="jinja2.Environment"><tt class="xref py py-class docutils literal"><span class="pre">Environment</span></tt></a>
+and not context.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="jinja2.contextfunction">
 <tt class="descclassname">jinja2.</tt><tt class="descname">contextfunction</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.contextfunction" title="Permalink to this definition">¶</a></dt>
 <dd><p>This decorator can be used to mark a function or method context callable.
-A context callable is passed the active <tt class="xref docutils literal"><span class="pre">Context</span></tt> as first argument when
+A context callable is passed the active <tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt> as first argument when
 called from the template.  This is useful if a function wants to get access
 to the context or functions provided on the context object.  For example
 a function that returns a sorted list of template variables the current
@@ -1234,7 +1281,7 @@ template exports could look like this:</p>
 <dt id="jinja2.evalcontextfunction">
 <tt class="descclassname">jinja2.</tt><tt class="descname">evalcontextfunction</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#jinja2.evalcontextfunction" title="Permalink to this definition">¶</a></dt>
 <dd><p>This decoraotr can be used to mark a function or method as an eval
-context callable.  This is similar to the <a title="jinja2.contextfunction" class="reference internal" href="#jinja2.contextfunction"><tt class="xref docutils literal"><span class="pre">contextfunction()</span></tt></a>
+context callable.  This is similar to the <a class="reference internal" href="#jinja2.contextfunction" title="jinja2.contextfunction"><tt class="xref py py-func docutils literal"><span class="pre">contextfunction()</span></tt></a>
 but instead of passing the context, an evaluation context object is
 passed.  For more information about the eval context, see
 <a class="reference internal" href="#eval-context"><em>Evaluation Context</em></a>.</p>
@@ -1249,22 +1296,23 @@ passed.  For more information about the eval context, see
 to HTML-safe sequences.  Use this if you need to display text that might
 contain such characters in HTML.  This function will not escaped objects
 that do have an HTML representation such as already escaped data.</p>
-<p>The return value is a <a title="jinja2.Markup" class="reference internal" href="#jinja2.Markup"><tt class="xref docutils literal"><span class="pre">Markup</span></tt></a> string.</p>
+<p>The return value is a <a class="reference internal" href="#jinja2.Markup" title="jinja2.Markup"><tt class="xref py py-class docutils literal"><span class="pre">Markup</span></tt></a> string.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="jinja2.clear_caches">
 <tt class="descclassname">jinja2.</tt><tt class="descname">clear_caches</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.clear_caches" title="Permalink to this definition">¶</a></dt>
-<dd>Jinja2 keeps internal caches for environments and lexers.  These are
+<dd><p>Jinja2 keeps internal caches for environments and lexers.  These are
 used so that Jinja2 doesn&#8217;t have to recreate environments and lexers all
 the time.  Normally you don&#8217;t have to care about that but if you are
-messuring memory consumption you may want to clean the caches.</dd></dl>
+messuring memory consumption you may want to clean the caches.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="jinja2.is_undefined">
 <tt class="descclassname">jinja2.</tt><tt class="descname">is_undefined</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#jinja2.is_undefined" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the object passed is undefined.  This does nothing more than
-performing an instance check against <a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a> but looks nicer.
+performing an instance check against <a class="reference internal" href="#jinja2.Undefined" title="jinja2.Undefined"><tt class="xref py py-class docutils literal"><span class="pre">Undefined</span></tt></a> but looks nicer.
 This can be used for custom filters or tests that want to react to
 undefined variables.  For example a custom default filter can look like
 this:</p>
@@ -1281,13 +1329,12 @@ this:</p>
 <em class="property">class </em><tt class="descclassname">jinja2.</tt><tt class="descname">Markup</tt><big>(</big><span class="optional">[</span><em>string</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#jinja2.Markup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Marks a string as being safe for inclusion in HTML/XML output without
 needing to be escaped.  This implements the <cite>__html__</cite> interface a couple
-of frameworks and web applications use.  <a title="jinja2.Markup" class="reference internal" href="#jinja2.Markup"><tt class="xref docutils literal"><span class="pre">Markup</span></tt></a> is a direct
+of frameworks and web applications use.  <a class="reference internal" href="#jinja2.Markup" title="jinja2.Markup"><tt class="xref py py-class docutils literal"><span class="pre">Markup</span></tt></a> is a direct
 subclass of <cite>unicode</cite> and provides all the methods of <cite>unicode</cite> just that
 it escapes arguments passed and always returns <cite>Markup</cite>.</p>
 <p>The <cite>escape</cite> function returns markup objects so that double escaping can&#8217;t
-happen.  If you want to use autoescaping in Jinja just enable the
-autoescaping feature in the environment.</p>
-<p>The constructor of the <a title="jinja2.Markup" class="reference internal" href="#jinja2.Markup"><tt class="xref docutils literal"><span class="pre">Markup</span></tt></a> class can be used for three
+happen.</p>
+<p>The constructor of the <a class="reference internal" href="#jinja2.Markup" title="jinja2.Markup"><tt class="xref py py-class docutils literal"><span class="pre">Markup</span></tt></a> class can be used for three
 different things:  When passed an unicode object it&#8217;s assumed to be safe,
 when passed an object with an HTML representation (has an <cite>__html__</cite>
 method) that representation is used, otherwise the object passed is
@@ -1303,13 +1350,13 @@ converted into a unicode string and then assumed to be safe:</p>
 </pre></div>
 </div>
 <p>If you want object passed being always treated as unsafe you can use the
-<a title="escape" class="reference external" href="templates.html#escape"><tt class="xref docutils literal"><span class="pre">escape()</span></tt></a> classmethod to create a <a title="jinja2.Markup" class="reference internal" href="#jinja2.Markup"><tt class="xref docutils literal"><span class="pre">Markup</span></tt></a> object:</p>
+<a class="reference internal" href="templates.html#escape" title="escape"><tt class="xref py py-meth docutils literal"><span class="pre">escape()</span></tt></a> classmethod to create a <a class="reference internal" href="#jinja2.Markup" title="jinja2.Markup"><tt class="xref py py-class docutils literal"><span class="pre">Markup</span></tt></a> object:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Markup</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="s">&quot;Hello &lt;em&gt;World&lt;/em&gt;!&quot;</span><span class="p">)</span>
 <span class="go">Markup(u&#39;Hello &amp;lt;em&amp;gt;World&amp;lt;/em&amp;gt;!&#39;)</span>
 </pre></div>
 </div>
 <p>Operations on a markup string are markup aware which means that all
-arguments are passed through the <a title="escape" class="reference external" href="templates.html#escape"><tt class="xref docutils literal"><span class="pre">escape()</span></tt></a> function:</p>
+arguments are passed through the <a class="reference internal" href="templates.html#escape" title="escape"><tt class="xref py py-func docutils literal"><span class="pre">escape()</span></tt></a> function:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">em</span> <span class="o">=</span> <span class="n">Markup</span><span class="p">(</span><span class="s">&quot;&lt;em&gt;</span><span class="si">%s</span><span class="s">&lt;/em&gt;&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">em</span> <span class="o">%</span> <span class="s">&quot;foo &amp; bar&quot;</span>
 <span class="go">Markup(u&#39;&lt;em&gt;foo &amp;amp; bar&lt;/em&gt;&#39;)</span>
@@ -1323,9 +1370,10 @@ arguments are passed through the <a title="escape" class="reference external" hr
 <dl class="classmethod">
 <dt id="jinja2.Markup.escape">
 <em class="property">classmethod </em><tt class="descname">escape</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#jinja2.Markup.escape" title="Permalink to this definition">¶</a></dt>
-<dd>Escape the string.  Works like <a title="escape" class="reference external" href="templates.html#escape"><tt class="xref docutils literal"><span class="pre">escape()</span></tt></a> with the difference
-that for subclasses of <a title="jinja2.Markup" class="reference internal" href="#jinja2.Markup"><tt class="xref docutils literal"><span class="pre">Markup</span></tt></a> this function would return the
-correct subclass.</dd></dl>
+<dd><p>Escape the string.  Works like <a class="reference internal" href="templates.html#escape" title="escape"><tt class="xref py py-func docutils literal"><span class="pre">escape()</span></tt></a> with the difference
+that for subclasses of <a class="reference internal" href="#jinja2.Markup" title="jinja2.Markup"><tt class="xref py py-class docutils literal"><span class="pre">Markup</span></tt></a> this function would return the
+correct subclass.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Markup.unescape">
@@ -1354,7 +1402,7 @@ normalized to one:</p>
 
 <div class="admonition-note admonition ">
 <p class="first admonition-title">Note</p>
-<p class="last">The Jinja2 <a title="jinja2.Markup" class="reference internal" href="#jinja2.Markup"><tt class="xref docutils literal"><span class="pre">Markup</span></tt></a> class is compatible with at least Pylons and
+<p class="last">The Jinja2 <a class="reference internal" href="#jinja2.Markup" title="jinja2.Markup"><tt class="xref py py-class docutils literal"><span class="pre">Markup</span></tt></a> class is compatible with at least Pylons and
 Genshi.  It&#8217;s expected that more template engines and framework will pick
 up the <cite>__html__</cite> concept soon.</p>
 </div>
@@ -1364,23 +1412,26 @@ up the <cite>__html__</cite> concept soon.</p>
 <dl class="exception">
 <dt id="jinja2.TemplateError">
 <em class="property">exception </em><tt class="descclassname">jinja2.</tt><tt class="descname">TemplateError</tt><big>(</big><em>message=None</em><big>)</big><a class="headerlink" href="#jinja2.TemplateError" title="Permalink to this definition">¶</a></dt>
-<dd>Baseclass for all template errors.</dd></dl>
+<dd><p>Baseclass for all template errors.</p>
+</dd></dl>
 
 <dl class="exception">
 <dt id="jinja2.UndefinedError">
 <em class="property">exception </em><tt class="descclassname">jinja2.</tt><tt class="descname">UndefinedError</tt><big>(</big><em>message=None</em><big>)</big><a class="headerlink" href="#jinja2.UndefinedError" title="Permalink to this definition">¶</a></dt>
-<dd>Raised if a template tries to operate on <a title="jinja2.Undefined" class="reference internal" href="#jinja2.Undefined"><tt class="xref docutils literal"><span class="pre">Undefined</span></tt></a>.</dd></dl>
+<dd><p>Raised if a template tries to operate on <a class="reference internal" href="#jinja2.Undefined" title="jinja2.Undefined"><tt class="xref py py-class docutils literal"><span class="pre">Undefined</span></tt></a>.</p>
+</dd></dl>
 
 <dl class="exception">
 <dt id="jinja2.TemplateNotFound">
 <em class="property">exception </em><tt class="descclassname">jinja2.</tt><tt class="descname">TemplateNotFound</tt><big>(</big><em>name</em>, <em>message=None</em><big>)</big><a class="headerlink" href="#jinja2.TemplateNotFound" title="Permalink to this definition">¶</a></dt>
-<dd>Raised if a template does not exist.</dd></dl>
+<dd><p>Raised if a template does not exist.</p>
+</dd></dl>
 
 <dl class="exception">
 <dt id="jinja2.TemplatesNotFound">
 <em class="property">exception </em><tt class="descclassname">jinja2.</tt><tt class="descname">TemplatesNotFound</tt><big>(</big><em>names=()</em>, <em>message=None</em><big>)</big><a class="headerlink" href="#jinja2.TemplatesNotFound" title="Permalink to this definition">¶</a></dt>
-<dd><p>Like <a title="jinja2.TemplateNotFound" class="reference internal" href="#jinja2.TemplateNotFound"><tt class="xref docutils literal"><span class="pre">TemplateNotFound</span></tt></a> but raised if multiple templates
-are selected.  This is a subclass of <a title="jinja2.TemplateNotFound" class="reference internal" href="#jinja2.TemplateNotFound"><tt class="xref docutils literal"><span class="pre">TemplateNotFound</span></tt></a>
+<dd><p>Like <a class="reference internal" href="#jinja2.TemplateNotFound" title="jinja2.TemplateNotFound"><tt class="xref py py-class docutils literal"><span class="pre">TemplateNotFound</span></tt></a> but raised if multiple templates
+are selected.  This is a subclass of <a class="reference internal" href="#jinja2.TemplateNotFound" title="jinja2.TemplateNotFound"><tt class="xref py py-class docutils literal"><span class="pre">TemplateNotFound</span></tt></a>
 exception, so just catching the base exception will catch both.</p>
 <p class="versionadded">
 <span class="versionmodified">New in version 2.2.</span></p>
@@ -1393,23 +1444,27 @@ exception, so just catching the base exception will catch both.</p>
 <dl class="attribute">
 <dt id="jinja2.TemplateSyntaxError.message">
 <tt class="descname">message</tt><a class="headerlink" href="#jinja2.TemplateSyntaxError.message" title="Permalink to this definition">¶</a></dt>
-<dd>The error message as utf-8 bytestring.</dd></dl>
+<dd><p>The error message as utf-8 bytestring.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.TemplateSyntaxError.lineno">
 <tt class="descname">lineno</tt><a class="headerlink" href="#jinja2.TemplateSyntaxError.lineno" title="Permalink to this definition">¶</a></dt>
-<dd>The line number where the error occurred</dd></dl>
+<dd><p>The line number where the error occurred</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.TemplateSyntaxError.name">
 <tt class="descname">name</tt><a class="headerlink" href="#jinja2.TemplateSyntaxError.name" title="Permalink to this definition">¶</a></dt>
-<dd>The load name for the template as unicode string.</dd></dl>
+<dd><p>The load name for the template as unicode string.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.TemplateSyntaxError.filename">
 <tt class="descname">filename</tt><a class="headerlink" href="#jinja2.TemplateSyntaxError.filename" title="Permalink to this definition">¶</a></dt>
-<dd>The filename that loaded the template as bytestring in the encoding
-of the file system (most likely utf-8 or mbcs on Windows systems).</dd></dl>
+<dd><p>The filename that loaded the template as bytestring in the encoding
+of the file system (most likely utf-8 or mbcs on Windows systems).</p>
+</dd></dl>
 
 <p>The reason why the filename and error message are bytestrings and not
 unicode strings is that Python 2.x is not using unicode for exceptions
@@ -1419,10 +1474,11 @@ and tracebacks as well as the compiler.  This will change with Python 3.</p>
 <dl class="exception">
 <dt id="jinja2.TemplateAssertionError">
 <em class="property">exception </em><tt class="descclassname">jinja2.</tt><tt class="descname">TemplateAssertionError</tt><big>(</big><em>message</em>, <em>lineno</em>, <em>name=None</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#jinja2.TemplateAssertionError" title="Permalink to this definition">¶</a></dt>
-<dd>Like a template syntax error, but covers cases where something in the
+<dd><p>Like a template syntax error, but covers cases where something in the
 template caused an error at compile time that wasn&#8217;t necessarily caused
 by a syntax error.  However it&#8217;s a direct subclass of
-<a title="jinja2.TemplateSyntaxError" class="reference internal" href="#jinja2.TemplateSyntaxError"><tt class="xref docutils literal"><span class="pre">TemplateSyntaxError</span></tt></a> and has the same attributes.</dd></dl>
+<a class="reference internal" href="#jinja2.TemplateSyntaxError" title="jinja2.TemplateSyntaxError"><tt class="xref py py-exc docutils literal"><span class="pre">TemplateSyntaxError</span></tt></a> and has the same attributes.</p>
+</dd></dl>
 
 </div>
 <div class="section" id="custom-filters">
@@ -1438,7 +1494,7 @@ be applied to datetime objects to format them:</p>
 </pre></div>
 </div>
 <p>You can register it on the template environment by updating the
-<a title="jinja2.Environment.filters" class="reference internal" href="#jinja2.Environment.filters"><tt class="xref docutils literal"><span class="pre">filters</span></tt></a> dict on the environment:</p>
+<a class="reference internal" href="#jinja2.Environment.filters" title="jinja2.Environment.filters"><tt class="xref py py-attr docutils literal"><span class="pre">filters</span></tt></a> dict on the environment:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">environment</span><span class="o">.</span><span class="n">filters</span><span class="p">[</span><span class="s">&#39;datetimeformat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetimeformat</span>
 </pre></div>
 </div>
@@ -1449,9 +1505,9 @@ be applied to datetime objects to format them:</p>
 </div>
 <p>Filters can also be passed the current template context or environment.  This
 is useful if a filter wants to return an undefined value or check the current
-<tt class="xref docutils literal"><span class="pre">autoescape</span></tt> setting.  For this purpose three decorators
-exist: <a title="jinja2.environmentfilter" class="reference internal" href="#jinja2.environmentfilter"><tt class="xref docutils literal"><span class="pre">environmentfilter()</span></tt></a>, <a title="jinja2.contextfilter" class="reference internal" href="#jinja2.contextfilter"><tt class="xref docutils literal"><span class="pre">contextfilter()</span></tt></a> and
-<a title="jinja2.evalcontextfilter" class="reference internal" href="#jinja2.evalcontextfilter"><tt class="xref docutils literal"><span class="pre">evalcontextfilter()</span></tt></a>.</p>
+<tt class="xref py py-attr docutils literal"><span class="pre">autoescape</span></tt> setting.  For this purpose three decorators
+exist: <a class="reference internal" href="#jinja2.environmentfilter" title="jinja2.environmentfilter"><tt class="xref py py-func docutils literal"><span class="pre">environmentfilter()</span></tt></a>, <a class="reference internal" href="#jinja2.contextfilter" title="jinja2.contextfilter"><tt class="xref py py-func docutils literal"><span class="pre">contextfilter()</span></tt></a> and
+<a class="reference internal" href="#jinja2.evalcontextfilter" title="jinja2.evalcontextfilter"><tt class="xref py py-func docutils literal"><span class="pre">evalcontextfilter()</span></tt></a>.</p>
 <p>Here a small example filter that breaks a text into HTML line breaks and
 paragraphs and marks the return value as safe HTML string if autoescaping is
 enabled:</p>
@@ -1470,7 +1526,7 @@ enabled:</p>
 </pre></div>
 </div>
 <p>Context filters work the same just that the first argument is the current
-active <tt class="xref docutils literal"><span class="pre">Context</span></tt> rather then the environment.</p>
+active <tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt> rather then the environment.</p>
 </div>
 <div class="section" id="evaluation-context">
 <span id="eval-context"></span><h2>Evaluation Context<a class="headerlink" href="#evaluation-context" title="Permalink to this headline">¶</a></h2>
@@ -1492,9 +1548,9 @@ evaluation context instead.</p>
     <span class="k">return</span> <span class="n">result</span>
 </pre></div>
 </div>
-<p>In new versions you can either use a <a title="jinja2.contextfilter" class="reference internal" href="#jinja2.contextfilter"><tt class="xref docutils literal"><span class="pre">contextfilter()</span></tt></a> and access the
+<p>In new versions you can either use a <a class="reference internal" href="#jinja2.contextfilter" title="jinja2.contextfilter"><tt class="xref py py-func docutils literal"><span class="pre">contextfilter()</span></tt></a> and access the
 evaluation context from the actual context, or use a
-<a title="jinja2.evalcontextfilter" class="reference internal" href="#jinja2.evalcontextfilter"><tt class="xref docutils literal"><span class="pre">evalcontextfilter()</span></tt></a> which directly passes the evaluation context to
+<a class="reference internal" href="#jinja2.evalcontextfilter" title="jinja2.evalcontextfilter"><tt class="xref py py-func docutils literal"><span class="pre">evalcontextfilter()</span></tt></a> which directly passes the evaluation context to
 the function:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@contextfilter</span>
 <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -1512,8 +1568,8 @@ the function:</p>
 </pre></div>
 </div>
 <p>The evaluation context must not be modified at runtime.  Modifications
-must only happen with a <a title="jinja2.nodes.EvalContextModifier" class="reference external" href="extensions.html#jinja2.nodes.EvalContextModifier"><tt class="xref docutils literal"><span class="pre">nodes.EvalContextModifier</span></tt></a> and
-<a title="jinja2.nodes.ScopedEvalContextModifier" class="reference external" href="extensions.html#jinja2.nodes.ScopedEvalContextModifier"><tt class="xref docutils literal"><span class="pre">nodes.ScopedEvalContextModifier</span></tt></a> from an extension, not on the
+must only happen with a <a class="reference internal" href="extensions.html#jinja2.nodes.EvalContextModifier" title="jinja2.nodes.EvalContextModifier"><tt class="xref py py-class docutils literal"><span class="pre">nodes.EvalContextModifier</span></tt></a> and
+<a class="reference internal" href="extensions.html#jinja2.nodes.ScopedEvalContextModifier" title="jinja2.nodes.ScopedEvalContextModifier"><tt class="xref py py-class docutils literal"><span class="pre">nodes.ScopedEvalContextModifier</span></tt></a> from an extension, not on the
 eval context object itself.</p>
 <dl class="class">
 <dt id="jinja2.nodes.EvalContext">
@@ -1523,13 +1579,15 @@ to it in extensions.</p>
 <dl class="attribute">
 <dt id="jinja2.EvalContext.autoescape">
 <tt class="descname">autoescape</tt><a class="headerlink" href="#jinja2.EvalContext.autoescape" title="Permalink to this definition">¶</a></dt>
-<dd><cite>True</cite> or <cite>False</cite> depending on if autoescaping is active or not.</dd></dl>
+<dd><p><cite>True</cite> or <cite>False</cite> depending on if autoescaping is active or not.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.EvalContext.volatile">
 <tt class="descname">volatile</tt><a class="headerlink" href="#jinja2.EvalContext.volatile" title="Permalink to this definition">¶</a></dt>
-<dd><cite>True</cite> if the compiler cannot evaluate some expressions at compile
-time.  At runtime this should always be <cite>False</cite>.</dd></dl>
+<dd><p><cite>True</cite> if the compiler cannot evaluate some expressions at compile
+time.  At runtime this should always be <cite>False</cite>.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1554,7 +1612,7 @@ checks.</p>
 </pre></div>
 </div>
 <p>You can register it on the template environment by updating the
-<a title="jinja2.Environment.tests" class="reference internal" href="#jinja2.Environment.tests"><tt class="xref docutils literal"><span class="pre">tests</span></tt></a> dict on the environment:</p>
+<a class="reference internal" href="#jinja2.Environment.tests" title="jinja2.Environment.tests"><tt class="xref py py-attr docutils literal"><span class="pre">tests</span></tt></a> dict on the environment:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">environment</span><span class="o">.</span><span class="n">tests</span><span class="p">[</span><span class="s">&#39;prime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_prime</span>
 </pre></div>
 </div>
@@ -1569,28 +1627,28 @@ checks.</p>
 </div>
 <div class="section" id="the-global-namespace">
 <span id="global-namespace"></span><h2>The Global Namespace<a class="headerlink" href="#the-global-namespace" title="Permalink to this headline">¶</a></h2>
-<p>Variables stored in the <a title="jinja2.Environment.globals" class="reference internal" href="#jinja2.Environment.globals"><tt class="xref docutils literal"><span class="pre">Environment.globals</span></tt></a> dict are special as they
+<p>Variables stored in the <a class="reference internal" href="#jinja2.Environment.globals" title="jinja2.Environment.globals"><tt class="xref py py-attr docutils literal"><span class="pre">Environment.globals</span></tt></a> dict are special as they
 are available for imported templates too, even if they are imported without
 context.  This is the place where you can put variables and functions
-that should be available all the time.  Additionally <a title="jinja2.Template.globals" class="reference internal" href="#jinja2.Template.globals"><tt class="xref docutils literal"><span class="pre">Template.globals</span></tt></a>
+that should be available all the time.  Additionally <a class="reference internal" href="#jinja2.Template.globals" title="jinja2.Template.globals"><tt class="xref py py-attr docutils literal"><span class="pre">Template.globals</span></tt></a>
 exist that are variables available to a specific template that are available
-to all <a title="jinja2.Template.render" class="reference internal" href="#jinja2.Template.render"><tt class="xref docutils literal"><span class="pre">render()</span></tt></a> calls.</p>
+to all <a class="reference internal" href="#jinja2.Template.render" title="jinja2.Template.render"><tt class="xref py py-meth docutils literal"><span class="pre">render()</span></tt></a> calls.</p>
 </div>
 <div class="section" id="low-level-api">
 <span id="id3"></span><h2>Low Level API<a class="headerlink" href="#low-level-api" title="Permalink to this headline">¶</a></h2>
 <p>The low level API exposes functionality that can be useful to understand some
-implementation details, debugging purposes or advanced <a class="reference external" href="extensions.html#jinja-extensions"><em>extension</em></a> techniques.  Unless you know exactly what you are doing we
+implementation details, debugging purposes or advanced <a class="reference internal" href="extensions.html#jinja-extensions"><em>extension</em></a> techniques.  Unless you know exactly what you are doing we
 don&#8217;t recommend using any of those.</p>
 <dl class="method">
 <dt id="jinja2.Environment.lex">
 <tt class="descclassname">Environment.</tt><tt class="descname">lex</tt><big>(</big><em>source</em>, <em>name=None</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.lex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lex the given sourcecode and return a generator that yields
 tokens as tuples in the form <tt class="docutils literal"><span class="pre">(lineno,</span> <span class="pre">token_type,</span> <span class="pre">value)</span></tt>.
-This can be useful for <a class="reference external" href="extensions.html#writing-extensions"><em>extension development</em></a>
+This can be useful for <a class="reference internal" href="extensions.html#writing-extensions"><em>extension development</em></a>
 and debugging templates.</p>
 <p>This does not perform preprocessing.  If you want the preprocessing
 of the extensions to be applied you have to filter source through
-the <a title="jinja2.Environment.preprocess" class="reference internal" href="#jinja2.Environment.preprocess"><tt class="xref docutils literal"><span class="pre">preprocess()</span></tt></a> method.</p>
+the <a class="reference internal" href="#jinja2.Environment.preprocess" title="jinja2.Environment.preprocess"><tt class="xref py py-meth docutils literal"><span class="pre">preprocess()</span></tt></a> method.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1600,21 +1658,22 @@ the <a title="jinja2.Environment.preprocess" class="reference internal" href="#j
 tree of nodes is used by the compiler to convert the template into
 executable source- or bytecode.  This is useful for debugging or to
 extract information from templates.</p>
-<p>If you are <a class="reference external" href="extensions.html#writing-extensions"><em>developing Jinja2 extensions</em></a>
+<p>If you are <a class="reference internal" href="extensions.html#writing-extensions"><em>developing Jinja2 extensions</em></a>
 this gives you a good overview of the node tree generated.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Environment.preprocess">
 <tt class="descclassname">Environment.</tt><tt class="descname">preprocess</tt><big>(</big><em>source</em>, <em>name=None</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#jinja2.Environment.preprocess" title="Permalink to this definition">¶</a></dt>
-<dd>Preprocesses the source with all extensions.  This is automatically
-called for all parsing and compiling methods but <em>not</em> for <a title="jinja2.Environment.lex" class="reference internal" href="#jinja2.Environment.lex"><tt class="xref docutils literal"><span class="pre">lex()</span></tt></a>
-because there you usually only want the actual source tokenized.</dd></dl>
+<dd><p>Preprocesses the source with all extensions.  This is automatically
+called for all parsing and compiling methods but <em>not</em> for <a class="reference internal" href="#jinja2.Environment.lex" title="jinja2.Environment.lex"><tt class="xref py py-meth docutils literal"><span class="pre">lex()</span></tt></a>
+because there you usually only want the actual source tokenized.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Template.new_context">
 <tt class="descclassname">Template.</tt><tt class="descname">new_context</tt><big>(</big><em>vars=None</em>, <em>shared=False</em>, <em>locals=None</em><big>)</big><a class="headerlink" href="#jinja2.Template.new_context" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new <tt class="xref docutils literal"><span class="pre">Context</span></tt> for this template.  The vars
+<dd><p>Create a new <tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt> for this template.  The vars
 provided will be passed to the template.  Per default the globals
 are added to the context.  If shared is set to <cite>True</cite> the data
 is passed as it to the context without adding the globals.</p>
@@ -1624,35 +1683,37 @@ is passed as it to the context without adding the globals.</p>
 <dl class="method">
 <dt id="jinja2.Template.root_render_func">
 <tt class="descclassname">Template.</tt><tt class="descname">root_render_func</tt><big>(</big><em>context</em><big>)</big><a class="headerlink" href="#jinja2.Template.root_render_func" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the low level render function.  It&#8217;s passed a <tt class="xref docutils literal"><span class="pre">Context</span></tt>
-that has to be created by <a title="jinja2.Template.new_context" class="reference internal" href="#jinja2.Template.new_context"><tt class="xref docutils literal"><span class="pre">new_context()</span></tt></a> of the same template or
+<dd><p>This is the low level render function.  It&#8217;s passed a <tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt>
+that has to be created by <a class="reference internal" href="#jinja2.Template.new_context" title="jinja2.Template.new_context"><tt class="xref py py-meth docutils literal"><span class="pre">new_context()</span></tt></a> of the same template or
 a compatible template.  This render function is generated by the
 compiler from the template code and returns a generator that yields
 unicode strings.</p>
 <p>If an exception in the template code happens the template engine will
 not rewrite the exception but pass through the original one.  As a
 matter of fact this function should only be called from within a
-<a title="jinja2.Template.render" class="reference internal" href="#jinja2.Template.render"><tt class="xref docutils literal"><span class="pre">render()</span></tt></a> / <a title="jinja2.Template.generate" class="reference internal" href="#jinja2.Template.generate"><tt class="xref docutils literal"><span class="pre">generate()</span></tt></a> / <a title="jinja2.Template.stream" class="reference internal" href="#jinja2.Template.stream"><tt class="xref docutils literal"><span class="pre">stream()</span></tt></a> call.</p>
+<a class="reference internal" href="#jinja2.Template.render" title="jinja2.Template.render"><tt class="xref py py-meth docutils literal"><span class="pre">render()</span></tt></a> / <a class="reference internal" href="#jinja2.Template.generate" title="jinja2.Template.generate"><tt class="xref py py-meth docutils literal"><span class="pre">generate()</span></tt></a> / <a class="reference internal" href="#jinja2.Template.stream" title="jinja2.Template.stream"><tt class="xref py py-meth docutils literal"><span class="pre">stream()</span></tt></a> call.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Template.blocks">
 <tt class="descclassname">Template.</tt><tt class="descname">blocks</tt><a class="headerlink" href="#jinja2.Template.blocks" title="Permalink to this definition">¶</a></dt>
-<dd>A dict of block render functions.  Each of these functions works exactly
-like the <a title="jinja2.Template.root_render_func" class="reference internal" href="#jinja2.Template.root_render_func"><tt class="xref docutils literal"><span class="pre">root_render_func()</span></tt></a> with the same limitations.</dd></dl>
+<dd><p>A dict of block render functions.  Each of these functions works exactly
+like the <a class="reference internal" href="#jinja2.Template.root_render_func" title="jinja2.Template.root_render_func"><tt class="xref py py-meth docutils literal"><span class="pre">root_render_func()</span></tt></a> with the same limitations.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="jinja2.Template.is_up_to_date">
 <tt class="descclassname">Template.</tt><tt class="descname">is_up_to_date</tt><a class="headerlink" href="#jinja2.Template.is_up_to_date" title="Permalink to this definition">¶</a></dt>
-<dd>This attribute is <cite>False</cite> if there is a newer version of the template
-available, otherwise <cite>True</cite>.</dd></dl>
+<dd><p>This attribute is <cite>False</cite> if there is a newer version of the template
+available, otherwise <cite>True</cite>.</p>
+</dd></dl>
 
 <div class="admonition-note admonition ">
 <p class="first admonition-title">Note</p>
 <p class="last">The low-level API is fragile.  Future Jinja2 versions will try not to
 change it in a backwards incompatible way but modifications in the Jinja2
 core may shine through.  For example if Jinja2 introduces a new AST node
-in later versions that may be returned by <a title="jinja2.Environment.parse" class="reference internal" href="#jinja2.Environment.parse"><tt class="xref docutils literal"><span class="pre">parse()</span></tt></a>.</p>
+in later versions that may be returned by <a class="reference internal" href="#jinja2.Environment.parse" title="jinja2.Environment.parse"><tt class="xref py py-meth docutils literal"><span class="pre">parse()</span></tt></a>.</p>
 </div>
 </div>
 <div class="section" id="the-meta-api">
@@ -1662,7 +1723,7 @@ in later versions that may be returned by <a title="jinja2.Environment.parse" cl
 <p>The meta API returns some information about abstract syntax trees that
 could help applications to implement more advanced template concepts.  All
 the functions of the meta API operate on an abstract syntax tree as
-returned by the <a title="jinja2.Environment.parse" class="reference internal" href="#jinja2.Environment.parse"><tt class="xref docutils literal"><span class="pre">Environment.parse()</span></tt></a> method.</p>
+returned by the <a class="reference internal" href="#jinja2.Environment.parse" title="jinja2.Environment.parse"><tt class="xref py py-meth docutils literal"><span class="pre">Environment.parse()</span></tt></a> method.</p>
 <dl class="function">
 <dt id="jinja2.meta.find_undeclared_variables">
 <tt class="descclassname">jinja2.meta.</tt><tt class="descname">find_undeclared_variables</tt><big>(</big><em>ast</em><big>)</big><a class="headerlink" href="#jinja2.meta.find_undeclared_variables" title="Permalink to this definition">¶</a></dt>
@@ -1681,7 +1742,7 @@ runtime, all variables are returned.</p>
 <p class="first admonition-title">Implementation</p>
 <p class="last">Internally the code generator is used for finding undeclared variables.
 This is good to know because the code generator might raise a
-<a title="jinja2.TemplateAssertionError" class="reference internal" href="#jinja2.TemplateAssertionError"><tt class="xref docutils literal"><span class="pre">TemplateAssertionError</span></tt></a> during compilation and as a matter of
+<a class="reference internal" href="#jinja2.TemplateAssertionError" title="jinja2.TemplateAssertionError"><tt class="xref py py-exc docutils literal"><span class="pre">TemplateAssertionError</span></tt></a> during compilation and as a matter of
 fact this function can currently raise that exception as well.</p>
 </div>
 </dd></dl>
