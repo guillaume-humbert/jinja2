@@ -1,3 +1,13 @@
+jinja2 (2.5.5-2) experimental; urgency=low
+
+  * Rebuild for Python 2.7 and 3.2 extension (minimum required python-all's
+    version temporary bumped to 2.6.6-4, python-setuptools' to 0.6.14-5
+    and python3-all's to 3.1.2-14 to make sure the right version from
+    experimental will be used). Closes: 607450.
+  * Update debian/rules to handle Python >= 3.2 
+
+ -- Piotr Ożarowski <piotr@debian.org>  Tue, 21 Dec 2010 20:58:19 +0100
+
 jinja2 (2.5.5-1) unstable; urgency=low
 
   * New upstream release

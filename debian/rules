@@ -5,7 +5,7 @@
 include /usr/share/quilt/quilt.make
 include /usr/share/python3/python.mk
 
-PYVERS=$(shell pyversions -vr) 3.1
+PYVERS=$(shell pyversions -vr) $(shell py3versions -vr)
 VERSION=$(shell sed -rn 's,^Version: (.*),\1,p' $(CURDIR)/PKG-INFO)
 pkgdir = $(CURDIR)/debian/python$(if $(patsubst 3.%,,$(1)),,3)-jinja2
 
@@ -42,7 +42,7 @@ install-stamp: $(PYVERS:%=install-python%) $(PYVERS:%=install-debug-python%)
 	dh_install
 	touch $@
 
-install-python%: build
+install-python%: build-python%
 	python$* setup.py --with-debugsupport install $(py_setup_install_args) \
 		--skip-build --single-version-externally-managed --root $(call pkgdir,$*)
 	sed -i -e 's,REPLACE_ME_WITH_PROPER_VERSION,$(VERSION),' $(call pkgdir,$*)$(call py_libdir,$*)/jinja2/__init__.py
@@ -50,10 +50,10 @@ install-python%: build
 	rm -f $(call pkgdir,$*)$(call py_libdir,$*)/jinja2/_debugsupport.c
 	touch $@
 
-install-debug-python%: build
+install-debug-python%: build-debug-python%
 	python$*-dbg setup.py --with-debugsupport install $(py_setup_install_args) \
 		--skip-build --single-version-externally-managed --root $(call pkgdir,$*)-dbg/
-	find $(call pkgdir,$*)-dbg/usr/ ! -type d ! -name '*_d\.so' -delete
+	find $(call pkgdir,$*)-dbg/usr/ ! -type d ! -name '*\.so' -delete
 	find $(call pkgdir,$*)-dbg/usr/ -depth -empty -delete
 	touch $@
 
