@@ -1,3 +1,10 @@
+jinja2 (2.5.5-3) experimental; urgency=low
+
+  * Bump minimum required python-support version to the one in experimental
+    to get Python 2.7 support (closes: 608149) 
+
+ -- Piotr Ożarowski <piotr@debian.org>  Mon, 27 Dec 2010 23:15:04 +0100
+
 jinja2 (2.5.5-2) experimental; urgency=low
 
   * Rebuild for Python 2.7 and 3.2 extension (minimum required python-all's
