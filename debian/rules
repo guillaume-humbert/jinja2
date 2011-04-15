@@ -71,7 +71,7 @@ binary-arch: build install
 	rm -rf $(call pkgdir,3.X)-dbg/usr/share/doc/python3-jinja2-dbg
 	ln -s python-jinja2 $(call pkgdir,2.X)-dbg/usr/share/doc/python-jinja2-dbg
 	ln -s python3-jinja2 $(call pkgdir,3.X)-dbg/usr/share/doc/python3-jinja2-dbg
-	dh_compress -a -X.py
+	dh_compress -a -X.py -Xobjects.inv
 	dh_fixperms -a
 	dh_installdeb -a
 	dh_shlibdeps -a
