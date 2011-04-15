@@ -67,7 +67,7 @@ Description: small but fast and easy to use stand-alone template engine
 
 Package: python3-jinja2
 Architecture: any
-Depends: ${python3:Depends}, ${shlibs:Depends}, ${misc:Depends}, python3-markupsafe, python3.1
+Depends: ${python3:Depends}, ${shlibs:Depends}, ${misc:Depends}, python3-markupsafe
 Recommends: python3-pkg-resources
 Provides: ${python3:Provides}
 Suggests: python3-jinja2-doc

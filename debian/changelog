@@ -1,3 +1,10 @@
+jinja2 (2.5.5-5) unstable; urgency=low
+
+  * Drop hardcoded python3.1 from Depends (closes: #621816)
+  * Do not compress objects.inv file (closes: #608757)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Fri, 15 Apr 2011 22:05:53 +0200
+
 jinja2 (2.5.5-4) unstable; urgency=low
 
   * Upload to unstable (closes: 621001)
