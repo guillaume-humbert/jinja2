@@ -44,7 +44,6 @@ install-stamp: $(PYVERS:%=install-python%) $(PYVERS:%=install-debug-python%)
 install-python%: build-python%
 	python$* setup.py --with-debugsupport install $(py_setup_install_args) \
 		--skip-build --single-version-externally-managed --root $(call pkgdir,$*)
-	sed -i -e 's,REPLACE_ME_WITH_PROPER_VERSION,$(VERSION),' $(call pkgdir,$*)$(call py_libdir,$*)/jinja2/__init__.py
 	rm -rf $(call pkgdir,$*)$(call py_libdir,$*)/jinja2/_markupsafe
 	rm -f $(call pkgdir,$*)$(call py_libdir,$*)/jinja2/_debugsupport.c
 	touch $@

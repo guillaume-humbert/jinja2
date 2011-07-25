@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 5),
  python3-all-dev (>= 3.1.2-10), python3-all-dbg,
  python-setuptools (>= 0.6b3-1~), python3-setuptools
 Build-Depends-Indep: python-sphinx (>= 0.6), python-pygments
-Standards-Version: 3.9.1
+Standards-Version: 3.9.2
 Homepage: http://jinja.pocoo.org/2/
 X-Python-Version: >= 2.4
 Vcs-Svn: svn://svn.debian.org/python-modules/packages/jinja2/trunk
