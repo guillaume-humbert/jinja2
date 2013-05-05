@@ -11,8 +11,8 @@ Build-Depends-Indep: python-sphinx (>= 0.6), python-pygments
 Standards-Version: 3.9.2
 Homepage: http://jinja.pocoo.org/2/
 X-Python-Version: >= 2.4
-Vcs-Svn: svn://svn.debian.org/python-modules/packages/jinja2/trunk
-Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/jinja2/trunk/
+Vcs-Svn: svn://anonscm.debian.org/python-modules/packages/jinja2/trunk/
+Vcs-Browser: http://anonscm.debian.org/viewvc/python-modules/packages/jinja2/trunk/
 
 Package: python-jinja2
 Architecture: any
