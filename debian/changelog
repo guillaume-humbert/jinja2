@@ -1,3 +1,22 @@
+jinja2 (2.7-1) unstable; urgency=low
+
+  [ Jakub Wilk ]
+  * Use canonical URIs for Vcs-* fields.
+
+  [ Piotr Ożarowski ]
+  * New upstream release
+    - minimum required Python version bumped to 2.6 and 3.3
+  * debugsupport extension no longer available, Architecture changed to "all"
+  * Bump minimum required python3-all version in Build-Depends (to generate
+    versioned py3compile -V in maintainer script)
+  * Add patches/drop_next_import_from_docs-jinjaext.patch to fix building docs
+  * Use dh_sphinxdoc to handle JavaScript libraries used in -doc package
+  * Standards-Version bumped to 3.9.4
+    - add build-arch and build-indep targets
+  * debian/compat changed to 9
+
+ -- Piotr Ożarowski <piotr@debian.org>  Mon, 20 May 2013 21:15:37 +0200
+
 jinja2 (2.6-1) unstable; urgency=low
 
   * New upstream release
