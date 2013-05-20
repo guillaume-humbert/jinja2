@@ -7,6 +7,8 @@ jinja2 (2.7-1) unstable; urgency=low
   * New upstream release
     - minimum required Python version bumped to 2.6 and 3.3
   * debugsupport extension no longer available, Architecture changed to "all"
+  * Bump minimum required python3-all verrsion in Build-Depends (to generate
+    versioned py3compile -V in maintainer script)
   * Add patches/drop_next_import_from_docs-jinjaext.patch to fix building docs
   * Use dh_sphinxdoc to handle JavaScript libraries used in -doc package
   * Standards-Version bumped to 3.9.4
