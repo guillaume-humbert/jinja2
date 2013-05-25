@@ -1,3 +1,18 @@
+jinja2 (2.7-3) unstable; urgency=low
+
+  [ Jakub Wilk ]
+  * Restore Python 3.2 compatibility (closes: #709638)
+  * Fix bunch of typos in the documentation (closes: #679534)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sat, 25 May 2013 23:07:10 +0200
+
+jinja2 (2.7-2) unstable; urgency=low
+
+  * Relax build dependency on python3-all and hardcode python3-jinja2's
+    Depends and postinst maintainer script (temporary fix, closes: #709390)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Thu, 23 May 2013 18:42:20 +0200
+
 jinja2 (2.7-1) unstable; urgency=low
 
   [ Jakub Wilk ]
