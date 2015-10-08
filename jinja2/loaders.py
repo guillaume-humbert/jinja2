@@ -14,7 +14,7 @@ try:
 except ImportError:
     from sha import new as sha1
 from jinja2.exceptions import TemplateNotFound
-from jinja2.utils import LRUCache
+from jinja2.utils import LRUCache, open_if_exists
 
 
 def split_template_path(template):
@@ -86,10 +86,33 @@ class BaseLoader(object):
         loaders (such as :class:`PrefixLoader` or :class:`ChoiceLoader`)
         will not call this method but `get_source` directly.
         """
+        code = None
         if globals is None:
             globals = {}
+
+        # first we try to get the source for this template together
+        # with the filename and the uptodate function.
         source, filename, uptodate = self.get_source(environment, name)
-        code = environment.compile(source, name, filename)
+
+        # try to load the code from the bytecode cache if there is a
+        # bytecode cache configured.
+        bcc = environment.bytecode_cache
+        if bcc is not None:
+            bucket = bcc.get_bucket(environment, name, filename, source)
+            code = bucket.code
+
+        # if we don't have code so far (not cached, no longer up to
+        # date) etc. we compile the template
+        if code is None:
+            code = environment.compile(source, name, filename)
+
+        # if the bytecode cache is available and the bucket doesn't
+        # have a code so far, we give the bucket the new code and put
+        # it back to the bytecode cache.
+        if bcc is not None and bucket.code is None:
+            bucket.code = code
+            bcc.set_bucket(bucket)
+
         return environment.template_class.from_code(environment, code,
                                                     globals, uptodate)
 
@@ -119,15 +142,21 @@ class FileSystemLoader(BaseLoader):
         pieces = split_template_path(template)
         for searchpath in self.searchpath:
             filename = path.join(searchpath, *pieces)
-            if not path.isfile(filename):
+            f = open_if_exists(filename)
+            if f is None:
                 continue
-            f = file(filename)
             try:
                 contents = f.read().decode(self.encoding)
             finally:
                 f.close()
-            old = path.getmtime(filename)
-            return contents, filename, lambda: path.getmtime(filename) == old
+
+            mtime = path.getmtime(filename)
+            def uptodate():
+                try:
+                    return path.getmtime(filename) == mtime
+                except OSError:
+                    return False
+            return contents, filename, uptodate
         raise TemplateNotFound(template)
 
 
@@ -148,7 +177,8 @@ class PackageLoader(BaseLoader):
 
     def __init__(self, package_name, package_path='templates',
                  encoding='utf-8'):
-        from pkg_resources import DefaultProvider, ResourceManager, get_provider
+        from pkg_resources import DefaultProvider, ResourceManager, \
+                                  get_provider
         provider = get_provider(package_name)
         self.encoding = encoding
         self.manager = ResourceManager()
@@ -167,7 +197,10 @@ class PackageLoader(BaseLoader):
             filename = self.provider.get_resource_filename(self.manager, p)
             mtime = path.getmtime(filename)
             def uptodate():
-                return path.getmtime(filename) == mtime
+                try:
+                    return path.getmtime(filename) == mtime
+                except OSError:
+                    return False
 
         source = self.provider.get_resource_string(self.manager, p)
         return source.decode(self.encoding), filename, uptodate
@@ -188,7 +221,7 @@ class DictLoader(BaseLoader):
     def get_source(self, environment, template):
         if template in self.mapping:
             source = self.mapping[template]
-            return source, None, lambda: source != self.mapping[template]
+            return source, None, lambda: source != self.mapping.get(template)
         raise TemplateNotFound(template)
 
 

@@ -55,17 +55,17 @@
 
         </div>
         
-  <div class="section">
-<h1 id="frequently-asked-questions">Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="frequently-asked-questions">
+<h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
 <p>This page answers some of the often asked questions about Jinja.</p>
-<div class="section">
-<h2 id="why-is-it-called-jinja">Why is it called Jinja?<a class="headerlink" href="#why-is-it-called-jinja" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="why-is-it-called-jinja">
+<h2>Why is it called Jinja?<a class="headerlink" href="#why-is-it-called-jinja" title="Permalink to this headline">¶</a></h2>
 <p>The name Jinja was chosen because it&#8217;s the name of a Japanese temple and
 temple and template share a similar pronunciation.  It is not named after
 the capital city of Uganda.</p>
 </div>
-<div class="section">
-<h2 id="how-fast-is-it">How fast is it?<a class="headerlink" href="#how-fast-is-it" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="how-fast-is-it">
+<h2>How fast is it?<a class="headerlink" href="#how-fast-is-it" title="Permalink to this headline">¶</a></h2>
 <p>We really hate benchmarks especially since they don&#8217;t reflect much.  The
 performance of a template depends on many factors and you would have to
 benchmark different engines in different situations.  The benchmarks from the
@@ -77,8 +77,8 @@ speaking the performance of a template engine doesn&#8217;t matter much as the
 usual bottleneck in a web application is either the database or the application
 code.</p>
 </div>
-<div class="section">
-<h2 id="how-compatible-is-jinja2-with-django">How Compatible is Jinja2 with Django?<a class="headerlink" href="#how-compatible-is-jinja2-with-django" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="how-compatible-is-jinja2-with-django">
+<h2>How Compatible is Jinja2 with Django?<a class="headerlink" href="#how-compatible-is-jinja2-with-django" title="Permalink to this headline">¶</a></h2>
 <p>The default syntax of Jinja2 matches Django syntax in many ways.  However
 this similarity doesn&#8217;t mean that you can use a Django template unmodified
 in Jinja2.  For example filter arguments use a function call syntax rather
@@ -110,8 +110,8 @@ comments from the database:</p>
 it still isn&#8217;t a good idea.  Queries should go into the view code and now
 the template!</p>
 </div>
-<div class="section">
-<h2 id="isn-t-it-a-terrible-idea-to-put-logic-into-templates">Isn&#8217;t it a terrible idea to put Logic into Templates?<a class="headerlink" href="#isn-t-it-a-terrible-idea-to-put-logic-into-templates" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="isn-t-it-a-terrible-idea-to-put-logic-into-templates">
+<h2>Isn&#8217;t it a terrible idea to put Logic into Templates?<a class="headerlink" href="#isn-t-it-a-terrible-idea-to-put-logic-into-templates" title="Permalink to this headline">¶</a></h2>
 <p>Without a doubt you should try to remove as much logic from templates as
 possible.  But templates without any logic mean that you have to do all
 the processing in the code which is boring and stupid.  A template engine
@@ -127,8 +127,8 @@ most common ones and more advanced expressions such as list comprehensions
 and generator expressions are not supported.  This keeps the template engine
 easier to maintain and templates more readable.</p>
 </div>
-<div class="section">
-<h2 id="why-is-autoescaping-not-the-default">Why is Autoescaping not the Default?<a class="headerlink" href="#why-is-autoescaping-not-the-default" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="why-is-autoescaping-not-the-default">
+<h2>Why is Autoescaping not the Default?<a class="headerlink" href="#why-is-autoescaping-not-the-default" title="Permalink to this headline">¶</a></h2>
 <p>There are multiple reasons why automatic escaping is not the default mode
 and also not the recommended one.  While automatic escaping of variables
 means that you will less likely have an XSS problem it also causes a huge
@@ -148,8 +148,8 @@ any unsafe parameters.</p>
 for HTML/XML generation.  For example you may generate LaTeX, emails,
 CSS, JavaScript, or configuration files.</p>
 </div>
-<div class="section">
-<h2 id="why-is-the-context-immutable">Why is the Context immutable?<a class="headerlink" href="#why-is-the-context-immutable" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="why-is-the-context-immutable">
+<h2>Why is the Context immutable?<a class="headerlink" href="#why-is-the-context-immutable" title="Permalink to this headline">¶</a></h2>
 <p>When writing a <tt class="xref docutils literal"><span class="pre">contextfunction()</span></tt> or something similar you may have
 noticed that the context tries to stop you from modifying it.  If you have
 managed to modify the context by using an internal context API you may
@@ -161,15 +161,15 @@ instead that one can assign to a variable by using set:</p>
 <div class="highlight"><pre><span class="cp">{%</span> <span class="k">set</span> <span class="nv">comments</span> <span class="o">=</span> <span class="nv">get_latest_comments</span><span class="o">()</span> <span class="cp">%}</span>
 </pre></div>
 </div>
-<div class="section">
-<h2 id="i-don-t-have-the-speedups-module-is-jinja-slower-now">I don&#8217;t have the _speedups Module.  Is Jinja slower now?<a class="headerlink" href="#i-don-t-have-the-speedups-module-is-jinja-slower-now" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="i-don-t-have-the-speedups-module-is-jinja-slower-now">
+<h2>I don&#8217;t have the _speedups Module.  Is Jinja slower now?<a class="headerlink" href="#i-don-t-have-the-speedups-module-is-jinja-slower-now" title="Permalink to this headline">¶</a></h2>
 <p>To achieve a good performance with automatic escaping enabled, the escaping
 function is also implemented in pure C and used if Jinja2 was installed with
 the speedups module.  This happens automatically if a C compiler is available
 on the system during installation.</p>
 </div>
-<div class="section">
-<h2 id="my-tracebacks-look-weird-what-s-happening">My tracebacks look weird.  What&#8217;s happening?<a class="headerlink" href="#my-tracebacks-look-weird-what-s-happening" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="my-tracebacks-look-weird-what-s-happening">
+<h2>My tracebacks look weird.  What&#8217;s happening?<a class="headerlink" href="#my-tracebacks-look-weird-what-s-happening" title="Permalink to this headline">¶</a></h2>
 <p>If the speedups module is not compiled and you are using a Python installation
 without ctypes (Python 2.4 without ctypes, Jython or Google&#8217;s AppEngine)
 Jinja2 is unable to provide correct debugging information and the traceback
@@ -177,8 +177,8 @@ may be incomplete.  There is currently no good workaround for Jython or
 the AppEngine as ctypes is unavailable there and it&#8217;s not possible to use
 the speedups extension.</p>
 </div>
-<div class="section">
-<h2 id="why-is-there-no-python-2-3-support">Why is there no Python 2.3 support?<a class="headerlink" href="#why-is-there-no-python-2-3-support" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="why-is-there-no-python-2-3-support">
+<h2>Why is there no Python 2.3 support?<a class="headerlink" href="#why-is-there-no-python-2-3-support" title="Permalink to this headline">¶</a></h2>
 <p>Python 2.3 is missing a lot of features that are used heavily in Jinja2.  This
 decision was made as with the upcoming Python 2.6 and 3.0 versions it becomes
 harder to maintain the code for older Python versions.  If you really need

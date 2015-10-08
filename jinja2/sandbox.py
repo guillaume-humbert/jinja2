@@ -13,11 +13,11 @@
     :license: BSD.
 """
 import operator
-from types import FunctionType, MethodType, TracebackType, CodeType, \
-     FrameType, GeneratorType
 from jinja2.runtime import Undefined
 from jinja2.environment import Environment
 from jinja2.exceptions import SecurityError
+from jinja2.utils import FunctionType, MethodType, TracebackType, CodeType, \
+     FrameType, GeneratorType
 
 
 #: maximum number of items a range may produce
@@ -212,14 +212,14 @@ class SandboxedEnvironment(Environment):
             value = getattr(obj, attribute)
         except AttributeError:
             try:
-                return obj[argument]
+                return obj[attribute]
             except (TypeError, LookupError):
                 pass
         else:
             if self.is_safe_attribute(obj, attribute, value):
                 return value
             return self.unsafe_undefined(obj, attribute)
-        return self.undefined(obj=obj, name=argument)
+        return self.undefined(obj=obj, name=attribute)
 
     def unsafe_undefined(self, obj, attribute):
         """Return an undefined object for unsafe attributes."""

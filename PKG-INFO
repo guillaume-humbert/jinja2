@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: Jinja2
-Version: 2.0
+Version: 2.1
 Summary: A small but fast and easy to use stand-alone template engine written in pure python.
 Home-page: http://jinja.pocoo.org/
 Author: Armin Ronacher
@@ -47,7 +47,7 @@ Description:
         .. _Jinja2 tip: http://dev.pocoo.org/hg/jinja2-main/archive/tip.tar.gz#egg=Jinja2-dev
         
 Platform: UNKNOWN
-Classifier: Development Status :: 4 - Beta
+Classifier: Development Status :: 5 - Production/Stable
 Classifier: Environment :: Web Environment
 Classifier: Intended Audience :: Developers
 Classifier: License :: OSI Approved :: BSD License

@@ -45,6 +45,7 @@
 <li><a class="reference" href="#as-a-python-egg-via-easy-install">As a Python egg (via easy_install)</a></li>
 <li><a class="reference" href="#from-the-tarball-release">From the tarball release</a></li>
 <li><a class="reference" href="#installing-the-development-version">Installing the development version</a></li>
+<li><a class="reference" href="#disable-the-speedups-module">Disable the speedups Module</a></li>
 </ul>
 </li>
 <li><a class="reference" href="#basic-api-usage">Basic API Usage</a></li>
@@ -54,8 +55,8 @@
 
         </div>
         
-  <div class="section">
-<h1 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <p>This is the documentation for the Jinja2 general purpose templating language.
 Jinja2 is a library for Python 2.4 and onwards that is designed to be flexible,
 fast and secure.</p>
@@ -78,26 +79,34 @@ debugging helpers.</li>
 optional sandbox is enabled.  This allows Jinja2 to be used as templating
 language for applications where users may modify the template design.</li>
 </ul>
-<div class="section">
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <p>Jinja2 needs at least <strong>Python 2.4</strong> to run.  Additionally a working C-compiler
 that can create python extensions should be installed for the debugger.  If no
 C-compiler is available and you are using Python 2.4 the <a class="reference" href="http://python.net/crew/theller/ctypes/">ctypes</a> module
 should be installed.</p>
+<p>If you don&#8217;t have a working C compiler and you are trying to install the source
+release you will get a compiler error.  This however can be circumvented by
+passing the <tt class="docutils literal"><span class="pre">--without-speedups</span></tt> command line argument to the setup script.</p>
+<p>For more details about that have a look at the <a class="reference" href="#disable-speedups"><em>Disable the speedups Module</em></a>
+section below.</p>
 </div>
-<div class="section">
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>You have multiple ways to install Jinja2.  If you are unsure what to do, go
 with the Python egg or tarball.</p>
-<div class="section">
-<h3 id="as-a-python-egg-via-easy-install">As a Python egg (via easy_install)<a class="headerlink" href="#as-a-python-egg-via-easy-install" title="Permalink to this headline">¶</a></h3>
-<p>You can install the most recent Jinja2 version using <a class="reference" href="http://peak.telecommunity.com/DevCenter/EasyInstall">easy_install</a>:</p>
-<pre>sudo easy_install Jinja2</pre>
+<div class="section" id="as-a-python-egg-via-easy-install">
+<h3>As a Python egg (via easy_install)<a class="headerlink" href="#as-a-python-egg-via-easy-install" title="Permalink to this headline">¶</a></h3>
+<p>You can install the most recent Jinja2 version using <a class="reference" href="http://peak.telecommunity.com/DevCenter/EasyInstall">easy_install</a> or <a class="reference" href="http://pypi.python.org/pypi/pip">pip</a>:</p>
+<pre>sudo easy_install Jinja2
+sudo pip install Jinja2</pre>
 <p>This will install a Jinja2 egg in your Python installation&#8217;s site-packages
 directory.</p>
+<p>(If you are installing from the windows command line omit the <cite>sudo</cite> and make
+sure to run the command as user with administrator rights)</p>
 </div>
-<div class="section">
-<h3 id="from-the-tarball-release">From the tarball release<a class="headerlink" href="#from-the-tarball-release" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="from-the-tarball-release">
+<h3>From the tarball release<a class="headerlink" href="#from-the-tarball-release" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li>Download the most recent tarball from the <a class="reference" href="http://jinja.pocoo.org/2/download">download page</a></li>
 <li>Unpack the tarball</li>
@@ -108,8 +117,8 @@ directory.</p>
 internet connection.</p>
 <p>This will install Jinja2 into your Python installation&#8217;s site-packages directory.</p>
 </div>
-<div class="section">
-<h3 id="installing-the-development-version">Installing the development version<a class="headerlink" href="#installing-the-development-version" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="installing-the-development-version">
+<h3>Installing the development version<a class="headerlink" href="#installing-the-development-version" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li>Install <a class="reference" href="http://www.selenic.com/mercurial/">mercurial</a></li>
 <li><tt class="docutils literal"><span class="pre">hg</span> <span class="pre">clone</span> <span class="pre">http://dev.pocoo.org/hg/jinja2-main</span> <span class="pre">jinja2</span></tt></li>
@@ -122,17 +131,29 @@ has the advantage that the C extensions are compiled.</p>
 <p>Alternative you can use <a class="reference" href="http://peak.telecommunity.com/DevCenter/EasyInstall">easy_install</a> to install the current development
 snapshot:</p>
 <pre>sudo easy_install Jinja2==dev</pre>
+<p>Or the new <a class="reference" href="http://pypi.python.org/pypi/pip">pip</a> command:</p>
+<pre>sudo pip install Jinja2==dev</pre>
+</div>
+<div class="section" id="disable-the-speedups-module">
+<span id="disable-speedups"></span><h3>Disable the speedups Module<a class="headerlink" href="#disable-the-speedups-module" title="Permalink to this headline">¶</a></h3>
+<p>By default Jinja2 will try to compile the speedups module.  This of course
+will fail if you don&#8217;t have the Python headers or a working compiler.  This
+is often the case if you are installing Jinja2 from a windows machine.</p>
+<p>You can disable the speedups extension when installing using the
+<tt class="docutils literal"><span class="pre">--without-speedups</span></tt> flag:</p>
+<pre>sudo python setup.py install --without-speedups</pre>
+<p>You can also pass this parameter to <cite>easy_install</cite> or <cite>pip</cite>.</p>
 </div>
 </div>
-<div class="section">
-<h2 id="basic-api-usage">Basic API Usage<a class="headerlink" href="#basic-api-usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="basic-api-usage">
+<h2>Basic API Usage<a class="headerlink" href="#basic-api-usage" title="Permalink to this headline">¶</a></h2>
 <p>This section gives you a brief introduction to the Python API for Jinja2
 templates.</p>
 <p>The most basic way to create a template and render it is through
 <a title="jinja2.Template" class="reference" href="api.html#jinja2.Template"><tt class="xref docutils literal"><span class="pre">Template</span></tt></a>.  This however is not the recommended way to
 work with it if your templates are not loaded from strings but the file
 system or another data source:</p>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">from</span> <span class="nn">jinja2</span> <span class="k">import</span> <span class="n">Template</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&#39;Hello {{ name }}!&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;John Doe&#39;</span><span class="p">)</span>
 <span class="go">u&#39;Hello John Doe!&#39;</span>

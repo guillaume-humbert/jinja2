@@ -84,14 +84,12 @@
     <h2 id="B">B</h2>
     <table class="indextable"><tr>
       <td><dl>
-        <dt><a href="api.html#jinja2.loaders.BaseLoader">BaseLoader (class in jinja2.loaders)</a>
+        <dt><a href="api.html#jinja2.BaseLoader">BaseLoader (class in jinja2)</a>
           </dt>
         <dt><a href="templates.html#batch">batch() (built-in function)</a>
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.BinExpr">BinExpr (class in jinja2.nodes)</a>
           </dt>
-      </dl></td>
-      <td><dl>
         <dt><a href="extensions.html#jinja2.nodes.Block">Block (class in jinja2.nodes)</a>
           </dt>
         <dt><a href="api.html#jinja2.Context.blocks">blocks (jinja2.Context attribute)</a>
@@ -99,7 +97,17 @@
         <dd><dl>
           <dt><a href="api.html#jinja2.Template.blocks">(jinja2.Template attribute)</a></dt>
         </dl></dd>
+      </dl></td>
+      <td><dl>
         <dt><a href="extensions.html#jinja2.nodes.Break">Break (class in jinja2.nodes)</a>
+          </dt>
+        <dt><a href="api.html#jinja2.bccache.Bucket">Bucket (class in jinja2.bccache)</a>
+          </dt>
+        <dt><a href="api.html#jinja2.bccache.Bucket.bytecode_from_string">bytecode_from_string() (jinja2.bccache.Bucket method)</a>
+          </dt>
+        <dt><a href="api.html#jinja2.bccache.Bucket.bytecode_to_string">bytecode_to_string() (jinja2.bccache.Bucket method)</a>
+          </dt>
+        <dt><a href="api.html#jinja2.BytecodeCache">BytecodeCache (class in jinja2)</a>
           </dt>
       </dl></td>
     </tr></table>
@@ -123,14 +131,20 @@
           </dt>
         <dt><a href="templates.html#center">center() (built-in function)</a>
           </dt>
-        <dt><a href="api.html#jinja2.loaders.ChoiceLoader">ChoiceLoader (class in jinja2.loaders)</a>
+        <dt><a href="api.html#jinja2.ChoiceLoader">ChoiceLoader (class in jinja2)</a>
           </dt>
-        <dt><a href="api.html#jinja2.utils.clear_caches">clear_caches() (in module jinja2.utils)</a>
+        <dt><a href="api.html#jinja2.BytecodeCache.clear">clear() (jinja2.BytecodeCache method)</a>
+          </dt>
+        <dt><a href="api.html#jinja2.clear_caches">clear_caches() (in module jinja2)</a>
+          </dt>
+        <dt><a href="api.html#jinja2.Bucket.code">code (jinja2.Bucket attribute)</a>
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.Compare">Compare (class in jinja2.nodes)</a>
           </dt>
       </dl></td>
       <td><dl>
+        <dt><a href="api.html#jinja2.Environment.compile_expression">compile_expression() (jinja2.Environment method)</a>
+          </dt>
         <dt><a href="extensions.html#jinja2.nodes.Concat">Concat (class in jinja2.nodes)</a>
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.CondExpr">CondExpr (class in jinja2.nodes)</a>
@@ -139,19 +153,22 @@
           </dt>
         <dt><a href="api.html#jinja2.runtime.Context">Context (class in jinja2.runtime)</a>
           </dt>
-        <dt><a href="api.html#jinja2.filters.contextfilter">contextfilter() (in module jinja2.filters)</a>
+        <dt><a href="api.html#jinja2.contextfilter">contextfilter() (in module jinja2)</a>
           </dt>
-        <dt><a href="api.html#jinja2.utils.contextfunction">contextfunction() (in module jinja2.utils)</a>
+        <dt><a href="api.html#jinja2.contextfunction">contextfunction() (in module jinja2)</a>
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.ContextReference">ContextReference (class in jinja2.nodes)</a>
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.Continue">Continue (class in jinja2.nodes)</a>
           </dt>
-        <dt><a href="extensions.html#jinja2.nodes.Node.copy">copy() (jinja2.nodes.Node method)</a>
-          </dt>
         <dt><a href="extensions.html#jinja2.lexer.count_newlines">count_newlines() (in module jinja2.lexer)</a>
           </dt>
-        <dt><a href="extensions.html#jinja2.ext.TokenStream.current">current (jinja2.ext.TokenStream attribute)</a>
+        <dt><a href="templates.html#cycler.current">current (cycler attribute)</a>
+          </dt>
+        <dd><dl>
+          <dt><a href="extensions.html#jinja2.ext.TokenStream.current">(jinja2.ext.TokenStream attribute)</a></dt>
+        </dl></dd>
+        <dt><a href="templates.html#cycler">cycler (class in None)</a>
           </dt>
       </dl></td>
     </tr></table>
@@ -159,7 +176,7 @@
     <h2 id="D">D</h2>
     <table class="indextable"><tr>
       <td><dl>
-        <dt><a href="api.html#jinja2.runtime.DebugUndefined">DebugUndefined (class in jinja2.runtime)</a>
+        <dt><a href="api.html#jinja2.DebugUndefined">DebugUndefined (class in jinja2)</a>
           </dt>
         <dt><a href="templates.html#default">default() (built-in function)</a>
           </dt>
@@ -169,7 +186,7 @@
           </dt>
         <dt><a href="templates.html#dict">dict() (built-in function)</a>
           </dt>
-        <dt><a href="api.html#jinja2.loaders.DictLoader">DictLoader (class in jinja2.loaders)</a>
+        <dt><a href="api.html#jinja2.DictLoader">DictLoader (class in jinja2)</a>
           </dt>
       </dl></td>
       <td><dl>
@@ -183,6 +200,8 @@
           </dt>
         <dt><a href="api.html#jinja2.environment.TemplateStream.dump">dump() (jinja2.environment.TemplateStream method)</a>
           </dt>
+        <dt><a href="api.html#jinja2.BytecodeCache.dump_bytecode">dump_bytecode() (jinja2.BytecodeCache method)</a>
+          </dt>
       </dl></td>
     </tr></table>
   
@@ -193,13 +212,16 @@
           </dt>
         <dt><a href="api.html#jinja2.Environment">Environment (class in jinja2)</a>
           </dt>
-        <dt><a href="api.html#jinja2.Context.environment">environment (jinja2.Context attribute)</a>
+        <dt><a href="api.html#jinja2.Bucket.environment">environment (jinja2.Bucket attribute)</a>
           </dt>
+        <dd><dl>
+          <dt><a href="api.html#jinja2.Context.environment">(jinja2.Context attribute)</a></dt>
+        </dl></dd>
         <dt><a href="extensions.html#jinja2.nodes.EnvironmentAttribute">EnvironmentAttribute (class in jinja2.nodes)</a>
           </dt>
-        <dt><a href="api.html#jinja2.filters.environmentfilter">environmentfilter() (in module jinja2.filters)</a>
+        <dt><a href="api.html#jinja2.environmentfilter">environmentfilter() (in module jinja2)</a>
           </dt>
-        <dt><a href="api.html#jinja2.utils.environmentfunction">environmentfunction() (in module jinja2.utils)</a>
+        <dt><a href="api.html#jinja2.environmentfunction">environmentfunction() (in module jinja2)</a>
           </dt>
         <dt><a href="extensions.html#jinja2.lexer.TokenStream.eos">eos (jinja2.lexer.TokenStream attribute)</a>
           </dt>
@@ -207,7 +229,7 @@
           </dt>
         <dd><dl>
           <dt><a href="api.html#jinja2.escape">(in module jinja2)</a></dt>
-          <dt><a href="api.html#jinja2.utils.Markup.escape">(jinja2.utils.Markup static method)</a></dt>
+          <dt><a href="api.html#jinja2.Markup.escape">(jinja2.Markup static method)</a></dt>
         </dl></dd>
         <dt><a href="templates.html#escaped">escaped() (built-in function)</a>
           </dt>
@@ -249,7 +271,9 @@
         </dl></dd>
         <dt><a href="templates.html#filesizeformat">filesizeformat() (built-in function)</a>
           </dt>
-        <dt><a href="api.html#jinja2.loaders.FileSystemLoader">FileSystemLoader (class in jinja2.loaders)</a>
+        <dt><a href="api.html#jinja2.FileSystemBytecodeCache">FileSystemBytecodeCache (class in jinja2)</a>
+          </dt>
+        <dt><a href="api.html#jinja2.FileSystemLoader">FileSystemLoader (class in jinja2)</a>
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.Filter">Filter (class in jinja2.nodes)</a>
           </dt>
@@ -283,7 +307,7 @@
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.FromImport">FromImport (class in jinja2.nodes)</a>
           </dt>
-        <dt><a href="api.html#jinja2.loaders.FunctionLoader">FunctionLoader (class in jinja2.loaders)</a>
+        <dt><a href="api.html#jinja2.FunctionLoader">FunctionLoader (class in jinja2)</a>
           </dt>
       </dl></td>
     </tr></table>
@@ -293,16 +317,18 @@
       <td><dl>
         <dt><a href="api.html#jinja2.Template.generate">generate() (jinja2.Template method)</a>
           </dt>
+        <dt><a href="api.html#jinja2.MemcachedBytecodeCache.MinimalClientInterface.get">get() (jinja2.MemcachedBytecodeCache.MinimalClientInterface method)</a>
+          </dt>
         <dt><a href="api.html#jinja2.runtime.Context.get_all">get_all() (jinja2.runtime.Context method)</a>
           </dt>
         <dt><a href="api.html#jinja2.runtime.Context.get_exported">get_exported() (jinja2.runtime.Context method)</a>
           </dt>
-        <dt><a href="api.html#jinja2.loaders.BaseLoader.get_source">get_source() (jinja2.loaders.BaseLoader method)</a>
-          </dt>
-        <dt><a href="api.html#jinja2.Environment.get_template">get_template() (jinja2.Environment method)</a>
+        <dt><a href="api.html#jinja2.BaseLoader.get_source">get_source() (jinja2.BaseLoader method)</a>
           </dt>
       </dl></td>
       <td><dl>
+        <dt><a href="api.html#jinja2.Environment.get_template">get_template() (jinja2.Environment method)</a>
+          </dt>
         <dt><a href="extensions.html#jinja2.nodes.Getattr">Getattr (class in jinja2.nodes)</a>
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.Getitem">Getitem (class in jinja2.nodes)</a>
@@ -360,7 +386,7 @@
           </dt>
         <dt><a href="sandbox.html#jinja2.sandbox.SandboxedEnvironment.is_safe_callable">is_safe_callable() (jinja2.sandbox.SandboxedEnvironment method)</a>
           </dt>
-        <dt><a href="api.html#jinja2.utils.is_undefined">is_undefined() (in module jinja2.utils)</a>
+        <dt><a href="api.html#jinja2.is_undefined">is_undefined() (in module jinja2)</a>
           </dt>
         <dt><a href="api.html#jinja2.Template.is_up_to_date">is_up_to_date (jinja2.Template attribute)</a>
           </dt>
@@ -382,19 +408,25 @@
           </dt>
         <dt><a href="extensions.html#module-jinja2.nodes">jinja2.nodes (module)</a>
           </dt>
-      </dl></td>
-      <td><dl>
         <dt><a href="sandbox.html#module-jinja2.sandbox">jinja2.sandbox (module)</a>
           </dt>
+      </dl></td>
+      <td><dl>
         <dt><a href="templates.html#join">join() (built-in function)</a>
           </dt>
         <dt><a href="api.html#jinja2.Environment.join_path">join_path() (jinja2.Environment method)</a>
+          </dt>
+        <dt><a href="templates.html#joiner">joiner (class in None)</a>
           </dt>
       </dl></td>
     </tr></table>
   
     <h2 id="K">K</h2>
     <table class="indextable"><tr>
+      <td><dl>
+        <dt><a href="api.html#jinja2.Bucket.key">key (jinja2.Bucket attribute)</a>
+          </dt>
+      </dl></td>
       <td><dl>
         <dt><a href="extensions.html#jinja2.nodes.Keyword">Keyword (class in jinja2.nodes)</a>
           </dt>
@@ -425,8 +457,13 @@
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.Literal">Literal (class in jinja2.nodes)</a>
           </dt>
-        <dt><a href="api.html#jinja2.loaders.BaseLoader.load">load() (jinja2.loaders.BaseLoader method)</a>
+        <dt><a href="api.html#jinja2.BaseLoader.load">load() (jinja2.BaseLoader method)</a>
           </dt>
+        <dt><a href="api.html#jinja2.bccache.Bucket.load_bytecode">load_bytecode() (jinja2.bccache.Bucket method)</a>
+          </dt>
+        <dd><dl>
+          <dt><a href="api.html#jinja2.BytecodeCache.load_bytecode">(jinja2.BytecodeCache method)</a></dt>
+        </dl></dd>
         <dt><a href="extensions.html#jinja2.lexer.TokenStream.look">look() (jinja2.lexer.TokenStream method)</a>
           </dt>
         <dt><a href="templates.html#lower">lower() (built-in function)</a>
@@ -443,12 +480,16 @@
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.MarkSafe">MarkSafe (class in jinja2.nodes)</a>
           </dt>
-        <dt><a href="api.html#jinja2.utils.Markup">Markup (class in jinja2.utils)</a>
+        <dt><a href="api.html#jinja2.Markup">Markup (class in jinja2)</a>
           </dt>
-        <dt><a href="api.html#jinja2.TemplateSyntaxError.message">message (jinja2.TemplateSyntaxError attribute)</a>
+        <dt><a href="api.html#jinja2.MemcachedBytecodeCache">MemcachedBytecodeCache (class in jinja2)</a>
+          </dt>
+        <dt><a href="api.html#jinja2.MemcachedBytecodeCache.MinimalClientInterface">MemcachedBytecodeCache.MinimalClientInterface (class in jinja2)</a>
           </dt>
       </dl></td>
       <td><dl>
+        <dt><a href="api.html#jinja2.TemplateSyntaxError.message">message (jinja2.TemplateSyntaxError attribute)</a>
+          </dt>
         <dt><a href="extensions.html#jinja2.nodes.Mod">Mod (class in jinja2.nodes)</a>
           </dt>
         <dt><a href="sandbox.html#jinja2.sandbox.modifies_known_mutable">modifies_known_mutable() (in module jinja2.sandbox)</a>
@@ -476,8 +517,11 @@
           </dt>
         <dt><a href="api.html#jinja2.Template.new_context">new_context() (jinja2.Template method)</a>
           </dt>
-        <dt><a href="extensions.html#jinja2.lexer.TokenStream.next">next() (jinja2.lexer.TokenStream method)</a>
+        <dt><a href="templates.html#cycler.next">next() (cycler method)</a>
           </dt>
+        <dd><dl>
+          <dt><a href="extensions.html#jinja2.lexer.TokenStream.next">(jinja2.lexer.TokenStream method)</a></dt>
+        </dl></dd>
       </dl></td>
       <td><dl>
         <dt><a href="extensions.html#jinja2.lexer.TokenStream.next_if">next_if() (jinja2.lexer.TokenStream method)</a>
@@ -514,7 +558,7 @@
     <h2 id="P">P</h2>
     <table class="indextable"><tr>
       <td><dl>
-        <dt><a href="api.html#jinja2.loaders.PackageLoader">PackageLoader (class in jinja2.loaders)</a>
+        <dt><a href="api.html#jinja2.PackageLoader">PackageLoader (class in jinja2)</a>
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.Pair">Pair (class in jinja2.nodes)</a>
           </dt>
@@ -543,7 +587,7 @@
           </dt>
         <dt><a href="templates.html#pprint">pprint() (built-in function)</a>
           </dt>
-        <dt><a href="api.html#jinja2.loaders.PrefixLoader">PrefixLoader (class in jinja2.loaders)</a>
+        <dt><a href="api.html#jinja2.PrefixLoader">PrefixLoader (class in jinja2)</a>
           </dt>
         <dt><a href="api.html#jinja2.Environment.preprocess">preprocess() (jinja2.Environment method)</a>
           </dt>
@@ -566,6 +610,11 @@
           </dt>
         <dt><a href="templates.html#replace">replace() (built-in function)</a>
           </dt>
+        <dt><a href="templates.html#cycler.reset">reset() (cycler method)</a>
+          </dt>
+        <dd><dl>
+          <dt><a href="api.html#jinja2.bccache.Bucket.reset">(jinja2.bccache.Bucket method)</a></dt>
+        </dl></dd>
       </dl></td>
       <td><dl>
         <dt><a href="api.html#jinja2.runtime.Context.resolve">resolve() (jinja2.runtime.Context method)</a>
@@ -594,7 +643,7 @@
           </dt>
         <dt><a href="templates.html#sequence">sequence() (built-in function)</a>
           </dt>
-        <dt><a href="extensions.html#jinja2.nodes.Set">Set (class in jinja2.nodes)</a>
+        <dt><a href="api.html#jinja2.MemcachedBytecodeCache.MinimalClientInterface.set">set() (jinja2.MemcachedBytecodeCache.MinimalClientInterface method)</a>
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.Node.set_ctx">set_ctx() (jinja2.nodes.Node method)</a>
           </dt>
@@ -622,14 +671,14 @@
           </dt>
         <dt><a href="api.html#jinja2.Template.stream">stream() (jinja2.Template method)</a>
           </dt>
-        <dt><a href="api.html#jinja2.runtime.StrictUndefined">StrictUndefined (class in jinja2.runtime)</a>
+        <dt><a href="api.html#jinja2.StrictUndefined">StrictUndefined (class in jinja2)</a>
           </dt>
         <dt><a href="templates.html#string">string() (built-in function)</a>
           , <a href="templates.html#string">[Link]</a></dt>
         <dt><a href="templates.html#striptags">striptags() (built-in function)</a>
           </dt>
         <dd><dl>
-          <dt><a href="api.html#jinja2.utils.Markup.striptags">(jinja2.utils.Markup method)</a></dt>
+          <dt><a href="api.html#jinja2.Markup.striptags">(jinja2.Markup method)</a></dt>
         </dl></dd>
         <dt><a href="extensions.html#jinja2.nodes.Sub">Sub (class in jinja2.nodes)</a>
           </dt>
@@ -648,17 +697,17 @@
         <dd><dl>
           <dt><a href="extensions.html#jinja2.nodes.Template">(class in jinja2.nodes)</a></dt>
         </dl></dd>
-        <dt><a href="api.html#jinja2.exceptions.TemplateAssertionError">TemplateAssertionError</a>
+        <dt><a href="api.html#jinja2.TemplateAssertionError">TemplateAssertionError</a>
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.TemplateData">TemplateData (class in jinja2.nodes)</a>
           </dt>
-        <dt><a href="api.html#jinja2.exceptions.TemplateError">TemplateError</a>
+        <dt><a href="api.html#jinja2.TemplateError">TemplateError</a>
           </dt>
-        <dt><a href="api.html#jinja2.exceptions.TemplateNotFound">TemplateNotFound</a>
+        <dt><a href="api.html#jinja2.TemplateNotFound">TemplateNotFound</a>
           </dt>
         <dt><a href="api.html#jinja2.environment.TemplateStream">TemplateStream (class in jinja2.environment)</a>
           </dt>
-        <dt><a href="api.html#jinja2.exceptions.TemplateSyntaxError">TemplateSyntaxError</a>
+        <dt><a href="api.html#jinja2.TemplateSyntaxError">TemplateSyntaxError</a>
           </dt>
         <dt><a href="extensions.html#jinja2.nodes.Test">Test (class in jinja2.nodes)</a>
           </dt>
@@ -692,16 +741,16 @@
       <td><dl>
         <dt><a href="extensions.html#jinja2.nodes.UnaryExpr">UnaryExpr (class in jinja2.nodes)</a>
           </dt>
-        <dt><a href="api.html#jinja2.runtime.Undefined">Undefined (class in jinja2.runtime)</a>
+        <dt><a href="api.html#jinja2.Undefined">Undefined (class in jinja2)</a>
           </dt>
         <dt><a href="templates.html#undefined">undefined() (built-in function)</a>
           </dt>
         <dd><dl>
           <dt><a href="api.html#jinja2.Environment.undefined">(jinja2.Environment method)</a></dt>
         </dl></dd>
-        <dt><a href="api.html#jinja2.exceptions.UndefinedError">UndefinedError</a>
+        <dt><a href="api.html#jinja2.UndefinedError">UndefinedError</a>
           </dt>
-        <dt><a href="api.html#jinja2.utils.Markup.unescape">unescape() (jinja2.utils.Markup method)</a>
+        <dt><a href="api.html#jinja2.Markup.unescape">unescape() (jinja2.Markup method)</a>
           </dt>
       </dl></td>
       <td><dl>
@@ -733,9 +782,11 @@
       <td><dl>
         <dt><a href="templates.html#wordcount">wordcount() (built-in function)</a>
           </dt>
+        <dt><a href="templates.html#wordwrap">wordwrap() (built-in function)</a>
+          </dt>
       </dl></td>
       <td><dl>
-        <dt><a href="templates.html#wordwrap">wordwrap() (built-in function)</a>
+        <dt><a href="api.html#jinja2.bccache.Bucket.write_bytecode">write_bytecode() (jinja2.bccache.Bucket method)</a>
           </dt>
       </dl></td>
     </tr></table>

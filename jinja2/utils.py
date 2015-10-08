@@ -10,14 +10,12 @@
 """
 import re
 import sys
-import string
+import errno
 try:
     from thread import allocate_lock
 except ImportError:
     from dummy_thread import allocate_lock
-from htmlentitydefs import name2codepoint
 from collections import deque
-from copy import deepcopy
 from itertools import imap
 
 
@@ -31,8 +29,8 @@ _punctuation_re = re.compile(
 _simple_email_re = re.compile(r'^\S+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+$')
 _striptags_re = re.compile(r'(<!--.*?-->|<[^>]*>)')
 _entity_re = re.compile(r'&([^;]+);')
-_entities = name2codepoint.copy()
-_entities['apos'] = 39
+_letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+_digits = '0123456789'
 
 # special singleton representing missing values for the runtime
 missing = type('MissingType', (), {'__repr__': lambda x: 'missing'})()
@@ -60,6 +58,40 @@ except TypeError, _error:
     else:
         concat = _concat
     del _test_gen_bug, _error
+
+
+# ironpython without stdlib doesn't have keyword
+try:
+    from keyword import iskeyword as is_python_keyword
+except ImportError:
+    _py_identifier_re = re.compile(r'^[a-zA-Z_][a-zA-Z0-9]*$')
+    def is_python_keyword(name):
+        if _py_identifier_re.search(name) is None:
+            return False
+        try:
+            exec name + " = 42"
+        except SyntaxError:
+            return False
+        return True
+
+
+# common types.  These do exist in the special types module too which however
+# does not exist in IronPython out of the box.
+class _C(object):
+    def method(self): pass
+def _func():
+    yield None
+FunctionType = type(_func)
+GeneratorType = type(_func())
+MethodType = type(_C.method)
+CodeType = type(_C.method.func_code)
+try:
+    raise TypeError()
+except TypeError:
+    _tb = sys.exc_info()[2]
+    TracebackType = type(_tb)
+    FrameType = type(_tb.tb_frame)
+del _C, _tb, _func
 
 
 def contextfunction(f):
@@ -104,6 +136,12 @@ def is_undefined(obj):
     return isinstance(obj, Undefined)
 
 
+def consume(iterable):
+    """Consumes an iterable without doing anything with it."""
+    for event in iterable:
+        pass
+
+
 def clear_caches():
     """Jinja2 keeps internal caches for environments and lexers.  These are
     used so that Jinja2 doesn't have to recreate environments and lexers all
@@ -142,6 +180,17 @@ def import_string(import_name, silent=False):
             raise
 
 
+def open_if_exists(filename, mode='r'):
+    """Returns a file descriptor for the filename if that file exists,
+    otherwise `None`.
+    """
+    try:
+        return file(filename, mode)
+    except IOError, e:
+        if e.errno not in (errno.ENOENT, errno.EISDIR):
+            raise
+
+
 def pformat(obj, verbose=False):
     """Prettyprint an object.  Either use the `pretty` library or the
     builtin `pprint`.
@@ -169,7 +218,7 @@ def urlize(text, trim_url_limit=None, nofollow=False):
     trim_url = lambda x, limit=trim_url_limit: limit is not None \
                          and (x[:limit] + (len(x) >=limit and '...'
                          or '')) or x
-    words = _word_split_re.split(text)
+    words = _word_split_re.split(unicode(escape(text)))
     nofollow_attr = nofollow and ' rel="nofollow"' or ''
     for i, word in enumerate(words):
         match = _punctuation_re.match(word)
@@ -179,7 +228,7 @@ def urlize(text, trim_url_limit=None, nofollow=False):
                 '@' not in middle and
                 not middle.startswith('http://') and
                 len(middle) > 0 and
-                middle[0] in string.letters + string.digits and (
+                middle[0] in _letters + _digits and (
                     middle.endswith('.org') or
                     middle.endswith('.net') or
                     middle.endswith('.com')
@@ -255,8 +304,8 @@ class Markup(unicode):
     it escapes arguments passed and always returns `Markup`.
 
     The `escape` function returns markup objects so that double escaping can't
-    happen.  If you want to use autoescaping in Jinja just set the finalizer
-    of the environment to `escape`.
+    happen.  If you want to use autoescaping in Jinja just enable the
+    autoescaping feature in the environment.
 
     The constructor of the :class:`Markup` class can be used for three
     different things:  When passed an unicode object it's assumed to be safe,
@@ -355,10 +404,11 @@ class Markup(unicode):
         >>> Markup("Main &raquo; <em>About</em>").unescape()
         u'Main \xbb <em>About</em>'
         """
+        from jinja2.constants import HTML_ENTITIES
         def handle_match(m):
             name = m.group(1)
-            if name in _entities:
-                return unichr(_entities[name])
+            if name in HTML_ENTITIES:
+                return unichr(HTML_ENTITIES[name])
             try:
                 if name[:2] in ('#x', '#X'):
                     return unichr(int(name[2:], 16))
@@ -614,6 +664,45 @@ try:
     MutableMapping.register(LRUCache)
 except ImportError:
     pass
+
+
+class Cycler(object):
+    """A cycle helper for templates."""
+
+    def __init__(self, *items):
+        if not items:
+            raise RuntimeError('at least one item has to be provided')
+        self.items = items
+        self.reset()
+
+    def reset(self):
+        """Resets the cycle."""
+        self.pos = 0
+
+    @property
+    def current(self):
+        """Returns the current item."""
+        return self.items[self.pos]
+
+    def next(self):
+        """Goes one item ahead and returns it."""
+        rv = self.current
+        self.pos = (self.pos + 1) % len(self.items)
+        return rv
+
+
+class Joiner(object):
+    """A joining helper for templates."""
+
+    def __init__(self, sep=u', '):
+        self.sep = sep
+        self.used = False
+
+    def __call__(self):
+        if not self.used:
+            self.used = True
+            return u''
+        return self.sep
 
 
 # we have to import it down here as the speedups module imports the

@@ -50,12 +50,12 @@
 
         </div>
         
-  <div class="section">
-<h1 id="tips-and-tricks">Tips and Tricks<a class="headerlink" href="#tips-and-tricks" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="tips-and-tricks">
+<h1>Tips and Tricks<a class="headerlink" href="#tips-and-tricks" title="Permalink to this headline">¶</a></h1>
 <p>This part of the documentation shows some tips and tricks for Jinja2
 templates.</p>
-<div class="section">
-<h2 id="id1"><span id="null-master-fallback"></span>Null-Master Fallback<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<span id="null-master-fallback"></span><h2>Null-Master Fallback<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>Jinja2 supports dynamic inheritance and does not distinguish between parent
 and child template as long as no <cite>extends</cite> tag is visited.  While this leads
 to the surprising behavior that everything before the first <cite>extends</cite> tag
@@ -76,8 +76,8 @@ basic skeleton is added to the file so that if it&#8217;s indeed rendered with
 <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
 </pre></div>
 </div>
-<div class="section">
-<h2 id="alternating-rows">Alternating Rows<a class="headerlink" href="#alternating-rows" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="alternating-rows">
+<h2>Alternating Rows<a class="headerlink" href="#alternating-rows" title="Permalink to this headline">¶</a></h2>
 <p>If you want to have different styles for each row of a table or
 list you can use the <cite>cycle</cite> method on the <cite>loop</cite> object:</p>
 <div class="highlight"><pre><span class="nt">&lt;ul&gt;</span>
@@ -89,8 +89,8 @@ list you can use the <cite>cycle</cite> method on the <cite>loop</cite> object:<
 <p><cite>cycle</cite> can take an unlimited amount of strings.  Each time this
 tag is encountered the next item from the list is rendered.</p>
 </div>
-<div class="section">
-<h2 id="highlighting-active-menu-items">Highlighting Active Menu Items<a class="headerlink" href="#highlighting-active-menu-items" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="highlighting-active-menu-items">
+<h2>Highlighting Active Menu Items<a class="headerlink" href="#highlighting-active-menu-items" title="Permalink to this headline">¶</a></h2>
 <p>Often you want to have a navigation bar with an active navigation
 item.  This is really simple to achieve.  Because assignments outside
 of <cite>block</cite>s in child templates are global and executed before the layout
@@ -117,8 +117,8 @@ sense to defined a default for that variable:</p>
 ...
 </pre></div>
 </div>
-<div class="section">
-<h2 id="id2"><span id="accessing-the-parent-loop"></span>Accessing the parent Loop<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<span id="accessing-the-parent-loop"></span><h2>Accessing the parent Loop<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>The special <cite>loop</cite> variable always points to the innermost loop.  If it&#8217;s
 desired to have access to an outer loop it&#8217;s possible to alias it:</p>
 <div class="highlight"><pre><span class="nt">&lt;table&gt;</span>

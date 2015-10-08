@@ -346,7 +346,6 @@ If you want to print a block multiple times you can however use the special
     <h1>{{ self.title() }}</h1>
     {% block body %}{% endblock %}
 
-
 Unlike Python Jinja does not support multiple inheritance.  So you can only have
 one extends tag called per rendering.
 
@@ -483,6 +482,9 @@ each time through the loop by using the special `loop.cycle` helper::
         <li class="{{ loop.cycle('odd', 'even') }}">{{ row }}</li>
     {% endfor %}
 
+With Jinja 2.1 an extra `cycle` helper exists that allows loop-unbound
+cycling.  For more information have a look at the :ref:`builtin-globals`.
+
 .. _loop-filtering:
 
 Unlike in Python it's not possible to `break` or `continue` in a loop.  You
@@ -614,6 +616,9 @@ are available on a macro object:
 `caller`
     This is `true` if the macro accesses the special `caller` variable and may
     be called from a :ref:`call<call>` tag.
+
+If a macro name starts with an underscore it's not exported and can't
+be imported.
 
 
 .. _call:
@@ -791,6 +796,19 @@ Here two examples::
 
     {% from 'forms.html' import input with context %}
     {% include 'header.html' without context %}
+
+.. admonition:: Note
+
+    In Jinja 2.0 the context that was passed to the included template
+    did not include variables define in the template.  As a matter of
+    fact this did not work::
+
+        {% for box in boxes %}
+            {% include "render_box.html" %}
+        {% endfor %}
+
+    The included template ``render_box.html`` is not able to access
+    `box` in Jinja 2.0, but in Jinja 2.1.
 
 
 .. _expressions:
@@ -984,6 +1002,7 @@ List of Builtin Tests
 
 .. jinjatests::
 
+.. _builtin-globals:
 
 List of Global Functions
 ------------------------
@@ -1022,6 +1041,64 @@ The following functions are available in the global scope by default:
 
     A convenient alternative to dict literals.  ``{'foo': 'bar'}`` is the same
     as ``dict(foo='bar')``.
+
+.. class:: cycler(\*items)
+
+    The cycler allows you to cycle among values similar to how `loop.cycle`
+    works.  Unlike `loop.cycle` however you can use this cycler outside of
+    loops or over multiple loops.
+
+    This is for example very useful if you want to show a list of folders and
+    files, with the folders on top, but both in the same list with alteranting
+    row colors.
+
+    The following example shows how `cycler` can be used::
+
+        {% set row_class = cycler('odd', 'even') %}
+        <ul class="browser">
+        {% for folder in folders %}
+          <li class="folder {{ row_class.next() }}">{{ folder|e }}</li>
+        {% endfor %}
+        {% for filename in files %}
+          <li class="file {{ row_class.next() }}">{{ filename|e }}</li>
+        {% endfor %}
+        </ul>
+
+    A cycler has the following attributes and methods:
+
+    .. method:: reset()
+
+        Resets the cycle to the first item.
+
+    .. method:: next()
+
+        Goes one item a head and returns the then current item.
+
+    .. attribute:: current
+
+        Returns the current item.
+    
+    **new in Jinja 2.1**
+
+.. class:: joiner(sep=', ')
+
+    A tiny helper that can be use to "join" multiple sections.  A joiner is
+    passed a string and will return that string every time it's calld, except
+    the first time in which situation it returns an empty string.  You can
+    use this to join things::
+
+        {% set pipe = joiner("|") %}
+        {% if categories %} {{ pipe() }}
+            Categories: {{ categories|join(", ") }}
+        {% endif %}
+        {% if author %} {{ pipe() }}
+            Author: {{ author() }}
+        {% endif %}
+        {% if can_edit %} {{ pipe() }}
+            <a href="?action=edit">Edit</a>
+        {% endif %}
+
+    **new in Jinja 2.1**
 
 
 Extensions

@@ -67,6 +67,7 @@ GROUPBY = '''{% for grouper, list in [{'foo': 1, 'bar': 2},
 {{ grouper }}: {{ list|join(', ') }}
 {% endfor %}'''
 FILTERTAG = '''{% filter upper|replace('FOO', 'foo') %}foobar{% endfilter %}'''
+SORT = '''{{ ['foo', 'Bar', 'blah']|sort }}'''
 
 
 def test_capitalize(env):
@@ -151,8 +152,8 @@ def test_indent(env):
     tmpl = env.from_string(INDENT)
     text = '\n'.join([' '.join(['foo', 'bar'] * 2)] * 2)
     out = tmpl.render(foo=text)
-    assert out == 'foo bar foo bar\n  foo bar foo bar|  ' \
-                  'foo bar foo bar\n  foo bar foo bar'
+    assert out == ('foo bar foo bar\n  foo bar foo bar|  '
+                   'foo bar foo bar\n  foo bar foo bar')
 
 
 def test_int(env):
@@ -324,3 +325,7 @@ def test_safe():
     assert tmpl.render() == '<div>foo</div>'
     tmpl = env.from_string('{{ "<div>foo</div>" }}')
     assert tmpl.render() == '&lt;div&gt;foo&lt;/div&gt;'
+
+
+def test_sort(env):
+    assert env.from_string(SORT).render() == "['Bar', 'blah', 'foo']"
