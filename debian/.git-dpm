@@ -6,3 +6,6 @@
 jinja2_2.8.orig.tar.gz
 4a33c1a0fd585eba2507e8c274a9cd113b1d13ab
 357055
+debianTag="debian/%e%v"
+patchedTag="patched/%e%v"
+upstreamTag="upstream/%e%u"
