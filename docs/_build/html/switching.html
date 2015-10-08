@@ -39,22 +39,22 @@
         <div id="toc">
           <h3>Table Of Contents</h3>
           <ul>
-<li><a class="reference external" href="#">Switching from other Template Engines</a><ul>
-<li><a class="reference external" href="#jinja1">Jinja1</a><ul>
-<li><a class="reference external" href="#api">API</a></li>
-<li><a class="reference external" href="#templates">Templates</a></li>
+<li><a class="reference internal" href="#">Switching from other Template Engines</a><ul>
+<li><a class="reference internal" href="#jinja1">Jinja1</a><ul>
+<li><a class="reference internal" href="#api">API</a></li>
+<li><a class="reference internal" href="#templates">Templates</a></li>
 </ul>
 </li>
-<li><a class="reference external" href="#django">Django</a><ul>
-<li><a class="reference external" href="#method-calls">Method Calls</a></li>
-<li><a class="reference external" href="#conditions">Conditions</a></li>
-<li><a class="reference external" href="#filter-arguments">Filter Arguments</a></li>
-<li><a class="reference external" href="#tests">Tests</a></li>
-<li><a class="reference external" href="#loops">Loops</a></li>
-<li><a class="reference external" href="#cycle">Cycle</a></li>
+<li><a class="reference internal" href="#django">Django</a><ul>
+<li><a class="reference internal" href="#method-calls">Method Calls</a></li>
+<li><a class="reference internal" href="#conditions">Conditions</a></li>
+<li><a class="reference internal" href="#filter-arguments">Filter Arguments</a></li>
+<li><a class="reference internal" href="#tests">Tests</a></li>
+<li><a class="reference internal" href="#loops">Loops</a></li>
+<li><a class="reference internal" href="#cycle">Cycle</a></li>
 </ul>
 </li>
-<li><a class="reference external" href="#mako">Mako</a></li>
+<li><a class="reference internal" href="#mako">Mako</a></li>
 </ul>
 </li>
 </ul>
@@ -80,11 +80,11 @@ of templates changed there is no longer support for external caching
 systems such as memcached.  The memory consumed by templates is comparable
 with regular Python modules now and external caching doesn&#8217;t give any
 advantage.  If you have used a custom loader in the past have a look at
-the new <a class="reference external" href="api.html#loaders"><em>loader API</em></a>.</dd>
+the new <a class="reference internal" href="api.html#loaders"><em>loader API</em></a>.</dd>
 <dt>Loading templates from strings</dt>
 <dd>In the past it was possible to generate templates from a string with the
 default environment configuration by using <cite>jinja.from_string</cite>.  Jinja2
-provides a <tt class="xref docutils literal"><span class="pre">Template</span></tt> class that can be used to do the same, but
+provides a <tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt> class that can be used to do the same, but
 with optional additional configuration.</dd>
 <dt>Automatic unicode conversion</dt>
 <dd>Jinja1 performed automatic conversion of bytestrings in a given encoding
@@ -97,7 +97,7 @@ gets unicode strings passed.</dd>
 <dd>Jinja1 used custom translators for internationalization.  i18n is now
 available as Jinja2 extension and uses a simpler, more gettext friendly
 interface and has support for babel.  For more details see
-<a class="reference external" href="extensions.html#i18n-extension"><em>i18n Extension</em></a>.</dd>
+<a class="reference internal" href="extensions.html#i18n-extension"><em>i18n Extension</em></a>.</dd>
 <dt>Internal methods</dt>
 <dd>Jinja1 exposed a few internal methods on the environment object such
 as <cite>call_function</cite>, <cite>get_attribute</cite> and others.  While they were marked
@@ -106,7 +106,7 @@ doesn&#8217;t have equivalent methods.</dd>
 <dt>Sandbox</dt>
 <dd>Jinja1 was running sandbox mode by default.  Few applications actually
 used that feature so it became optional in Jinja2.  For more details
-about the sandboxed execution see <tt class="xref docutils literal"><span class="pre">SandboxedEnvironment</span></tt>.</dd>
+about the sandboxed execution see <tt class="xref py py-class docutils literal"><span class="pre">SandboxedEnvironment</span></tt>.</dd>
 <dt>Context</dt>
 <dd>Jinja1 had a stacked context as storage for variables passed to the
 environment.  In Jinja2 a similar object exists but it doesn&#8217;t allow
@@ -125,10 +125,10 @@ macros require parentheses around the argument list now.</p>
 The old helper function <cite>rendertemplate</cite> is gone now, <cite>include</cite> can be used
 instead.  Includes no longer import macros and variable assignments, for
 that the new <cite>import</cite> tag is used.  This concept is explained in the
-<a class="reference external" href="templates.html#import"><em>Import</em></a> documentation.</p>
+<a class="reference internal" href="templates.html#import"><em>Import</em></a> documentation.</p>
 <p>Another small change happened in the <cite>for</cite>-tag.  The special loop variable
 doesn&#8217;t have a <cite>parent</cite> attribute, instead you have to alias the loop
-yourself.  See <a class="reference external" href="tricks.html#accessing-the-parent-loop"><em>Accessing the parent Loop</em></a> for more details.</p>
+yourself.  See <a class="reference internal" href="tricks.html#accessing-the-parent-loop"><em>Accessing the parent Loop</em></a> for more details.</p>
 </div>
 </div>
 <div class="section" id="django">
