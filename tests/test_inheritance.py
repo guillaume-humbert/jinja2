@@ -3,11 +3,13 @@
     unit test for the inheritance
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: 2007 by Armin Ronacher.
+    :copyright: (c) 2009 by the Jinja Team.
     :license: BSD, see LICENSE for more details.
 """
+
 from jinja2 import Environment, DictLoader
 from jinja2.exceptions import TemplateSyntaxError
+
 
 LAYOUTTEMPLATE = '''\
 |{% block block1 %}block 1 from layout{% endblock %}
@@ -47,31 +49,40 @@ WORKINGTEMPLATE = '''\
 {% endblock %}
 '''
 
-def test_layout(env):
+env = Environment(loader=DictLoader({
+    'layout':       LAYOUTTEMPLATE,
+    'level1':       LEVEL1TEMPLATE,
+    'level2':       LEVEL2TEMPLATE,
+    'level3':       LEVEL3TEMPLATE,
+    'level4':       LEVEL4TEMPLATE,
+    'working':      WORKINGTEMPLATE
+}), trim_blocks=True)
+
+def test_layout():
     tmpl = env.get_template('layout')
     assert tmpl.render() == ('|block 1 from layout|block 2 from '
                              'layout|nested block 4 from layout|')
 
 
-def test_level1(env):
+def test_level1():
     tmpl = env.get_template('level1')
     assert tmpl.render() == ('|block 1 from level1|block 2 from '
                              'layout|nested block 4 from layout|')
 
 
-def test_level2(env):
+def test_level2():
     tmpl = env.get_template('level2')
     assert tmpl.render() == ('|block 1 from level1|nested block 5 from '
                              'level2|nested block 4 from layout|')
 
 
-def test_level3(env):
+def test_level3():
     tmpl = env.get_template('level3')
     assert tmpl.render() == ('|block 1 from level1|block 5 from level3|'
                              'block 4 from level3|')
 
 
-def test_level4(env):
+def test_level4():
     tmpl = env.get_template('level4')
     assert tmpl.render() == ('|block 1 from level1|block 5 from '
                              'level3|block 3 from level4|')
@@ -91,11 +102,11 @@ def test_super():
     assert tmpl.render() == '--INTRO--|BEFORE|[(INNER)]|AFTER'
 
 
-def test_working(env):
+def test_working():
     tmpl = env.get_template('working')
 
 
-def test_reuse_blocks(env):
+def test_reuse_blocks():
     tmpl = env.from_string('{{ self.foo() }}|{% block foo %}42{% endblock %}|{{ self.foo() }}')
     assert tmpl.render() == '42|42|42'
 
@@ -166,3 +177,21 @@ def test_fixed_macro_scoping_bug():
     {% block content %}&nbsp;{% endblock %}
     '''
     })).get_template("test.html").render().split() == [u'outer_box', u'my_macro']
+
+
+def test_scoped_block():
+    env = Environment(loader=DictLoader({
+        'master.html': '{% for item in seq %}[{% block item scoped %}'
+                       '{% endblock %}]{% endfor %}'
+    }))
+    t = env.from_string('{% extends "master.html" %}{% block item %}{{ item }}{% endblock %}')
+    assert t.render(seq=range(5)) == '[0][1][2][3][4]'
+
+
+def test_super_in_scoped_block():
+    env = Environment(loader=DictLoader({
+        'master.html': '{% for item in seq %}[{% block item scoped %}'
+                       '{{ item }}{% endblock %}]{% endfor %}'
+    }))
+    t = env.from_string('{% extends "master.html" %}{% block item %}{{ super() }}|{{ item * 2 }}{% endblock %}')
+    assert t.render(seq=range(5)) == '[0|0][1|2][2|4][3|6][4|8]'

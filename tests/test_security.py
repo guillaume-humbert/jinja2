@@ -3,16 +3,17 @@
     unit test for security features
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: 2007 by Armin Ronacher.
+    :copyright: (c) 2009 by the Jinja Team.
     :license: BSD, see LICENSE for more details.
 """
-from py.test import raises
 from jinja2 import Environment
 from jinja2.sandbox import SandboxedEnvironment, \
      ImmutableSandboxedEnvironment, unsafe
 from jinja2 import Markup, escape
 from jinja2.exceptions import SecurityError, TemplateSyntaxError
 
+
+from nose.tools import assert_raises
 
 class PrivateStuff(object):
 
@@ -35,20 +36,21 @@ class PublicStuff(object):
         return 'PublicStuff'
 
 
-test_unsafe = '''
->>> env = MODULE.SandboxedEnvironment()
->>> env.from_string("{{ foo.foo() }}").render(foo=MODULE.PrivateStuff())
+def test_unsafe():
+    '''
+>>> env = SandboxedEnvironment()
+>>> env.from_string("{{ foo.foo() }}").render(foo=PrivateStuff())
 Traceback (most recent call last):
     ...
 SecurityError: <bound method PrivateStuff.foo of PrivateStuff> is not safely callable
->>> env.from_string("{{ foo.bar() }}").render(foo=MODULE.PrivateStuff())
+>>> env.from_string("{{ foo.bar() }}").render(foo=PrivateStuff())
 u'23'
 
->>> env.from_string("{{ foo._foo() }}").render(foo=MODULE.PublicStuff())
+>>> env.from_string("{{ foo._foo() }}").render(foo=PublicStuff())
 Traceback (most recent call last):
     ...
 SecurityError: access to attribute '_foo' of 'PublicStuff' object is unsafe.
->>> env.from_string("{{ foo.bar() }}").render(foo=MODULE.PublicStuff())
+>>> env.from_string("{{ foo.bar() }}").render(foo=PublicStuff())
 u'23'
 
 >>> env.from_string("{{ foo.__class__ }}").render(foo=42)
@@ -64,14 +66,15 @@ SecurityError: access to attribute '__class__' of 'int' object is unsafe.
 
 def test_restricted():
     env = SandboxedEnvironment()
-    raises(TemplateSyntaxError, env.from_string,
-           "{% for item.attribute in seq %}...{% endfor %}")
-    raises(TemplateSyntaxError, env.from_string,
-           "{% for foo, bar.baz in seq %}...{% endfor %}")
+    assert_raises(TemplateSyntaxError, env.from_string,
+                  "{% for item.attribute in seq %}...{% endfor %}")
+    assert_raises(TemplateSyntaxError, env.from_string,
+                  "{% for foo, bar.baz in seq %}...{% endfor %}")
 
 
-test_immutable_environment = '''
->>> env = MODULE.ImmutableSandboxedEnvironment()
+def test_immutable_environment():
+    '''
+>>> env = ImmutableSandboxedEnvironment()
 >>> env.from_string('{{ [].append(23) }}').render()
 Traceback (most recent call last):
     ...
@@ -135,4 +138,4 @@ def test_template_data():
 def test_attr_filter():
     env = SandboxedEnvironment()
     tmpl = env.from_string('{{ 42|attr("__class__")|attr("__subclasses__")() }}')
-    raises(SecurityError, tmpl.render)
+    assert_raises(SecurityError, tmpl.render)

@@ -15,11 +15,12 @@
     `JINJA2_CACHE_SIZE`     The size of the Jinja2 template cache.
     ======================= =============================================
 
-    :copyright: Copyright 2008 by Armin Ronacher.
+    :copyright: (c) 2009 by the Jinja Team.
     :license: BSD.
 """
 from itertools import chain
 from django.conf import settings
+from django.http import HttpResponse
 from django.core.exceptions import ImproperlyConfigured
 from django.template.context import get_standard_processors
 from django.template import TemplateDoesNotExist
@@ -43,7 +44,7 @@ def create_env():
     """Create a new Jinja2 environment."""
     searchpath = list(settings.JINJA2_TEMPLATE_DIRS)
     return Environment(loader=FileSystemLoader(searchpath),
-                       auto_reload=not settings.TEMPLATE_DEBUG,
+                       auto_reload=settings.TEMPLATE_DEBUG,
                        cache_size=getattr(settings, 'JINJA2_CACHE_SIZE', 50),
                        extensions=getattr(settings, 'JINJA2_EXTENSIONS', ()))
 

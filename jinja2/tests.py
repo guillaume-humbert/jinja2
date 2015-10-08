@@ -5,7 +5,7 @@
 
     Jinja test functions. Used with the "is" operator.
 
-    :copyright: 2007 by Armin Ronacher.
+    :copyright: (c) 2009 by the Jinja Team.
     :license: BSD, see LICENSE for more details.
 """
 import re
@@ -14,6 +14,13 @@ from jinja2.runtime import Undefined
 
 number_re = re.compile(r'^-?\d+(\.\d+)?$')
 regex_type = type(number_re)
+
+
+try:
+    test_callable = callable
+except NameError:
+    def test_callable(x):
+        return hasattr(x, '__call__')
 
 
 def test_odd(value):
@@ -130,7 +137,7 @@ TESTS = {
     'number':           test_number,
     'sequence':         test_sequence,
     'iterable':         test_iterable,
-    'callable':         callable,
+    'callable':         test_callable,
     'sameas':           test_sameas,
     'escaped':          test_escaped
 }

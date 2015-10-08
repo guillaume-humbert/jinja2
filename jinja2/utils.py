@@ -5,7 +5,7 @@
 
     Utility functions.
 
-    :copyright: 2008 by Armin Ronacher.
+    :copyright: (c) 2009 by the Jinja Team.
     :license: BSD, see LICENSE for more details.
 """
 import re
@@ -35,6 +35,9 @@ _digits = '0123456789'
 # special singleton representing missing values for the runtime
 missing = type('MissingType', (), {'__repr__': lambda x: 'missing'})()
 
+# internal code
+internal_code = set()
+
 
 # concatenate a list of strings and convert them to unicode.
 # unfortunately there is a bug in python 2.4 and lower that causes
@@ -58,6 +61,15 @@ except TypeError, _error:
     else:
         concat = _concat
     del _test_gen_bug, _error
+
+
+# for python 2.x we create outselves a next() function that does the
+# basics without exception catching.
+try:
+    next = next
+except NameError:
+    def next(x):
+        return x.next()
 
 
 # ironpython without stdlib doesn't have keyword
@@ -117,6 +129,12 @@ def environmentfunction(f):
     and not context.
     """
     f.environmentfunction = True
+    return f
+
+
+def internalcode(f):
+    """Marks the function as internally used"""
+    internal_code.add(f.func_code)
     return f
 
 
@@ -451,7 +469,7 @@ class Markup(unicode):
         func.__doc__ = orig.__doc__
         return func
 
-    for method in '__getitem__', '__getslice__', 'capitalize', \
+    for method in '__getitem__', 'capitalize', \
                   'title', 'lower', 'upper', 'replace', 'ljust', \
                   'rjust', 'lstrip', 'rstrip', 'center', 'strip', \
                   'translate', 'expandtabs', 'swapcase', 'zfill':
@@ -465,6 +483,10 @@ class Markup(unicode):
     # new in python 2.6
     if hasattr(unicode, 'format'):
         format = make_wrapper('format')
+
+    # not in python 3
+    if hasattr(unicode, '__getslice__'):
+        __getslice__ = make_wrapper('__getslice__')
 
     del method, make_wrapper
 
@@ -589,7 +611,13 @@ class LRUCache(object):
         """
         rv = self._mapping[key]
         if self._queue[-1] != key:
-            self._remove(key)
+            try:
+                self._remove(key)
+            except:
+                # if something removed the key from the container
+                # when we read, ignore the ValueError that we would
+                # get otherwise.
+                pass
             self._append(key)
         return rv
 

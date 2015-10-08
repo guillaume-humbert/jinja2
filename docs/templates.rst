@@ -109,7 +109,7 @@ applied to the next.
 ``{{ name|striptags|title }}`` for example will remove all HTML Tags from the
 `name` and title-cases it.  Filters that accept arguments have parentheses
 around the arguments, like a function call.  This example will join a list
-by spaces:  ``{{ list|join(', ') }}``.
+by commas:  ``{{ list|join(', ') }}``.
 
 The :ref:`builtin-filters` below describes all the builtin filters.
 
@@ -142,7 +142,7 @@ by default set to ``{# ... #}``.  This is useful to comment out parts of the
 template for debugging or to add information for other template designers or
 yourself::
 
-    {# note: disabled template because we no longer user this
+    {# note: disabled template because we no longer use this
         {% for user in users %}
             ...
         {% endfor %}
@@ -252,6 +252,14 @@ precedes it.  For better readability statements that start a block (such as
         # endfor
         </ul>
 
+Since Jinja 2.2 line-based comments are available as well.  For example if
+the line-comment prefix is configured to be ``##`` everything from ``##`` to
+the end of the line is ignored (excluding the newline sign)::
+
+    # for item in seq:
+        <li>{{ item }}</li>     ## this comment is ignored
+    # endfor
+
 
 .. _template-inheritance:
 
@@ -311,7 +319,7 @@ A child template might look like this::
     {% block content %}
         <h1>Index</h1>
         <p class="important">
-          Welcome on my awsome homepage.
+          Welcome on my awesome homepage.
         </p>
     {% endblock %}
 
@@ -376,6 +384,32 @@ readability::
     {% endblock sidebar %}
 
 However the name after the `endblock` word must match the block name.
+
+
+Block Nesting and Scope
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Blocks can be nested for more complex layouts.  However per default blocks
+may not access variables from outer scopes::
+
+    {% for item in seq %}
+        <li>{% block loop_item %}{{ item }}{% endblock %}</li>
+    {% endfor %}
+
+This example would output empty ``<li>`` items because `item` is unavailable
+inside the block.  The reason for this is that if the block is replaced by
+a child template a variable would appear that was not defined in the block or
+passed to the context.
+
+Starting with Jinja 2.2 you can explicitly specify that variables are
+available in a block by setting the block to "scoped" by adding the `scoped`
+modifier to a block declaration::
+
+    {% for item in seq %}
+        <li>{% block loop_item scoped %}{{ item }}{% endblock %}</li>
+    {% endfor %}
+
+    When overriding a block the `scoped` modifier does not have to be provided.
 
 
 HTML Escaping
@@ -724,6 +758,16 @@ Included templates have access to the variables of the active context by
 default.  For more details about context behavior of imports and includes
 see :ref:`import-visibility`.
 
+From Jinja 2.2 onwards you can mark an include with ``ignore missing`` in
+which case Jinja will ignore the statement if the template to be ignored
+does not exist.  When combined with ``with`` or ``without context`` it has
+to be placed *before* the context visibility statement.  Here some valid
+examples::
+
+    {% include "sidebar.html" ignore missing %}
+    {% include "sidebar.html" ignore missing with context %}
+    {% include "sidebar.html" ignore missing without context %}
+
 .. _import:
 
 Import
@@ -800,7 +844,7 @@ Here two examples::
 .. admonition:: Note
 
     In Jinja 2.0 the context that was passed to the included template
-    did not include variables define in the template.  As a matter of
+    did not include variables defined in the template.  As a matter of
     fact this did not work::
 
         {% for box in boxes %}
@@ -878,16 +922,16 @@ Math
 ~~~~
 
 Jinja allows you to calculate with values.  This is rarely useful in templates
-but exists for completeness sake.  The following operators are supported:
+but exists for completeness' sake.  The following operators are supported:
 
 \+
-    Adds two objects with each other.  Usually numbers but if both objects are
+    Adds two objects together.  Usually the objects are numbers but if both are
     strings or lists you can concatenate them this way.  This however is not
     the preferred way to concatenate strings!  For string concatenation have
     a look at the ``~`` operator.  ``{{ 1 + 1 }}`` is ``2``.
 
 \-
-    Substract two numbers from each other.  ``{{ 3 - 2 }}`` is ``1``.
+    Substract the second number from the first one.  ``{{ 3 - 2 }}`` is ``1``.
 
 /
     Divide two numbers.  The return value will be a floating point number.
@@ -898,12 +942,11 @@ but exists for completeness sake.  The following operators are supported:
     ``{{ 20 / 7 }}`` is ``2``.
 
 %
-    Calculate the remainder of an integer division between the left and right
-    operand.  ``{{ 11 % 7 }}`` is ``4``.
+    Calculate the remainder of an integer division.  ``{{ 11 % 7 }}`` is ``4``.
 
 \*
     Multiply the left operand with the right one.  ``{{ 2 * 2 }}`` would
-    return ``4``.  This can also be used to repeat string multiple times.
+    return ``4``.  This can also be used to repeat a string multiple times.
     ``{{ '=' * 80 }}`` would print a bar of 80 equal signs.
 
 \**
@@ -913,8 +956,8 @@ but exists for completeness sake.  The following operators are supported:
 Logic
 ~~~~~
 
-For `if` statements / `for` filtering or `if` expressions it can be useful to
-combine group multiple expressions:
+For `if` statements, `for` filtering or `if` expressions it can be useful to
+combine multiple expressions:
 
 and
     Return true if the left and the right operand is true.
@@ -960,7 +1003,7 @@ is
 
 ()
     Call a callable: ``{{ post.render() }}``.  Inside of the parentheses you
-    can use arguments and keyword arguments like in python:
+    can use positional arguments and keyword arguments like in python:
     ``{{ post.render(user, full=true) }}``.
 
 . / []
@@ -1049,7 +1092,7 @@ The following functions are available in the global scope by default:
     loops or over multiple loops.
 
     This is for example very useful if you want to show a list of folders and
-    files, with the folders on top, but both in the same list with alteranting
+    files, with the folders on top, but both in the same list with alternating
     row colors.
 
     The following example shows how `cycler` can be used::

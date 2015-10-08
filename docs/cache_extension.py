@@ -49,8 +49,8 @@ class FragmentCacheExtension(Extension):
         # if there is no fragment in the cache, render it and store
         # it in the cache.
         rv = self.environment.fragment_cache.get(key)
-        if rv is None:
+        if rv is not None:
             return rv
-            rv = caller()
-            self.environment.fragment_cache.add(key, rv, timeout)
+        rv = caller()
+        self.environment.fragment_cache.add(key, rv, timeout)
         return rv

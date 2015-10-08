@@ -3,15 +3,17 @@
     unit test for the undefined types
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: 2008 by Armin Ronacher.
+    :copyright: (c) 2009 by the Jinja Team.
     :license: BSD, see LICENSE for more details.
 """
-from py.test import raises
 from jinja2 import Template
 from jinja2.exceptions import UndefinedError
 
+from nose.tools import assert_raises
 
-test_default_undefined = '''
+
+def test_default_undefined():
+    '''
 >>> from jinja2 import Environment, Undefined
 >>> env = Environment(undefined=Undefined)
 >>> env.from_string('{{ missing }}').render()
@@ -30,7 +32,8 @@ u''
 u'True'
 '''
 
-test_debug_undefined = '''
+def test_debug_undefined():
+    '''
 >>> from jinja2 import Environment, DebugUndefined
 >>> env = Environment(undefined=DebugUndefined)
 >>> env.from_string('{{ missing }}').render()
@@ -49,7 +52,8 @@ u"{{ no such element: int['missing'] }}"
 u'True'
 '''
 
-test_strict_undefined = '''
+def test_strict_undefined():
+    '''
 >>> from jinja2 import Environment, StrictUndefined
 >>> env = Environment(undefined=StrictUndefined)
 >>> env.from_string('{{ missing }}').render()
@@ -79,4 +83,4 @@ UndefinedError: 'missing' is undefined
 
 def test_indexing_gives_undefined():
     t = Template("{{ var[42].foo }}")
-    raises(UndefinedError, t.render, var=0)
+    assert_raises(UndefinedError, t.render, var=0)

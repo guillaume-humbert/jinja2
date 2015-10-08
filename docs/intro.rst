@@ -38,11 +38,14 @@ C-compiler is available and you are using Python 2.4 the `ctypes`_ module
 should be installed.
 
 If you don't have a working C compiler and you are trying to install the source
-release you will get a compiler error.  This however can be circumvented by
-passing the ``--without-speedups`` command line argument to the setup script.
+release with the speedups you will get a compiler error.  This however can be
+circumvented by passing the ``--without-speedups`` command line argument to the
+setup script::
 
-For more details about that have a look at the :ref:`disable-speedups`
-section below.
+    $ python setup.py install --with-speedups
+
+(As of Jinja 2.2, the speedups are disabled by default and can be enabled
+with ``--with-speedups``.  See :ref:`enable-speedups`)
 
 .. _ctypes: http://python.net/crew/theller/ctypes/
 
@@ -58,8 +61,8 @@ As a Python egg (via easy_install)
 
 You can install the most recent Jinja2 version using `easy_install`_ or `pip`_::
 
-    sudo easy_install Jinja2
-    sudo pip install Jinja2
+    easy_install Jinja2
+    pip install Jinja2
 
 This will install a Jinja2 egg in your Python installation's site-packages
 directory.
@@ -101,27 +104,29 @@ Or the new `pip`_ command::
 
     sudo pip install Jinja2==dev
 
-.. _download page: http://jinja.pocoo.org/2/download
+.. _download page: http://pypi.python.org/pypi/Jinja2
 .. _setuptools: http://peak.telecommunity.com/DevCenter/setuptools
 .. _easy_install: http://peak.telecommunity.com/DevCenter/EasyInstall
 .. _pip: http://pypi.python.org/pypi/pip
 .. _mercurial: http://www.selenic.com/mercurial/
 
-.. _disable-speedups:
+.. _enable-speedups:
 
-Disable the speedups Module
+Enaable the speedups Module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default Jinja2 will try to compile the speedups module.  This of course
+By default Jinja2 will not compile the speedups module.  Enabling this
 will fail if you don't have the Python headers or a working compiler.  This
 is often the case if you are installing Jinja2 from a windows machine.
 
-You can disable the speedups extension when installing using the
-``--without-speedups`` flag::
+You can enable the speedups extension when installing using the
+``--with-speedups`` flag::
 
-    sudo python setup.py install --without-speedups
+    sudo python setup.py install --with-speedups
 
-You can also pass this parameter to `easy_install` or `pip`.
+You can also pass this parameter to `pip`::
+
+    $ pip install --install-option='--with-speedups' Jinja2
 
 
 Basic API Usage
