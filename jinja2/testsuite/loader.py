@@ -9,8 +9,10 @@
     :license: BSD, see LICENSE for more details.
 """
 import os
+import sys
 import time
 import tempfile
+import shutil
 import unittest
 
 from jinja2.testsuite import JinjaTestCase, dict_loader, \
@@ -98,7 +100,92 @@ class LoaderTestCase(JinjaTestCase):
         self.assert_raises(TemplateNotFound, split_template_path, '../foo')
 
 
+class ModuleLoaderTestCase(JinjaTestCase):
+    archive = None
+
+    def compile_down(self, zip='deflated', py_compile=False):
+        super(ModuleLoaderTestCase, self).setup()
+        log = []
+        self.reg_env = Environment(loader=prefix_loader)
+        if zip is not None:
+            self.archive = tempfile.mkstemp(suffix='.zip')[1]
+        else:
+            self.archive = tempfile.mkdtemp()
+        self.reg_env.compile_templates(self.archive, zip=zip,
+                                       log_function=log.append,
+                                       py_compile=py_compile)
+        self.mod_env = Environment(loader=loaders.ModuleLoader(self.archive))
+        return ''.join(log)
+
+    def teardown(self):
+        super(ModuleLoaderTestCase, self).teardown()
+        if hasattr(self, 'mod_env'):
+            if os.path.isfile(self.archive):
+                os.remove(self.archive)
+            else:
+                shutil.rmtree(self.archive)
+            self.archive = None
+
+    def test_log(self):
+        log = self.compile_down()
+        assert 'Compiled "a/foo/test.html" as ' \
+               'tmpl_a790caf9d669e39ea4d280d597ec891c4ef0404a' in log
+        assert 'Finished compiling templates' in log
+        assert 'Could not compile "a/syntaxerror.html": ' \
+               'Encountered unknown tag \'endif\'' in log
+
+    def _test_common(self):
+        tmpl1 = self.reg_env.get_template('a/test.html')
+        tmpl2 = self.mod_env.get_template('a/test.html')
+        assert tmpl1.render() == tmpl2.render()
+
+        tmpl1 = self.reg_env.get_template('b/justdict.html')
+        tmpl2 = self.mod_env.get_template('b/justdict.html')
+        assert tmpl1.render() == tmpl2.render()
+
+    def test_deflated_zip_compile(self):
+        self.compile_down(zip='deflated')
+        self._test_common()
+
+    def test_stored_zip_compile(self):
+        self.compile_down(zip='stored')
+        self._test_common()
+
+    def test_filesystem_compile(self):
+        self.compile_down(zip=None)
+        self._test_common()
+
+    def test_weak_references(self):
+        self.compile_down()
+        tmpl = self.mod_env.get_template('a/test.html')
+        key = loaders.ModuleLoader.get_template_key('a/test.html')
+        name = self.mod_env.loader.module.__name__
+
+        assert hasattr(self.mod_env.loader.module, key)
+        assert name in sys.modules
+
+        # unset all, ensure the module is gone from sys.modules
+        self.mod_env = tmpl = None
+
+        try:
+            import gc
+            gc.collect()
+        except:
+            pass
+
+        assert name not in sys.modules
+
+    def test_byte_compilation(self):
+        log = self.compile_down(py_compile=True)
+        assert 'Byte-compiled "a/test.html"' in log
+        tmpl1 = self.mod_env.get_template('a/test.html')
+        mod = self.mod_env.loader.module. \
+            tmpl_3c4ddf650c1a73df961a6d3d2ce2752f1b8fd490
+        assert mod.__file__.endswith('.pyc')
+
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(LoaderTestCase))
+    suite.addTest(unittest.makeSuite(ModuleLoaderTestCase))
     return suite
