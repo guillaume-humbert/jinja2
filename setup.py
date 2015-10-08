@@ -43,13 +43,19 @@ import os
 import sys
 
 from setuptools import setup, Extension, Feature
-from distutils.command.build_ext import build_ext
-from distutils.errors import CCompilerError, DistutilsPlatformError
+
+# tell distribute to use 2to3 with our own fixers.
+extra = {}
+if sys.version_info >= (3, 0):
+    extra.update(
+        use_2to3=True,
+        use_2to3_fixers=['custom_fixers']
+    )
 
 
 setup(
     name='Jinja2',
-    version='2.2.1',
+    version='2.3',
     url='http://jinja.pocoo.org/',
     license='BSD',
     author='Armin Ronacher',
@@ -66,11 +72,12 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Text Processing :: Markup :: HTML'
     ],
-    packages=['jinja2'],
+    packages=['jinja2', 'jinja2.testsuite', 'jinja2.testsuite.res'],
     features={
         'speedups': Feature("optional C speed-enhancements",
             standard=False,
@@ -80,8 +87,11 @@ setup(
         )
     },
     extras_require={'i18n': ['Babel>=0.8']},
+    test_suite='jinja2.testsuite.suite',
+    include_package_data=True,
     entry_points="""
     [babel.extractors]
     jinja2 = jinja2.ext:babel_extract[i18n]
-    """
+    """,
+    **extra
 )

@@ -5,7 +5,7 @@
 
     Provides a class that holds runtime and parsing time options.
 
-    :copyright: (c) 2009 by the Jinja Team.
+    :copyright: (c) 2010 by the Jinja Team.
     :license: BSD, see LICENSE for more details.
 """
 import sys
@@ -16,9 +16,10 @@ from jinja2.parser import Parser
 from jinja2.optimizer import optimize
 from jinja2.compiler import generate
 from jinja2.runtime import Undefined, new_context
-from jinja2.exceptions import TemplateSyntaxError
+from jinja2.exceptions import TemplateSyntaxError, TemplateNotFound, \
+     TemplatesNotFound
 from jinja2.utils import import_string, LRUCache, Markup, missing, \
-     concat, consume, internalcode
+     concat, consume, internalcode, _encode_filename
 
 
 # for direct template usage we have up to ten living environments
@@ -151,8 +152,9 @@ class Environment(object):
             undefined values in the template.
 
         `finalize`
-            A callable that finalizes the variable.  Per default no finalizing
-            is applied.
+            A callable that can be used to process the result of a variable
+            expression before it is output.  For example one can convert
+            `None` implicitly into an empty string here.
 
         `autoescape`
             If set to true the XML/HTML autoescaping feature is enabled.
@@ -288,8 +290,8 @@ class Environment(object):
                 loader=missing, cache_size=missing, auto_reload=missing,
                 bytecode_cache=missing):
         """Create a new overlay environment that shares all the data with the
-        current environment except of cache and the overriden attributes.
-        Extensions cannot be removed for a overlayed environment.  A overlayed
+        current environment except of cache and the overridden attributes.
+        Extensions cannot be removed for an overlayed environment.  An overlayed
         environment automatically gets all the extensions of the environment it
         is linked to plus optional extra extensions.
 
@@ -373,9 +375,7 @@ class Environment(object):
 
     def _parse(self, source, name, filename):
         """Internal parsing function used by `parse` and `compile`."""
-        if isinstance(filename, unicode):
-            filename = filename.encode('utf-8')
-        return Parser(self, source, name, filename).parse()
+        return Parser(self, source, name, _encode_filename(filename)).parse()
 
     def lex(self, source, name=None, filename=None):
         """Lex the given sourcecode and return a generator that yields
@@ -440,8 +440,8 @@ class Environment(object):
                 return source
             if filename is None:
                 filename = '<template>'
-            elif isinstance(filename, unicode):
-                filename = filename.encode('utf-8')
+            else:
+                filename = _encode_filename(filename)
             return compile(source, filename, 'exec')
         except TemplateSyntaxError:
             exc_info = sys.exc_info()
@@ -473,7 +473,7 @@ class Environment(object):
         >>> env.compile_expression('var', undefined_to_none=False)()
         Undefined
 
-        **new in Jinja 2.1**
+        .. versionadded:: 2.1
         """
         parser = Parser(self, source, state='variable')
         exc_info = None
@@ -526,6 +526,20 @@ class Environment(object):
         return template
 
     @internalcode
+    def _load_template(self, name, globals):
+        if self.loader is None:
+            raise TypeError('no loader for this environment specified')
+        if self.cache is not None:
+            template = self.cache.get(name)
+            if template is not None and (not self.auto_reload or \
+                                         template.is_up_to_date):
+                return template
+        template = self.loader.load(self, name, globals)
+        if self.cache is not None:
+            self.cache[name] = template
+        return template
+
+    @internalcode
     def get_template(self, name, parent=None, globals=None):
         """Load a template from the loader.  If a loader is configured this
         method ask the loader for the template and returns a :class:`Template`.
@@ -538,21 +552,43 @@ class Environment(object):
         If the template does not exist a :exc:`TemplateNotFound` exception is
         raised.
         """
-        if self.loader is None:
-            raise TypeError('no loader for this environment specified')
         if parent is not None:
             name = self.join_path(name, parent)
+        return self._load_template(name, self.make_globals(globals))
 
-        if self.cache is not None:
-            template = self.cache.get(name)
-            if template is not None and (not self.auto_reload or \
-                                         template.is_up_to_date):
-                return template
+    @internalcode
+    def select_template(self, names, parent=None, globals=None):
+        """Works like :meth:`get_template` but tries a number of templates
+        before it fails.  If it cannot find any of the templates, it will
+        raise a :exc:`TemplatesNotFound` exception.
 
-        template = self.loader.load(self, name, self.make_globals(globals))
-        if self.cache is not None:
-            self.cache[name] = template
-        return template
+        .. versionadded:: 2.3
+        """
+        if not names:
+            raise TemplatesNotFound(message=u'Tried to select from an empty list '
+                                            u'of templates.')
+        globals = self.make_globals(globals)
+        for name in names:
+            if parent is not None:
+                name = self.join_path(name, parent)
+            try:
+                return self._load_template(name, globals)
+            except TemplateNotFound:
+                pass
+        raise TemplatesNotFound(names)
+
+    @internalcode
+    def get_or_select_template(self, template_name_or_list,
+                               parent=None, globals=None):
+        """
+        Does a typecheck and dispatches to :meth:`select_template` if an
+        iterable of template names is given, otherwise to :meth:`get_template`.
+
+        .. versionadded:: 2.3
+        """
+        if isinstance(template_name_or_list, basestring):
+            return self.get_template(template_name_or_list, parent, globals)
+        return self.select_template(template_name_or_list, parent, globals)
 
     def from_string(self, source, globals=None, template_class=None):
         """Load a template from a string.  This parses the source given and
@@ -770,11 +806,18 @@ class TemplateModule(object):
         self.__dict__.update(context.get_exported())
         self.__name__ = template.name
 
-    __unicode__ = lambda x: concat(x._body_stream)
-    __html__ = lambda x: Markup(concat(x._body_stream))
+    def __html__(self):
+        return Markup(concat(self._body_stream))
 
     def __str__(self):
         return unicode(self).encode('utf-8')
+
+    # unicode goes after __str__ because we configured 2to3 to rename
+    # __unicode__ to __str__.  because the 2to3 tree is not designed to
+    # remove nodes from it, we leave the above __str__ around and let
+    # it override at runtime.
+    def __unicode__(self):
+        return concat(self._body_stream)
 
     def __repr__(self):
         if self.__name__ is None:

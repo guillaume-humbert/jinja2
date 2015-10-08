@@ -49,6 +49,7 @@
 <li><a class="reference external" href="#i-don-t-have-the-speedups-module-is-jinja-slower-now">I don&#8217;t have the _speedups Module.  Is Jinja slower now?</a></li>
 <li><a class="reference external" href="#my-tracebacks-look-weird-what-s-happening">My tracebacks look weird.  What&#8217;s happening?</a></li>
 <li><a class="reference external" href="#why-is-there-no-python-2-3-support">Why is there no Python 2.3 support?</a></li>
+<li><a class="reference external" href="#my-macros-are-overriden-by-something">My Macros are overriden by something</a></li>
 </ul>
 </li>
 </ul>
@@ -188,6 +189,26 @@ decision was made as with the upcoming Python 2.6 and 3.0 versions it becomes
 harder to maintain the code for older Python versions.  If you really need
 Python 2.3 support you either have to use <a class="reference external" href="http://jinja.pocoo.org/1/">Jinja 1</a> or other templating
 engines that still support 2.3.</p>
+</div>
+<div class="section" id="my-macros-are-overriden-by-something">
+<h2>My Macros are overriden by something<a class="headerlink" href="#my-macros-are-overriden-by-something" title="Permalink to this headline">¶</a></h2>
+<p>In some situations the Jinja scoping appears arbitrary:</p>
+<p>layout.tmpl:</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">macro</span> <span class="nv">foo</span><span class="o">()</span> <span class="cp">%}</span><span class="x">LAYOUT</span><span class="cp">{%</span> <span class="k">endmacro</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>child.tmpl:</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;layout.tmpl&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">macro</span> <span class="nv">foo</span><span class="o">()</span> <span class="cp">%}</span><span class="x">CHILD</span><span class="cp">{%</span> <span class="k">endmacro</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}{{</span> <span class="nv">foo</span><span class="o">()</span> <span class="cp">}}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>This will print <tt class="docutils literal"><span class="pre">LAYOUT</span></tt> in Jinja2.  This is a side effect of having
+the parent template evaluated after the child one.  This allows child
+templates passing information to the parent template.  To avoid this
+issue rename the macro or variable in the parent template to have an
+uncommon prefix.</p>
 </div>
 </div>
 

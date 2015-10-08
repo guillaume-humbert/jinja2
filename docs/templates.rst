@@ -354,9 +354,6 @@ If you want to print a block multiple times you can however use the special
     <h1>{{ self.title() }}</h1>
     {% block body %}{% endblock %}
 
-Unlike Python Jinja does not support multiple inheritance.  So you can only have
-one extends tag called per rendering.
-
 
 Super Blocks
 ~~~~~~~~~~~~
@@ -541,7 +538,7 @@ by using `else`::
         <li>{{ user.username|e }}</li>
     {% else %}
         <li><em>no users found</em></li>
-    {% endif %}
+    {% endfor %}
     </ul>
 
 It is also possible to use loops recursively.  This is useful if you are
@@ -732,8 +729,7 @@ Extends
 
 The `extends` tag can be used to extend a template from another one.  You
 can have multiple of them in a file but only one of them may be executed
-at the time.  There is no support for multiple inheritance.  See the section
-about :ref:`template-inheritance` above.
+at the time.  See the section about :ref:`template-inheritance` above.
 
 
 Block
@@ -767,6 +763,18 @@ examples::
     {% include "sidebar.html" ignore missing %}
     {% include "sidebar.html" ignore missing with context %}
     {% include "sidebar.html" ignore missing without context %}
+
+.. versionadded:: 2.2
+
+You can also provide a list of templates that are checked for existence
+before inclusion.  The first template that exists will be included.  If
+`ignore missing` is given, it will fall back to rendering nothing if
+none of the templates exist, otherwise it will raise an exception.
+
+Example::
+
+    {% include ['page_detailed.html', 'page.html'] %}
+    {% include ['special_sidebar.html', 'sidebar.html'] ignore missing %}
 
 .. _import:
 
@@ -1244,3 +1252,35 @@ Likewise a look that stops processing after the 10th iteration::
     {% for user in users %}
         {%- if loop.index >= 10 %}{% break %}{% endif %}
     {%- endfor %}
+
+
+With Statement
+~~~~~~~~~~~~~~
+
+.. versionadded:: 2.3
+
+If the application enables the :ref:`with-extension` it is possible to
+use the `with` keyword in templates.  This makes it possible to create
+a new inner scope.  Variables set within this scope are not visible
+outside of the scope.
+
+With in a nutshell::
+
+    {% with %}
+        {% set foo = 42 %}
+        {{ foo }}           foo is 42 here
+    {% endwith %}
+    foo is not visible here any longer
+
+Because it is common to set variables at the beginning of the scope
+you can do that within the with statement.  The following two examples
+are equivalent::
+
+    {% with foo = 42 %}
+        {{ foo }}
+    {% endwith %}
+
+    {% with %}
+        {% set foo = 42 %}
+        {{ foo }}
+    {% endwith %}

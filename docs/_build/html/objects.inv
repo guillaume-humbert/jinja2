@@ -68,6 +68,7 @@ jinja2.nodes.ContextReference class extensions.html
 joiner class templates.html
 jinja2.ext.Parser.name attribute extensions.html
 jinja2.BytecodeCache.load_bytecode attribute api.html
+jinja2.TemplatesNotFound exception api.html
 upper function templates.html
 jinja2.Template.stream method api.html
 jinja2.nodes.Output class extensions.html
@@ -116,7 +117,7 @@ jinja2.nodes.FilterBlock class extensions.html
 jinja2.Context.environment attribute api.html
 jinja2.lexer.TokenStream.expect attribute extensions.html
 jinja2.nodes.ExprStmt class extensions.html
-cycler.next method templates.html
+jinja2.Environment.select_template attribute api.html
 jinja2.Template.root_render_func method api.html
 cycler class templates.html
 jinja2.environmentfunction function api.html
@@ -189,6 +190,7 @@ jinja2.nodes.Sub class extensions.html
 jinja2.Markup.unescape attribute api.html
 jinja2.TemplateSyntaxError.lineno attribute api.html
 jinja2.ext.Parser.filename attribute extensions.html
+jinja2.Environment.get_or_select_template attribute api.html
 jinja2.Environment.install_null_translations method extensions.html
 jinja2.nodes.InternalName class extensions.html
 jinja2.Environment.undefined method api.html
@@ -196,7 +198,7 @@ dict function templates.html
 jinja2.nodes.CallBlock class extensions.html
 jinja2.MemcachedBytecodeCache.MinimalClientInterface class api.html
 jinja2.nodes.Not class extensions.html
-jinja2.BytecodeCache.dump_bytecode attribute api.html
+jinja2.Environment.shared attribute api.html
 jinja2.MemcachedBytecodeCache.MinimalClientInterface.get method api.html
 last function templates.html
 jinja2.environment.TemplateStream.dump attribute api.html
@@ -248,6 +250,7 @@ jinja2.Environment.overlay method api.html
 length function templates.html
 jinja2.Context.parent attribute api.html
 jinja2.nodes.Tuple class extensions.html
+cycler.next method templates.html
 jinja2.ext.Extension class extensions.html
 jinja2.lexer.Token.test_any attribute extensions.html
 jinja2.sandbox.unsafe function sandbox.html
@@ -282,4 +285,4 @@ jinja2.nodes.FromImport class extensions.html
 jinja2.sandbox.SandboxedEnvironment.is_safe_callable attribute sandbox.html
 jinja2.nodes.Extends class extensions.html
 jinja2.Undefined._undefined_name attribute api.html
-jinja2.Environment.shared attribute api.html
+jinja2.BytecodeCache.dump_bytecode attribute api.html

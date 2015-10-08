@@ -45,10 +45,11 @@
 <li><a class="reference external" href="#as-a-python-egg-via-easy-install">As a Python egg (via easy_install)</a></li>
 <li><a class="reference external" href="#from-the-tarball-release">From the tarball release</a></li>
 <li><a class="reference external" href="#installing-the-development-version">Installing the development version</a></li>
-<li><a class="reference external" href="#enaable-the-speedups-module">Enaable the speedups Module</a></li>
+<li><a class="reference external" href="#enable-the-speedups-module">Enable the speedups Module</a></li>
 </ul>
 </li>
 <li><a class="reference external" href="#basic-api-usage">Basic API Usage</a></li>
+<li><a class="reference external" href="#experimental-python-3-support">Experimental Python 3 Support</a></li>
 </ul>
 </li>
 </ul>
@@ -85,14 +86,14 @@ language for applications where users may modify the template design.</li>
 that can create python extensions should be installed for the debugger.  If no
 C-compiler is available and you are using Python 2.4 the <a class="reference external" href="http://python.net/crew/theller/ctypes/">ctypes</a> module
 should be installed.</p>
-<p>If you don&#8217;t have a working C compiler and you are trying to install the source
+<p>If you don&#8217;t have a working C-compiler and you are trying to install the source
 release with the speedups you will get a compiler error.  This however can be
 circumvented by passing the <tt class="docutils literal"><span class="pre">--without-speedups</span></tt> command line argument to the
 setup script:</p>
-<div class="highlight-python"><pre>$ python setup.py install --with-speedups</pre>
+<div class="highlight-python"><pre>$ python setup.py --with-speedups install</pre>
 </div>
 <p>(As of Jinja 2.2, the speedups are disabled by default and can be enabled
-with <tt class="docutils literal"><span class="pre">--with-speedups</span></tt>.  See <a class="reference internal" href="#enable-speedups"><em>Enaable the speedups Module</em></a>)</p>
+with <tt class="docutils literal"><span class="pre">--with-speedups</span></tt>.  See <a class="reference internal" href="#enable-speedups"><em>Enable the speedups Module</em></a>)</p>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
@@ -116,9 +117,8 @@ sure to run the command as user with administrator rights)</p>
 <li>Unpack the tarball</li>
 <li><tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></tt></li>
 </ol>
-<p>Note that the last command will automatically download and install
-<a class="reference external" href="http://peak.telecommunity.com/DevCenter/setuptools">setuptools</a> if you don&#8217;t already have it installed. This requires a working
-internet connection.</p>
+<p>Note that you either have to have setuptools or <a class="reference external" href="http://pypi.python.org/pypi/distribute">distribute</a> installed,
+the latter is preferred.</p>
 <p>This will install Jinja2 into your Python installation&#8217;s site-packages directory.</p>
 </div>
 <div class="section" id="installing-the-development-version">
@@ -130,27 +130,24 @@ internet connection.</p>
 <li><tt class="docutils literal"><span class="pre">ln</span> <span class="pre">-s</span> <span class="pre">jinja2</span> <span class="pre">/usr/lib/python2.X/site-packages</span></tt></li>
 </ol>
 <p>As an alternative to steps 4 you can also do <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></tt>
-which will install the package via setuptools in development mode.  This also
+which will install the package via distribute in development mode.  This also
 has the advantage that the C extensions are compiled.</p>
-<p>Alternative you can use <a class="reference external" href="http://peak.telecommunity.com/DevCenter/EasyInstall">easy_install</a> to install the current development
+<p>Alternative you can use <a class="reference external" href="http://pypi.python.org/pypi/pip">pip</a> to install the current development
 snapshot:</p>
-<div class="highlight-python"><pre>sudo easy_install Jinja2==dev</pre>
-</div>
-<p>Or the new <a class="reference external" href="http://pypi.python.org/pypi/pip">pip</a> command:</p>
 <div class="highlight-python"><pre>sudo pip install Jinja2==dev</pre>
 </div>
+<p>Or the <a class="reference external" href="http://peak.telecommunity.com/DevCenter/EasyInstall">easy_install</a> command:</p>
+<div class="highlight-python"><pre>sudo easy_install Jinja2==dev</pre>
 </div>
-<div class="section" id="enaable-the-speedups-module">
-<span id="enable-speedups"></span><h3>Enaable the speedups Module<a class="headerlink" href="#enaable-the-speedups-module" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="enable-the-speedups-module">
+<span id="enable-speedups"></span><h3>Enable the speedups Module<a class="headerlink" href="#enable-the-speedups-module" title="Permalink to this headline">¶</a></h3>
 <p>By default Jinja2 will not compile the speedups module.  Enabling this
 will fail if you don&#8217;t have the Python headers or a working compiler.  This
 is often the case if you are installing Jinja2 from a windows machine.</p>
 <p>You can enable the speedups extension when installing using the
 <tt class="docutils literal"><span class="pre">--with-speedups</span></tt> flag:</p>
-<div class="highlight-python"><pre>sudo python setup.py install --with-speedups</pre>
-</div>
-<p>You can also pass this parameter to <cite>pip</cite>:</p>
-<div class="highlight-python"><pre>$ pip install --install-option='--with-speedups' Jinja2</pre>
+<div class="highlight-python"><pre>sudo python setup.py --with-speedups install</pre>
 </div>
 </div>
 </div>
@@ -176,6 +173,16 @@ of the template.</p>
 <p>What you can see here is that Jinja2 is using unicode internally and the
 return value is an unicode string.  So make sure that your application is
 indeed using unicode internally.</p>
+</div>
+<div class="section" id="experimental-python-3-support">
+<h2>Experimental Python 3 Support<a class="headerlink" href="#experimental-python-3-support" title="Permalink to this headline">¶</a></h2>
+<p>Jinja 2.3 brings experimental support for Python 3.  It means that all
+unittests pass on the new version, but there might still be small bugs in
+there and behavior might be inconsistent.  If you notice any bugs, please
+provide feedback in the <a class="reference external" href="http://dev.pocoo.org/projects/jinja/">Jinja bug tracker</a>.</p>
+<p>Also please keep in mind that the documentation is written with Python 2
+in mind, you will have to adapt the shown code examples to Python 3 syntax
+for yourself.</p>
 </div>
 </div>
 
