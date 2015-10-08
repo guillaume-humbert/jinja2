@@ -28,7 +28,6 @@ docs/index.rst
 docs/integration.rst
 docs/intro.rst
 docs/jinjaext.py
-docs/jinjaext.pyc
 docs/sandbox.rst
 docs/switching.rst
 docs/templates.rst
@@ -179,7 +178,6 @@ jinja2/testsuite/security.py
 jinja2/testsuite/tests.py
 jinja2/testsuite/utils.py
 jinja2/testsuite/res/__init__.py
-jinja2/testsuite/res/__init__.pyc
 jinja2/testsuite/res/templates/broken.html
 jinja2/testsuite/res/templates/syntaxerror.html
 jinja2/testsuite/res/templates/test.html

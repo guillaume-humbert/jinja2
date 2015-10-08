@@ -41,7 +41,11 @@
           <ul>
 <li><a class="reference external" href="#">Extensions</a><ul>
 <li><a class="reference external" href="#adding-extensions">Adding Extensions</a></li>
-<li><a class="reference external" href="#i18n-extension">i18n Extension</a></li>
+<li><a class="reference external" href="#i18n-extension">i18n Extension</a><ul>
+<li><a class="reference external" href="#environment-methods">Environment Methods</a></li>
+<li><a class="reference external" href="#newstyle-gettext">Newstyle Gettext</a></li>
+</ul>
+</li>
 <li><a class="reference external" href="#expression-statement">Expression Statement</a></li>
 <li><a class="reference external" href="#loop-controls">Loop Controls</a></li>
 <li><a class="reference external" href="#with-statement">With Statement</a></li>
@@ -86,22 +90,43 @@ translatable and calls <cite>gettext</cite>.</p>
 to the environment globals.  An internationalized application then has to
 provide at least an <cite>gettext</cite> and optoinally a <cite>ngettext</cite> function into the
 namespace.  Either globally or for each rendering.</p>
+<div class="section" id="environment-methods">
+<h3>Environment Methods<a class="headerlink" href="#environment-methods" title="Permalink to this headline">¶</a></h3>
 <p>After enabling of the extension the environment provides the following
 additional methods:</p>
 <dl class="method">
 <dt id="jinja2.Environment.install_gettext_translations">
-<tt class="descclassname">jinja2.Environment.</tt><tt class="descname">install_gettext_translations</tt><big>(</big><em>translations</em><big>)</big><a class="headerlink" href="#jinja2.Environment.install_gettext_translations" title="Permalink to this definition">¶</a></dt>
-<dd>Installs a translation globally for that environment.  The tranlations
+<tt class="descclassname">jinja2.Environment.</tt><tt class="descname">install_gettext_translations</tt><big>(</big><em>translations</em>, <em>newstyle=False</em><big>)</big><a class="headerlink" href="#jinja2.Environment.install_gettext_translations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Installs a translation globally for that environment.  The tranlations
 object provided must implement at least <cite>ugettext</cite> and <cite>ungettext</cite>.
 The <cite>gettext.NullTranslations</cite> and <cite>gettext.GNUTranslations</cite> classes
-as well as <a class="reference external" href="http://babel.edgewall.org/">Babel</a>s <cite>Translations</cite> class are supported.</dd></dl>
+as well as <a class="reference external" href="http://babel.edgewall.org/">Babel</a>s <cite>Translations</cite> class are supported.</p>
+<p class="versionchanged">
+<span class="versionmodified">Changed in version 2.5: </span>newstyle gettext added</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Environment.install_null_translations">
-<tt class="descclassname">jinja2.Environment.</tt><tt class="descname">install_null_translations</tt><big>(</big><big>)</big><a class="headerlink" href="#jinja2.Environment.install_null_translations" title="Permalink to this definition">¶</a></dt>
-<dd>Install dummy gettext functions.  This is useful if you want to prepare
+<tt class="descclassname">jinja2.Environment.</tt><tt class="descname">install_null_translations</tt><big>(</big><em>newstyle=False</em><big>)</big><a class="headerlink" href="#jinja2.Environment.install_null_translations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Install dummy gettext functions.  This is useful if you want to prepare
 the application for internationalization but don&#8217;t want to implement the
-full internationalization system yet.</dd></dl>
+full internationalization system yet.</p>
+<p class="versionchanged">
+<span class="versionmodified">Changed in version 2.5: </span>newstyle gettext added</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="jinja2.Environment.install_gettext_callables">
+<tt class="descclassname">jinja2.Environment.</tt><tt class="descname">install_gettext_callables</tt><big>(</big><em>gettext</em>, <em>ngettext</em>, <em>newstyle=False</em><big>)</big><a class="headerlink" href="#jinja2.Environment.install_gettext_callables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Installs the given <cite>gettext</cite> and <cite>ngettext</cite> callables into the
+environment as globals.  They are supposed to behave exactly like the
+standard library&#8217;s <tt class="xref docutils literal"><span class="pre">gettext.ugettext()</span></tt> and
+<tt class="xref docutils literal"><span class="pre">gettext.ungettext()</span></tt> functions.</p>
+<p>If <cite>newstyle</cite> is activated, the callables are wrapped to work like
+newstyle callables.  See <a class="reference internal" href="#newstyle-gettext"><em>Newstyle Gettext</em></a> for more information.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 2.5.</span></p>
+</dd></dl>
 
 <dl class="method">
 <dt id="jinja2.Environment.uninstall_gettext_translations">
@@ -139,6 +164,44 @@ current configuration.  (For example by using <cite>gettext.find</cite>)</p>
 <p>The usage of the <cite>i18n</cite> extension for template designers is covered as part
 <a class="reference external" href="templates.html#i18n-in-templates"><em>of the template documentation</em></a>.</p>
 </div>
+<div class="section" id="newstyle-gettext">
+<span id="id2"></span><h3>Newstyle Gettext<a class="headerlink" href="#newstyle-gettext" title="Permalink to this headline">¶</a></h3>
+<p class="versionadded">
+<span class="versionmodified">New in version 2.5.</span></p>
+<p>Starting with version 2.5 you can use newstyle gettext calls.  These are
+inspired by trac&#8217;s internal gettext functions and are fully supported by
+the babel extraction tool.  They might not work as expected by other
+extraction tools in case you are not using Babel&#8217;s.</p>
+<p>What&#8217;s the big difference between standard and newstyle gettext calls?  In
+general they are less to type and less error prone.  Also if they are used
+in an autoescaping environment they better support automatic escaping.
+Here some common differences between old and new calls:</p>
+<p>standard gettext:</p>
+<div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">gettext</span><span class="o">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="o">)</span> <span class="cp">}}</span>
+<span class="cp">{{</span> <span class="nv">gettext</span><span class="o">(</span><span class="s1">&#39;Hello %(name)s!&#39;</span><span class="o">)|</span><span class="nf">format</span><span class="o">(</span><span class="nv">name</span><span class="o">=</span><span class="s1">&#39;World&#39;</span><span class="o">)</span> <span class="cp">}}</span>
+<span class="cp">{{</span> <span class="nv">ngettext</span><span class="o">(</span><span class="s1">&#39;%(num)d apple&#39;</span><span class="o">,</span> <span class="s1">&#39;%(num)d apples&#39;</span><span class="o">,</span> <span class="nv">apples</span><span class="o">|</span><span class="nf">count</span><span class="o">)|</span><span class="nf">format</span><span class="o">(</span>
+    <span class="nv">num</span><span class="o">=</span><span class="nv">apples</span><span class="o">|</span><span class="nf">count</span>
+<span class="o">)</span><span class="cp">}}</span>
+</pre></div>
+</div>
+<p>newstyle gettext looks like this instead:</p>
+<div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">gettext</span><span class="o">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="o">)</span> <span class="cp">}}</span>
+<span class="cp">{{</span> <span class="nv">gettext</span><span class="o">(</span><span class="s1">&#39;Hello %(name)s!&#39;</span><span class="o">,</span> <span class="nv">name</span><span class="o">=</span><span class="s1">&#39;World&#39;</span><span class="o">)</span> <span class="cp">}}</span>
+<span class="cp">{{</span> <span class="nv">ngettext</span><span class="o">(</span><span class="s1">&#39;%(num)d apple&#39;</span><span class="o">,</span> <span class="s1">&#39;%(num)d apples&#39;</span><span class="o">,</span> <span class="nv">apples</span><span class="o">|</span><span class="nf">count</span><span class="o">)</span> <span class="cp">}}</span>
+</pre></div>
+</div>
+<p>The advantages of newstyle gettext is that you have less to type and that
+named placeholders become mandatory.  The latter sounds like a
+disadvantage but solves a lot of troubles translators are often facing
+when they are unable to switch the positions of two placeholder.  With
+newstyle gettext, all format strings look the same.</p>
+<p>Furthermore with newstyle gettext, string formatting is also used if no
+placeholders are used which makes all strings behave exactly the same.
+Last but not least are newstyle gettext calls able to properly mark
+strings for autoescaping which solves lots of escaping related issues many
+templates are experiencing over time when using autoescaping.</p>
+</div>
+</div>
 <div class="section" id="expression-statement">
 <h2>Expression Statement<a class="headerlink" href="#expression-statement" title="Permalink to this headline">¶</a></h2>
 <p><strong>Import name:</strong> <cite>jinja2.ext.do</cite></p>
@@ -164,7 +227,7 @@ declared directly in the opening block of the with statement or using a
 standard <cite>set</cite> statement directly within.</p>
 </div>
 <div class="section" id="autoescape-extension">
-<span id="id2"></span><h2>Autoescape Extension<a class="headerlink" href="#autoescape-extension" title="Permalink to this headline">¶</a></h2>
+<span id="id3"></span><h2>Autoescape Extension<a class="headerlink" href="#autoescape-extension" title="Permalink to this headline">¶</a></h2>
 <p><strong>Import name:</strong> <cite>jinja2.ext.autoescape</cite></p>
 <p class="versionadded">
 <span class="versionmodified">New in version 2.4.</span></p>
@@ -1070,6 +1133,23 @@ is used for loading the names or storing.</p>
 <dt id="jinja2.nodes.MarkSafe">
 <em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">MarkSafe</tt><big>(</big><em>expr</em><big>)</big><a class="headerlink" href="#jinja2.nodes.MarkSafe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mark the wrapped expression as safe (wrap it as <cite>Markup</cite>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Node type:</th><td class="field-body"><a title="jinja2.nodes.Expr" class="reference internal" href="#jinja2.nodes.Expr"><tt class="xref docutils literal"><span class="pre">Expr</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="jinja2.nodes.MarkSafeIfAutoescape">
+<em class="property">class </em><tt class="descclassname">jinja2.nodes.</tt><tt class="descname">MarkSafeIfAutoescape</tt><big>(</big><em>expr</em><big>)</big><a class="headerlink" href="#jinja2.nodes.MarkSafeIfAutoescape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark the wrapped expression as safe (wrap it as <cite>Markup</cite>) but
+only if autoescaping is active.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 2.5.</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

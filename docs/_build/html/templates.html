@@ -1383,9 +1383,18 @@ values on the last iteration.</p>
 
 <dl class="function">
 <dt id="sort">
-<tt class="descname">sort</tt><big>(</big><em>value</em>, <em>reverse=False</em><big>)</big><a class="headerlink" href="#sort" title="Permalink to this definition">¶</a></dt>
-<dd>Sort a sequence. Per default it sorts ascending, if you pass it
-true as first argument it will reverse the sorting.</dd></dl>
+<tt class="descname">sort</tt><big>(</big><em>value</em>, <em>reverse=False</em>, <em>case_sensitive=False</em><big>)</big><a class="headerlink" href="#sort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort an iterable.  Per default it sorts ascending, if you pass it
+true as first argument it will reverse the sorting.</p>
+<p>If the iterable is made of strings the third parameter can be used to
+control the case sensitiveness of the comparison which is disabled by
+default.</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">for</span> <span class="nv">item</span> <span class="k">in</span> <span class="nv">iterable</span><span class="o">|</span><span class="nf">sort</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    ...</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="function">
 <dt id="string">
@@ -1735,12 +1744,21 @@ three functions exist:</p>
 </div>
 <p>To use placeholders you can use the <cite>format</cite> filter:</p>
 <div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="kp">_</span><span class="o">(</span><span class="s1">&#39;Hello %(user)s!&#39;</span><span class="o">)|</span><span class="nf">format</span><span class="o">(</span><span class="nv">user</span><span class="o">=</span><span class="nv">user.username</span><span class="o">)</span> <span class="cp">}}</span>
-    or
-<span class="cp">{{</span> <span class="kp">_</span><span class="o">(</span><span class="s1">&#39;Hello %s&#39;</span><span class="o">)|</span><span class="nf">format</span><span class="o">(</span><span class="nv">user.username</span><span class="o">)</span> <span class="cp">}}</span>
 </pre></div>
 </div>
 <p>For multiple placeholders always use keyword arguments to <cite>format</cite> as other
 languages may not use the words in the same order.</p>
+<p class="versionchanged">
+<span class="versionmodified">Changed in version 2.5.</span></p>
+<p>If newstyle gettext call are activated (<a class="reference external" href="extensions.html#newstyle-gettext"><em>Newstyle Gettext</em></a>), using
+placeholders is a lot easier:</p>
+<div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">gettext</span><span class="o">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="o">)</span> <span class="cp">}}</span>
+<span class="cp">{{</span> <span class="nv">gettext</span><span class="o">(</span><span class="s1">&#39;Hello %(name)s!&#39;</span><span class="o">,</span> <span class="nv">name</span><span class="o">=</span><span class="s1">&#39;World&#39;</span><span class="o">)</span> <span class="cp">}}</span>
+<span class="cp">{{</span> <span class="nv">ngettext</span><span class="o">(</span><span class="s1">&#39;%(num)d apple&#39;</span><span class="o">,</span> <span class="s1">&#39;%(num)d apples&#39;</span><span class="o">,</span> <span class="nv">apples</span><span class="o">|</span><span class="nf">count</span><span class="o">)</span> <span class="cp">}}</span>
+</pre></div>
+</div>
+<p>Note that the <cite>ngettext</cite> function&#8217;s format string automatically recieves
+the count as <cite>num</cite> parameter additionally to the regular parameters.</p>
 </div>
 <div class="section" id="expression-statement">
 <h3>Expression Statement<a class="headerlink" href="#expression-statement" title="Permalink to this headline">¶</a></h3>
