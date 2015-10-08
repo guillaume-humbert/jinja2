@@ -9,12 +9,10 @@ Jinja2.egg-info/PKG-INFO
 Jinja2.egg-info/SOURCES.txt
 Jinja2.egg-info/dependency_links.txt
 Jinja2.egg-info/entry_points.txt
-Jinja2.egg-info/native_libs.txt
 Jinja2.egg-info/not-zip-safe
 Jinja2.egg-info/requires.txt
 Jinja2.egg-info/top_level.txt
 artwork/jinjalogo.svg
-docs/.DS_Store
 docs/Makefile
 docs/api.rst
 docs/cache_extension.py
@@ -31,7 +29,6 @@ docs/sandbox.rst
 docs/switching.rst
 docs/templates.rst
 docs/tricks.rst
-docs/_build/.DS_Store
 docs/_build/.ignore
 docs/_build/html/api.html
 docs/_build/html/changelog.html
@@ -103,7 +100,6 @@ docs/_templates/layout.html
 docs/_templates/opensearch.xml
 docs/_templates/page.html
 docs/_templates/search.html
-examples/.DS_Store
 examples/bench.py
 examples/profile.py
 examples/basic/cycle.py
@@ -114,21 +110,8 @@ examples/basic/test_filter_and_linestatements.py
 examples/basic/test_loop_filter.py
 examples/basic/translate.py
 examples/basic/templates/broken.html
-examples/rwbench/.DS_Store
-examples/rwbench/django.gv
-examples/rwbench/django.pdf
 examples/rwbench/djangoext.py
-examples/rwbench/djangoext.pyc
-examples/rwbench/genshi.gv
-examples/rwbench/jinja.gv
-examples/rwbench/jinja.pdf
-examples/rwbench/jinjabug.gv
-examples/rwbench/jinjabug.pdf
-examples/rwbench/mako.gv
-examples/rwbench/profiler.py
-examples/rwbench/profiler.pyc
 examples/rwbench/rwbench.py
-examples/rwbench/rwbench.pyc
 examples/rwbench/django/_form.html
 examples/rwbench/django/_input_field.html
 examples/rwbench/django/_textarea.html
@@ -144,11 +127,7 @@ examples/rwbench/mako/helpers.html
 examples/rwbench/mako/index.html
 examples/rwbench/mako/layout.html
 ext/djangojinja2.py
-ext/djangojinja2.pyc
-ext/ifchanged.py
-ext/ifchanged.pyc
 ext/inlinegettext.py
-ext/inlinegettext.pyc
 ext/jinja.el
 ext/Jinja Templates.tmbundle/info.plist
 ext/Jinja Templates.tmbundle/Commands/Help.tmCommand
@@ -171,10 +150,6 @@ ext/Vim/htmljinja.vim
 ext/Vim/jinja.vim
 ext/django2jinja/django2jinja.py
 ext/django2jinja/example.py
-ext/django2jinja/incoming.patch
-ext/django2jinja/converted/index.html
-ext/django2jinja/converted/layout.html
-ext/django2jinja/converted/subtemplate.html
 ext/django2jinja/templates/index.html
 ext/django2jinja/templates/layout.html
 ext/django2jinja/templates/subtemplate.html
