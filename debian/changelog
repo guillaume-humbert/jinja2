@@ -6,6 +6,7 @@ jinja2 (2.9.4-1) unstable; urgency=medium
   [ Piotr Ożarowski ]
   * New upstream release
     - do not install async* files for Python 2.7 (they require Python >= 3.5)
+  * Standards-version bumped to 3.9.8 (no other changes needed)
 
  -- Piotr Ożarowski <piotr@debian.org>  Tue, 10 Jan 2017 20:28:57 +0100
 
