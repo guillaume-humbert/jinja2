@@ -606,10 +606,10 @@ Inside of a for-loop block, you can access some special variables:
 | `loop.cycle`          | A helper function to cycle between a list of      |
 |                       | sequences.  See the explanation below.            |
 +-----------------------+---------------------------------------------------+
-| `loop.depth`          | Indicates how deep in deep in a recursive loop    |
+| `loop.depth`          | Indicates how deep in a recursive loop            |
 |                       | the rendering currently is.  Starts at level 1    |
 +-----------------------+---------------------------------------------------+
-| `loop.depth0`         | Indicates how deep in deep in a recursive loop    |
+| `loop.depth0`         | Indicates how deep in a recursive loop            |
 |                       | the rendering currently is.  Starts at level 0    |
 +-----------------------+---------------------------------------------------+
 
@@ -681,7 +681,7 @@ If
 
 The `if` statement in Jinja is comparable with the Python if statement.
 In the simplest form, you can use it to test if a variable is defined, not
-empty or not false::
+empty and not false::
 
     {% if users %}
     <ul>
@@ -1460,10 +1460,8 @@ With Statement
 
 .. versionadded:: 2.3
 
-If the application enables the :ref:`with-extension`, it is possible to
-use the `with` keyword in templates.  This makes it possible to create
-a new inner scope.  Variables set within this scope are not visible
-outside of the scope.
+The with statement makes it possible to create a new inner scope.
+Variables set within this scope are not visible outside of the scope.
 
 With in a nutshell::
 
@@ -1486,15 +1484,20 @@ are equivalent::
         {{ foo }}
     {% endwith %}
 
+.. admonition:: Extension
+
+   In older versions of Jinja (before 2.9) it was required to enable this
+   feature with an extension.  It's now enabled by default.
+
 .. _autoescape-overrides:
 
-Autoescape Extension
+Autoescape Overrides
 --------------------
 
 .. versionadded:: 2.4
 
-If the application enables the :ref:`autoescape-extension`, one can
-activate and deactivate the autoescaping from within the templates.
+If you want you can activate and deactivate the autoescaping from within
+the templates.
 
 Example::
 
@@ -1507,3 +1510,8 @@ Example::
     {% endautoescape %}
 
 After an `endautoescape` the behavior is reverted to what it was before.
+
+.. admonition:: Extension
+
+   In older versions of Jinja (before 2.9) it was required to enable this
+   feature with an extension.  It's now enabled by default.

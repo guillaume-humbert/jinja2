@@ -84,6 +84,8 @@ ext/django2jinja/templates/subtemplate.html
 jinja2/__init__.py
 jinja2/_compat.py
 jinja2/_stringdefs.py
+jinja2/asyncfilters.py
+jinja2/asyncsupport.py
 jinja2/bccache.py
 jinja2/compiler.py
 jinja2/constants.py
@@ -93,6 +95,7 @@ jinja2/environment.py
 jinja2/exceptions.py
 jinja2/ext.py
 jinja2/filters.py
+jinja2/idtracking.py
 jinja2/lexer.py
 jinja2/loaders.py
 jinja2/meta.py

@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: Jinja2
-Version: 2.8
+Version: 2.9.4
 Summary: A small but fast and easy to use stand-alone template engine written in pure python.
 Home-page: http://jinja.pocoo.org/
 Author: Armin Ronacher
@@ -54,6 +54,8 @@ Classifier: Programming Language :: Python :: 2.6
 Classifier: Programming Language :: Python :: 2.7
 Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
 Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
 Classifier: Topic :: Software Development :: Libraries :: Python Modules
 Classifier: Topic :: Text Processing :: Markup :: HTML
