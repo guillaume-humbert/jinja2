@@ -1,0 +1,4 @@
+# these files require Python3.6 and are not used in <= 3.5
+# see https://github.com/pallets/jinja/issues/643
+jinja2/asyncfilters.py
+jinja2/asyncsupport.py
