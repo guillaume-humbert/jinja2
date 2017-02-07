@@ -1,11 +1,11 @@
 # see git-dpm(1) from git-dpm package
-487df3f3e5f434ebb1cfa875576a4c1f2312ea8a
-487df3f3e5f434ebb1cfa875576a4c1f2312ea8a
-487df3f3e5f434ebb1cfa875576a4c1f2312ea8a
-487df3f3e5f434ebb1cfa875576a4c1f2312ea8a
-jinja2_2.9.4.orig.tar.gz
-47b1db51d9ebbdbaa26934ed055ee51a7190142a
-369566
+b9cd64738061265fe816f7f8b8f9cf670a7bd2eb
+b9cd64738061265fe816f7f8b8f9cf670a7bd2eb
+b9cd64738061265fe816f7f8b8f9cf670a7bd2eb
+b9cd64738061265fe816f7f8b8f9cf670a7bd2eb
+jinja2_2.9.5.orig.tar.gz
+a3129c140d34ae565a556e48db40772df3536b23
+437631
 debianTag="debian/%e%v"
 patchedTag="patched/%e%v"
 upstreamTag="upstream/%e%u"
