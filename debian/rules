@@ -13,3 +13,6 @@ override_dh_auto_clean:
 
 override_dh_auto_build-indep:
 	PYTHONPATH=$(CURDIR):$(CURDIR)/docs make -C docs html
+
+override_dh_installchangelogs:
+	dh_installchangelogs CHANGES

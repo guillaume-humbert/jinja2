@@ -1,6 +1,7 @@
 jinja2 (2.9.6-1) unstable; urgency=medium
 
   * New upstream release
+  * Install CHANGES file as upstream changelog (closes: 857722)
 
  -- Piotr Ożarowski <piotr@debian.org>  Tue, 20 Jun 2017 15:21:18 +0200
 
