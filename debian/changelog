@@ -1,7 +1,13 @@
 jinja2 (2.9.6-1) unstable; urgency=medium
 
+  [ Piotr Ożarowski ]
   * New upstream release
   * Install CHANGES file as upstream changelog (closes: 857722)
+
+  [ Michael Hudson-Doyle ]
+  * Install asyncsupport.py and asyncfilters.py now that Python 3.6 is a
+    supported version (but do not compile them on install with Python 3.5).
+    (closes: 862699)
 
  -- Piotr Ożarowski <piotr@debian.org>  Tue, 20 Jun 2017 15:21:18 +0200
 
