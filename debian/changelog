@@ -3,6 +3,7 @@ jinja2 (2.9.6-1) unstable; urgency=medium
   [ Piotr Ożarowski ]
   * New upstream release
   * Install CHANGES file as upstream changelog (closes: 857722)
+  * Standards-version bumped to 4.0.0 (no other changes needed)
 
   [ Michael Hudson-Doyle ]
   * Install asyncsupport.py and asyncfilters.py now that Python 3.6 is a
