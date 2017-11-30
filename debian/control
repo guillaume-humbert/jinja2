@@ -42,7 +42,6 @@ Description: small but fast and easy to use stand-alone template engine
 Package: python-jinja2-doc
 Section: doc
 Architecture: all
-Priority: extra
 Depends: ${sphinxdoc:Depends}, ${misc:Depends}
 Recommends: python-jinja2
 Description: documentation for the Jinja2 Python library
