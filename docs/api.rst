@@ -114,7 +114,7 @@ for everything else `unicode`:
 u'f\xf6\xf6'
 
 
-.. _Unicode documentation: http://docs.python.org/dev/howto/unicode.html
+.. _Unicode documentation: https://docs.python.org/dev/howto/unicode.html
 
 High Level API
 --------------
@@ -611,6 +611,13 @@ Example::
     Keyword arguments to be passed to the dump function.  The default is
     ``{'sort_keys': True}``.
 
+.. _ext-i18n-trimmed:
+
+``ext.i18n.trimmed``:
+    If this is set to `True`, ``{% trans %}`` blocks of the
+    :ref:`i18n-extension` will always unify linebreaks and surrounding
+    whitespace as if the `trimmed` modifier was used.
+
 
 Utilities
 ---------
@@ -686,6 +693,8 @@ Exceptions
     The reason why the filename and error message are bytestrings and not
     unicode strings is that Python 2.x is not using unicode for exceptions
     and tracebacks as well as the compiler.  This will change with Python 3.
+
+.. autoexception:: jinja2.TemplateRuntimeError
 
 .. autoexception:: jinja2.TemplateAssertionError
 

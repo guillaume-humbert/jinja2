@@ -27,8 +27,8 @@ i18n Extension
 
 **Import name:** `jinja2.ext.i18n`
 
-The i18n extension can be used in combination with `gettext`_ or `babel`_.  If 
-the i18n extension is enabled Jinja2 provides a `trans` statement that marks 
+The i18n extension can be used in combination with `gettext`_ or `babel`_.  If
+the i18n extension is enabled Jinja2 provides a `trans` statement that marks
 the wrapped string as translatable and calls `gettext`.
 
 After enabling, dummy `_` function that forwards calls to `gettext` is added
@@ -106,10 +106,19 @@ current configuration.  (For example by using `gettext.find`)
 The usage of the `i18n` extension for template designers is covered as part
 :ref:`of the template documentation <i18n-in-templates>`.
 
-.. _gettext: http://docs.python.org/dev/library/gettext
+.. _gettext: https://docs.python.org/dev/library/gettext
 .. _Babel: http://babel.pocoo.org/
 
 .. _newstyle-gettext:
+
+Whitespace Trimming
+~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 2.10
+
+Linebreaks and surrounding whitespace can be automatically trimmed by enabling
+the ``ext.i18n.trimmed`` :ref:`policy <ext-i18n-trimmed>`.
+
 
 Newstyle Gettext
 ~~~~~~~~~~~~~~~~
@@ -294,7 +303,7 @@ extensions:
         The current :class:`~jinja2.lexer.TokenStream`
 
 .. autoclass:: jinja2.lexer.TokenStream
-   :members: push, look, eos, skip, next, next_if, skip_if, expect
+   :members: push, look, eos, skip, __next__, next_if, skip_if, expect
 
    .. attribute:: current
 
