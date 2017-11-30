@@ -5,7 +5,7 @@
 export PYBUILD_NAME=jinja2
 
 %:
-	dh $@ --with python2,python3 --buildsystem=pybuild
+	dh $@ --with python2,python3,sphinx --buildsystem=pybuild
 
 override_dh_auto_clean:
 	make -C docs clean
