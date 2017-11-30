@@ -1,6 +1,8 @@
 jinja2 (2.10-1) unstable; urgency=medium
 
   * New upstream release
+  * Add python3-sphinx to Build-Depends and invoke dh_sphinxdoc after building
+    documentation
   * Standards-version bumped to 4.1.1
     - -doc package's Priority changed to optional
 
