@@ -197,14 +197,14 @@ without the `trim_blocks` and `lstrip_blocks` options, this template::
 gets rendered with blank lines inside the div::
 
     <div>
-    
+
             yay
-    
+
     </div>
 
 But with both `trim_blocks` and `lstrip_blocks` enabled, the template block
 lines are removed and other whitespace is preserved::
-    
+
     <div>
             yay
     </div>
@@ -522,12 +522,12 @@ Working with Automatic Escaping
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When automatic escaping is enabled, everything is escaped by default except
-for values explicitly marked as safe.  Variables and expressions 
+for values explicitly marked as safe.  Variables and expressions
 can be marked as safe either in:
 
 a. the context dictionary by the application with `MarkupSafe.Markup`, or
 b. the template, with the `|safe` filter
-   
+
 The main problem with this approach is that Python itself doesn't have the
 concept of tainted values; so whether a value is safe or unsafe can get lost.
 
@@ -612,6 +612,15 @@ Inside of a for-loop block, you can access some special variables:
 | `loop.depth0`         | Indicates how deep in a recursive loop            |
 |                       | the rendering currently is.  Starts at level 0    |
 +-----------------------+---------------------------------------------------+
+| `loop.previtem`       | The item from the previous iteration of the loop. |
+|                       | Undefined during the first iteration.             |
++-----------------------+---------------------------------------------------+
+| `loop.nextitem`       | The item from the following iteration of the loop.|
+|                       | Undefined during the last iteration.              |
++-----------------------+---------------------------------------------------+
+| `loop.changed(*val)`  | True if previously called with a different value  |
+|                       | (or not called at all).                           |
++-----------------------+---------------------------------------------------+
 
 Within a for-loop, it's possible to cycle among a list of strings/variables
 each time through the loop by using the special `loop.cycle` helper::
@@ -679,6 +688,30 @@ iteration and cannot outlive the loop scope.  Older versions of Jinja2 had
 a bug where in some circumstances it appeared that assignments would work.
 This is not supported.  See :ref:`assignments` for more information about
 how to deal with this.
+
+If all you want to do is check whether some value has changed since the
+last iteration or will change in the next iteration, you can use `previtem`
+and `nextitem`::
+
+    {% for value in values %}
+        {% if loop.previtem is defined and value > loop.previtem %}
+            The value just increased!
+        {% endif %}
+        {{ value }}
+        {% if loop.nextitem is defined and loop.nextitem > value %}
+            The value will increase even more!
+        {% endif %}
+    {% endfor %}
+
+If you only care whether the value changed at all, using `changed` is even
+easier::
+
+    {% for entry in entries %}
+        {% if loop.changed(entry.category) %}
+            <h2>{{ entry.category }}</h2>
+        {% endif %}
+        <p>{{ entry.message }}</p>
+    {% endfor %}
 
 .. _if:
 
@@ -875,6 +908,24 @@ Assignments use the `set` tag and can have multiple targets::
             did not iterate
         {% endfor %}
 
+    As of version 2.10 more complex use cases can be handled using namespace
+    objects which allow propagating of changes across scopes::
+
+        {% set ns = namespace(found=false) %}
+        {% for item in items %}
+            {% if item.check_something() %}
+                {% set ns.found = true %}
+            {% endif %}
+            * {{ item.title }}
+        {% endfor %}
+        Found item having something: {{ ns.found }}
+
+    Note hat the ``obj.attr`` notation in the `set` tag is only allowed for
+    namespace objects; attempting to assign an attribute on any other object
+    will raise an exception.
+
+    .. versionadded:: 2.10 Added support for namespace objects
+
 
 Block Assignments
 ~~~~~~~~~~~~~~~~~
@@ -895,6 +946,17 @@ Example::
     {% endset %}
 
 The `navigation` variable then contains the navigation HTML source.
+
+.. versionchanged:: 2.10
+
+Starting with Jinja 2.10, the block assignment supports filters.
+
+Example::
+
+    {% set reply | wordwrap %}
+        You wrote:
+        {{ message }}
+    {% endset %}
 
 
 .. _extends:
@@ -1249,6 +1311,8 @@ something else>``.
 The `else` part is optional.  If not provided, the else block implicitly
 evaluates into an undefined object::
 
+.. sourcecode:: jinja
+
     {{ '[%s]' % page.title if page.title }}
 
 
@@ -1345,7 +1409,7 @@ The following functions are available in the global scope by default:
 
         Returns the current item.
 
-    **new in Jinja 2.1**
+    .. versionadded:: 2.1
 
 .. class:: joiner(sep=', ')
 
@@ -1365,7 +1429,30 @@ The following functions are available in the global scope by default:
             <a href="?action=edit">Edit</a>
         {% endif %}
 
-    **new in Jinja 2.1**
+    .. versionadded:: 2.1
+
+.. class:: namespace(...)
+
+    Creates a new container that allows attribute assignment using the
+    ``{% set %}`` tag::
+
+        {% set ns = namespace() %}
+        {% set ns.foo = 'bar' %}
+
+    The main purpose of this is to allow carrying a value from within a loop
+    body to an outer scope.  Initial values can be provided as a dict, as
+    keyword arguments, or both (same behavior as Python's `dict` constructor)::
+
+        {% set ns = namespace(found=false) %}
+        {% for item in items %}
+            {% if item.check_something() %}
+                {% set ns.found = true %}
+            {% endif %}
+            * {{ item.title }}
+        {% endfor %}
+        Found item having something: {{ ns.found }}
+
+    .. versionadded:: 2.10
 
 
 Extensions
@@ -1417,6 +1504,22 @@ which should be used for pluralizing by adding it as parameter to `pluralize`::
 
     {% trans ..., user_count=users|length %}...
     {% pluralize user_count %}...{% endtrans %}
+
+When translating longer blocks of text, whitespace and linebreaks result in
+rather ugly and error-prone translation strings.  To avoid this, a trans block
+can be marked as trimmed which will replace all linebreaks and the whitespace
+surrounding them with a single space and remove leading/trailing whitespace::
+
+    {% trans trimmed book_title=book.title %}
+        This is {{ book_title }}.
+        You should read it!
+    {% endtrans %}
+
+If trimming is enabled globally, the `notrimmed` modifier can be used to
+disable it for a `trans` block.
+
+.. versionadded:: 2.10
+   The `trimmed` and `notrimmed` modifiers have been added.
 
 It's also possible to translate strings in expressions.  For that purpose,
 three functions exist:
