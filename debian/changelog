@@ -1,6 +1,7 @@
 jinja2 (2.10-2) UNRELEASED; urgency=medium
 
   * d/control: Set Vcs-* to salsa.debian.org
+  * d/changelog: Remove trailing whitespaces
 
  -- Ondřej Nový <onovy@debian.org>  Tue, 13 Feb 2018 10:15:12 +0100
 
@@ -150,7 +151,7 @@ jinja2 (2.5.5-4) unstable; urgency=low
 jinja2 (2.5.5-3) experimental; urgency=low
 
   * Bump minimum required python-support version to the one in experimental
-    to get Python 2.7 support (closes: 608149) 
+    to get Python 2.7 support (closes: 608149)
 
  -- Piotr Ożarowski <piotr@debian.org>  Mon, 27 Dec 2010 23:15:04 +0100
 
@@ -160,7 +161,7 @@ jinja2 (2.5.5-2) experimental; urgency=low
     version temporary bumped to 2.6.6-4, python-setuptools' to 0.6.14-5
     and python3-all's to 3.1.2-14 to make sure the right version from
     experimental will be used). Closes: 607450.
-  * Update debian/rules to handle Python >= 3.2 
+  * Update debian/rules to handle Python >= 3.2
 
  -- Piotr Ożarowski <piotr@debian.org>  Tue, 21 Dec 2010 20:58:19 +0100
 
