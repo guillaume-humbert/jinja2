@@ -3,6 +3,7 @@ jinja2 (2.10-2) UNRELEASED; urgency=medium
   * d/control: Set Vcs-* to salsa.debian.org
   * d/changelog: Remove trailing whitespaces
   * d/control: Remove ancient X-Python-Version field
+  * d/control: Remove ancient X-Python3-Version field
 
  -- Ondřej Nový <onovy@debian.org>  Tue, 13 Feb 2018 10:15:12 +0100
 
