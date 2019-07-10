@@ -9,6 +9,7 @@ jinja2 (2.10.1-1) unstable; urgency=medium
 
   [ Piotr Ożarowski ]
   * New upstream release
+  * Standards-version bumped to 4.4.0 (no other changes needed)
 
  -- Piotr Ożarowski <piotr@debian.org>  Wed, 10 Jul 2019 22:34:15 +0200
 
