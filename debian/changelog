@@ -12,6 +12,15 @@ jinja2 (2.10.1-1) unstable; urgency=medium
 
  -- Piotr Ożarowski <piotr@debian.org>  Wed, 10 Jul 2019 22:34:15 +0200
 
+jinja2 (2.10-2) unstable; urgency=high
+
+  [ Thomas Goirand ]
+  * CVE-2019-10906: In Pallets Jinja before 2.10.1, str.format_map allows a
+    sandbox escape. Applied upstream patch: sandbox_str.format_map.patch
+    (Closes: #926602).
+
+ -- Piotr Ożarowski <piotr@debian.org>  Tue, 09 Apr 2019 21:58:20 +0200
+
 jinja2 (2.10-1) unstable; urgency=medium
 
   * New upstream release
