@@ -19,7 +19,7 @@ Even if you are creating templates from strings by using the constructor of
 albeit a shared one.
 
 Most applications will create one :class:`Environment` object on application
-initialization and use that to load templates.  In some cases however, it's 
+initialization and use that to load templates.  In some cases however, it's
 useful to have multiple environments side by side, if different configurations
 are in use.
 
@@ -46,7 +46,7 @@ To load a template from this environment you just have to call the
 
 To render it with some variables, just call the :meth:`render` method::
 
-    print template.render(the='variables', go='here')
+    print(template.render(the='variables', go='here'))
 
 Using a template loader rather than passing strings to :class:`Template`
 or :meth:`Environment.from_string` has multiple advantages.  Besides being
@@ -114,7 +114,7 @@ for everything else `unicode`:
 u'f\xf6\xf6'
 
 
-.. _Unicode documentation: https://docs.python.org/dev/howto/unicode.html
+.. _Unicode documentation: https://docs.python.org/3/howto/unicode.html
 
 High Level API
 --------------
@@ -213,7 +213,7 @@ useful if you want to dig deeper into Jinja2 or :ref:`develop extensions
         For a more complex example you can provide a hint.  For example
         the :func:`first` filter creates an undefined object that way::
 
-            return environment.undefined('no first item, sequence was empty')            
+            return environment.undefined('no first item, sequence was empty')
 
         If it the `name` or `obj` is known (for example because an attribute
         was accessed) it should be passed to the undefined object, even if
@@ -834,11 +834,11 @@ Here a simple test that checks if a variable is a prime number::
     def is_prime(n):
         if n == 2:
             return True
-        for i in xrange(2, int(math.ceil(math.sqrt(n))) + 1):
+        for i in range(2, int(math.ceil(math.sqrt(n))) + 1):
             if n % i == 0:
                 return False
         return True
-        
+
 
 You can register it on the template environment by updating the
 :attr:`~Environment.tests` dict on the environment::
