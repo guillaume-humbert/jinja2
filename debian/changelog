@@ -1,3 +1,10 @@
+jinja2 (2.10.3-1~ubuntu2) bionic; urgency=medium
+
+  [ Guillaume J Humbert ]
+  * Fix Build Dependencies
+
+ -- Guillaume J Humbert <guillaume.j.humbert@pm.me>  Mon, 28 Oct 2019 16:25:21 +0800
+
 jinja2 (2.10.3-1~ubuntu1) bionic; urgency=medium
 
   [ Guillaume J Humbert ]
