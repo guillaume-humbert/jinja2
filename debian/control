@@ -3,11 +3,11 @@ Section: python
 Priority: optional
 Maintainer: Piotr Ożarowski <piotr@debian.org>
 Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
-Build-Depends: debhelper-compat (= 9), dh-python,
+Build-Depends: debhelper (>= 10~), dh-python,
  python-all (>= 2.6.6-3), python3-all,
  python-setuptools (>= 0.6b3-1~), python3-setuptools,
- python3-sphinx, python3-pygments
-Standards-Version: 4.4.1
+ python3-pygments
+Standards-Version: 4.1.4
 Homepage: http://jinja.pocoo.org/
 Vcs-Git: https://salsa.debian.org/python-team/modules/jinja2.git
 Vcs-Browser: https://salsa.debian.org/python-team/modules/jinja2
@@ -36,17 +36,6 @@ Description: small but fast and easy to use stand-alone template engine
   * Secure. It’s possible to evaluate untrusted template code if the optional
     sandbox is enabled. This allows Jinja2 to be used as templating language
     for applications where users may modify the template design.
-
-Package: python-jinja2-doc
-Section: doc
-Architecture: all
-Depends: ${sphinxdoc:Depends}, ${misc:Depends}
-Recommends: python-jinja2
-Description: documentation for the Jinja2 Python library
- Jinja2 is a small but fast and easy to use stand-alone template engine
- .
- This package contains the documentation for Jinja2 in HTML and
- reStructuredText formats.
 
 Package: python3-jinja2
 Architecture: all

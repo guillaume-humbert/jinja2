@@ -5,14 +5,12 @@
 export PYBUILD_NAME=jinja2
 
 %:
-	dh $@ --with python2,python3,sphinxdoc --buildsystem=pybuild
+	dh $@ --with python2,python3 --buildsystem=pybuild
 
 override_dh_auto_clean:
-	make -C docs clean
 	dh_auto_clean
-
-override_dh_auto_build-indep:
-	PYTHONPATH=$(CURDIR):$(CURDIR)/docs make -C docs html
+	git checkout -- Jinja2.egg-info/SOURCES.txt || echo -n
+	rm -Rf .pybuild
 
 override_dh_installchangelogs:
 	dh_installchangelogs CHANGES.rst
